@@ -1,0 +1,41 @@
+name: Failure report / 실패 보고
+description: Report a workflow, model, gate, or handoff failure. / 워크플로우, 모델, 게이트,
+  핸드오프 실패를 기록합니다.
+title: '[Failure / 실패]: '
+labels:
+- failure
+body:
+- type: input
+  id: stack
+  attributes:
+    label: Stack / 스택
+  validations:
+    required: true
+- type: input
+  id: model
+  attributes:
+    label: Model and tool / 모델 및 도구
+  validations:
+    required: true
+- type: textarea
+  id: expected
+  attributes:
+    label: Expected behavior / 기대 동작
+  validations:
+    required: true
+- type: textarea
+  id: actual
+  attributes:
+    label: Actual behavior / 실제 동작
+  validations:
+    required: true
+- type: textarea
+  id: evidence
+  attributes:
+    label: Validation evidence and failure category / Validation 증거 및 실패 분류
+  validations:
+    required: true
+- type: textarea
+  id: workaround
+  attributes:
+    label: Human correction or workaround / 사람 수정 또는 우회 방법

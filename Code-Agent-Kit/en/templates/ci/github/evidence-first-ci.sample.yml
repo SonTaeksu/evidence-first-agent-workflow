@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tools:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: python -m pip install -r tools/reference-image-manifest/requirements.txt
+      - run: python -m compileall tools
+      - run: python tools/check-agent-config/check_agent_config.py --root .
+      - run: python tools/check-stack-readiness/self_test.py
+      - run: python tools/check-stack-readiness/check_stack_readiness.py --stack stacks/react-aspnetcore
+      - run: python tools/check-state-model/self_test.py
+      - run: python tools/check-state-model/check_state_model.py --project-docs samples/react-aspnetcore-taskflow/docs
+      - run: python tools/check-build-log/self_test.py
+      - run: python tools/reference-image-manifest/self_test.py
+      - run: python tools/spa-screen-extractor/self_test.py
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: samples/react-aspnetcore-taskflow/frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.16"
+          cache: npm
+          cache-dependency-path: samples/react-aspnetcore-taskflow/frontend/package-lock.json
+      - run: node --check ../../../tools/spa-screen-extractor/extract_screen.js
+      - run: npm ci
+      - run: npm run color:static
+      - run: npm run lint
+      - run: npm run test
+      - run: npm run build
+
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: samples/react-aspnetcore-taskflow/backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - run: dotnet restore TaskFlow.Api.Tests/TaskFlow.Api.Tests.csproj
+      - run: dotnet build TaskFlow.Api.Tests/TaskFlow.Api.Tests.csproj --no-restore
+      - run: dotnet test TaskFlow.Api.Tests/TaskFlow.Api.Tests.csproj --no-build
+
+  e2e:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: samples/react-aspnetcore-taskflow/frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.16"
+          cache: npm
+          cache-dependency-path: samples/react-aspnetcore-taskflow/frontend/package-lock.json
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run e2e
+      - run: npm run e2e:color
+
+  enforcement:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Enforce evidence-first gates on the diff
+        run: |
+          BASE="${{ github.event.pull_request.base.sha || github.event.before }}"
+          if [ -z "$BASE" ] || ! git rev-parse --verify "$BASE" >/dev/null 2>&1; then
+            BASE="$(git rev-parse HEAD~1 2>/dev/null || git rev-parse HEAD)"
+          fi
+          python tools/enforce-agent-gates/enforce_gates.py --base "$BASE"
+      - name: Sanitization gate (no proprietary strings)
+        run: python tools/check-sanitization/check_sanitization.py --root .

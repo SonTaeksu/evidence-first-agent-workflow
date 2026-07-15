@@ -1,0 +1,56 @@
+{
+  "schema": "evidence-first/portable-code-agent-kit/v1",
+  "version": "0.1.8-alpha",
+  "language_roots": [
+    "en",
+    "ko"
+  ],
+  "copy_modes": {
+    "full": "All operational docs, tools, stacks, demos, reference-assets, and sample.",
+    "core": "Core workflow, templates, tools, scripts, demos, reference-assets, adapters, and selected stack; excludes sample and unselected planned stacks."
+  },
+  "required_root_files": [
+    "README.md",
+    "AGENTS.md",
+    "DESIGN-CONCEPTS.md",
+    ".agentignore",
+    "prompts/GATE.md",
+    "templates/core/worklog.md",
+    "docs/core/state-and-memory-model.md",
+    "docs/getting-started/stack-input-requirements.md",
+    "tools/check-stack-readiness/check_stack_readiness.py",
+    "demos/README.md",
+    "reference-assets/README.md",
+    "LICENSES.md",
+    "tools/check-kit-installation/check_kit_installation.py"
+  ],
+  "portable_sections": [
+    "docs",
+    "prompts",
+    "templates",
+    "stacks",
+    "tools",
+    "scripts",
+    "demos",
+    "reference-assets",
+    "agent-configs",
+    "samples",
+    "LICENSES"
+  ],
+  "repository_only_exclusions": [
+    "docs/design-review",
+    "docs/evaluation",
+    "docs/ko",
+    ".github active workflows",
+    "release changelog and update manifests",
+    "generated validation evidence"
+  ],
+  "post_install_validation": "tools/check-kit-installation/check_kit_installation.py",
+  "mirrored_file_count": 270,
+  "validation": {
+    "self_contained_links": "PASS",
+    "path_parity": "PASS",
+    "language_suffix": "PASS",
+    "installer": "PASS"
+  }
+}

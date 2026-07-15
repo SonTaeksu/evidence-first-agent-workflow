@@ -1,0 +1,220 @@
+{
+  "checks": [
+    {
+      "name": "Base page text",
+      "foreground": {
+        "selector": ":root",
+        "property": "color"
+      },
+      "background": {
+        "selector": ":root",
+        "property": "background"
+      },
+      "minimum": 4.5
+    },
+    {
+      "name": "Hero supporting copy",
+      "foreground": {
+        "selector": ".hero-copy",
+        "property": "color"
+      },
+      "background": {
+        "selector": ":root",
+        "property": "background"
+      },
+      "minimum": 4.5
+    },
+    {
+      "name": "Eyebrow text on page",
+      "foreground": {
+        "selector": ".eyebrow",
+        "property": "color"
+      },
+      "background": {
+        "selector": ":root",
+        "property": "background"
+      },
+      "minimum": 4.5
+    },
+    {
+      "name": "Eyebrow text on white card",
+      "foreground": {
+        "selector": ".eyebrow",
+        "property": "color"
+      },
+      "background": {
+        "selector": ".task-form",
+        "property": "background"
+      },
+      "minimum": 4.5
+    },
+    {
+      "name": "Form hint on white card",
+      "foreground": {
+        "selector": ".form-hint",
+        "property": "color"
+      },
+      "background": {
+        "selector": ".task-form",
+        "property": "background"
+      },
+      "minimum": 4.5
+    },
+    {
+      "name": "Section count on page",
+      "foreground": {
+        "selector": ".section-heading > span",
+        "property": "color"
+      },
+      "background": {
+        "selector": ":root",
+        "property": "background"
+      },
+      "minimum": 4.5
+    },
+    {
+      "name": "Primary button label",
+      "foreground": {
+        "selector": ".primary-button",
+        "property": "color"
+      },
+      "background": {
+        "selector": ".primary-button",
+        "property": "background"
+      },
+      "minimum": 4.5
+    },
+    {
+      "name": "Secondary button label",
+      "foreground": {
+        "selector": ".secondary-button",
+        "property": "color"
+      },
+      "background": {
+        "selector": ".secondary-button",
+        "property": "background"
+      },
+      "minimum": 4.5
+    },
+    {
+      "name": "Error message",
+      "foreground": {
+        "selector": ".error-banner",
+        "property": "color"
+      },
+      "background": {
+        "selector": ".error-banner",
+        "property": "background"
+      },
+      "minimum": 4.5
+    },
+    {
+      "name": "Task assignee",
+      "foreground": {
+        "selector": ".task-assignee",
+        "property": "color"
+      },
+      "background": {
+        "selector": ".task-card",
+        "property": "background"
+      },
+      "minimum": 4.5
+    },
+    {
+      "name": "Task description",
+      "foreground": {
+        "selector": ".task-description",
+        "property": "color"
+      },
+      "background": {
+        "selector": ".task-card",
+        "property": "background"
+      },
+      "minimum": 4.5
+    },
+    {
+      "name": "Backlog badge",
+      "foreground": {
+        "selector": ".status-backlog",
+        "property": "color"
+      },
+      "background": {
+        "selector": ".status-backlog",
+        "property": "background"
+      },
+      "minimum": 4.5
+    },
+    {
+      "name": "In-progress badge",
+      "foreground": {
+        "selector": ".status-inprogress",
+        "property": "color"
+      },
+      "background": {
+        "selector": ".status-inprogress",
+        "property": "background"
+      },
+      "minimum": 4.5
+    },
+    {
+      "name": "Ready-for-approval badge",
+      "foreground": {
+        "selector": ".status-readyforapproval",
+        "property": "color"
+      },
+      "background": {
+        "selector": ".status-readyforapproval",
+        "property": "background"
+      },
+      "minimum": 4.5
+    },
+    {
+      "name": "Approved badge",
+      "foreground": {
+        "selector": ".status-approved",
+        "property": "color"
+      },
+      "background": {
+        "selector": ".status-approved",
+        "property": "background"
+      },
+      "minimum": 4.5
+    },
+    {
+      "name": "Rejected badge",
+      "foreground": {
+        "selector": ".status-rejected",
+        "property": "color"
+      },
+      "background": {
+        "selector": ".status-rejected",
+        "property": "background"
+      },
+      "minimum": 4.5
+    },
+    {
+      "name": "Small neutral button",
+      "foreground": {
+        "selector": ".small-button",
+        "property": "color"
+      },
+      "background": {
+        "selector": ".small-button",
+        "property": "background"
+      },
+      "minimum": 4.5
+    },
+    {
+      "name": "Small primary button",
+      "foreground": {
+        "selector": ".small-button-primary",
+        "property": "color"
+      },
+      "background": {
+        "selector": ".small-button-primary",
+        "property": "background"
+      },
+      "minimum": 4.5
+    }
+  ]
+}

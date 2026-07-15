@@ -1,0 +1,42 @@
+{
+  "schema": "evidence-first/stack-readiness/v1",
+  "stack_key": "go-htmx",
+  "declared_state": "blocked",
+  "required_documents": [
+    "STACK.md",
+    "STACK-INPUTS.md",
+    "AGENTS.stack.md",
+    "SKILL.md",
+    "capability-detection.md",
+    "feature-model.md",
+    "artifact-contract.md",
+    "communication-contract.md",
+    "evidence-provenance.md",
+    "references/_index.md",
+    "references/pitfalls.md",
+    "references/verified-facts.md",
+    "skeletons/README.md",
+    "validation/validation-profile.md"
+  ],
+  "inputs": [
+    {
+      "key": "owner-stack-definition",
+      "required": true,
+      "source": "user",
+      "status": "unknown",
+      "evidence": [],
+      "notes": "See STACK-INPUTS.md"
+    }
+  ],
+  "capabilities": [
+    {
+      "key": "implementation-path",
+      "status": "unknown",
+      "evidence": [],
+      "selected_path": "",
+      "blocks": [
+        "all stack-dependent implementation"
+      ]
+    }
+  ]
+}

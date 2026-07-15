@@ -1,0 +1,20 @@
+{
+  "checks": [
+    {
+      "name": "Primary button",
+      "reference_region": "primary",
+      "reference_source": "average",
+      "runtime_selector": "\\.primary-button$",
+      "runtime_property": "backgroundColor",
+      "max_delta_e": 2
+    },
+    {
+      "name": "Page title",
+      "reference_region": "text",
+      "reference_source": "average",
+      "runtime_selector": "\\.page-title$",
+      "runtime_property": "color",
+      "max_delta_e": 2
+    }
+  ]
+}

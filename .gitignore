@@ -1,0 +1,41 @@
+# .NET
+**/bin/
+**/obj/
+*.user
+*.suo
+
+# Node
+**/node_modules/
+**/dist/
+**/coverage/
+**/playwright-report/
+**/test-results/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Validation evidence generated locally
+**/docs/evidence/generated/
+
+# Reference assets are local by default; keep only instructions/examples
+reference-assets/images/*
+!reference-assets/images/README.md
+reference-assets/evidence/*
+!reference-assets/evidence/README.md
+reference-assets/spa/*
+!reference-assets/spa/README.md
+
+# Python
+**/__pycache__/
+*.pyc
+
+# Visual Studio
+.vs/

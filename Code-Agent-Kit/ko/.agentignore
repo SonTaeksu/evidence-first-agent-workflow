@@ -1,0 +1,33 @@
+# Generic agent indexing exclusions.
+# Not every agent recognizes this file; AGENTS.md repeats the critical rules.
+
+# Build and dependencies
+**/node_modules/
+**/dist/
+**/bin/
+**/obj/
+**/target/
+**/coverage/
+**/playwright-report/
+**/playwright-color-report/
+**/test-results/
+
+# Generated evidence and large source assets
+reference-assets/images/
+reference-assets/spa/
+reference-assets/evidence/**/rendered.html
+**/docs/evidence/generated/*.json
+
+# Human-only onboarding
+docs/human/
+
+# IDE and archives
+.vscode/
+.idea/
+*.zip
+*.7z
+
+# Secrets
+.env
+.env.*
+!*.env.example

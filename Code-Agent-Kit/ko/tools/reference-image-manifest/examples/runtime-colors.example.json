@@ -1,0 +1,23 @@
+{
+  "schema": "evidence-first/computed-color-evidence/v1",
+  "items": [
+    {
+      "selector": "button.primary-button",
+      "color": "rgb(255, 255, 255)",
+      "backgroundColor": "rgb(49, 86, 223)",
+      "borderColor": "rgb(49, 86, 223)",
+      "fontSize": "16px",
+      "fontWeight": "700",
+      "text": "Create task"
+    },
+    {
+      "selector": "h1.page-title",
+      "color": "rgb(23, 32, 51)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "borderColor": "rgb(0, 0, 0)",
+      "fontSize": "64px",
+      "fontWeight": "700",
+      "text": "TaskFlow"
+    }
+  ]
+}

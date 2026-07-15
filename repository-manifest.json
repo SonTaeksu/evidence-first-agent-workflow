@@ -1,0 +1,183 @@
+{
+  "name": "evidence-first-agent-workflow",
+  "version": "0.1.8-alpha",
+  "generated": "2026-07-14",
+  "default_language": "English",
+  "sample_stack": {
+    "frontend": "React 19.2.7 + TypeScript 7.0.2 + Vite 8.1.4",
+    "backend": "ASP.NET Core 10 / .NET SDK 10.0.301"
+  },
+  "mcp": {
+    "microsoft_learn": "https://learn.microsoft.com/api/mcp",
+    "context7": "@upstash/context7-mcp"
+  },
+  "validation": {
+    "agent_configuration": "PASS",
+    "python_tools_compile": "PASS",
+    "static_css_contrast": "PASS_18_OF_18",
+    "static_color_failure_behavior": "PASS_EXIT_CODE_2",
+    "frontend_typescript": "PASS",
+    "frontend_component_test": "PASS_1_OF_1",
+    "frontend_build": "PASS",
+    "playwright_test_discovery": "PASS",
+    "backend_build_test": "PENDING_LOCAL_OR_CI",
+    "playwright_runtime_e2e": "PENDING_LOCAL_OR_CI",
+    "runtime_axe_color_contrast": "PENDING_LOCAL_OR_CI",
+    "docker": "PENDING_LOCAL_OR_CI",
+    "reference_image_manifest_self_test": "PASS",
+    "reference_runtime_color_comparison": "PASS",
+    "reference_color_mismatch_behavior": "PASS_EXIT_CODE_2",
+    "reference_icc_detection": "PASS",
+    "reference_exif_orientation": "PASS",
+    "reference_named_regions": "PASS",
+    "reference_runtime_delta_e": "PASS",
+    "reference_mismatch_behavior": "PASS_EXIT_CODE_2",
+    "frontend_typescript_after_reference_integration": "PASS",
+    "frontend_component_test_after_reference_integration": "PASS_1_OF_1",
+    "frontend_build_after_reference_integration": "PASS",
+    "spa_screen_extractor_self_test": "PASS",
+    "screen_spec_completeness": "PASS",
+    "screen_spec_mismatch_behavior": "PASS_EXIT_CODE_2",
+    "developer_guide_static_extraction": "PASS",
+    "backup_palette_extraction": "PASS",
+    "public_package_syntax": "PASS",
+    "markdown_links": "PASS",
+    "korean_document_coverage": "PASS",
+    "sensitive_and_private_scan": "PASS",
+    "installed_browser_spa_runtime": "PENDING_LOCAL_OR_CI",
+    "thin_adapter_validation": "PASS",
+    "stack_readiness_self_test": "PASS",
+    "react_aspnetcore_stack_readiness": "PASS",
+    "state_model_self_test": "PASS",
+    "sample_state_model": "PASS",
+    "build_log_self_test": "PASS",
+    "spa_visual_block_extraction": "PASS",
+    "spa_empty_visual_block_behavior": "PASS_EXIT_CODE_2",
+    "frontend_v015_rerun": "PENDING_LOCAL_OR_CI",
+    "generic_core_stack_name_scan": "PASS",
+    "concept_assertions": "PASS",
+    "zip_integrity": "PASS",
+    "portable_kit_mirror": "PASS",
+    "portable_kit_self_contained_links": "PASS",
+    "portable_kit_language_suffix": "PASS",
+    "portable_kit_installer": "PASS",
+    "private_scan": "PASS"
+  },
+  "file_count": 1112,
+  "documentation": {
+    "default_language": "English",
+    "korean_supported": true,
+    "english_markdown_documents": 211,
+    "korean_counterparts_or_summaries": 211,
+    "coverage_check": "PASS"
+  },
+  "supported_agents": [
+    "Codex",
+    "Roo Code",
+    "Zoo Code",
+    "Cline",
+    "Claude Code"
+  ],
+  "reference_input": {
+    "image_manifest": true,
+    "original_file_sha256": true,
+    "decoded_pixel_sha256": true,
+    "icc_and_exif_metadata": true,
+    "dominant_palette": true,
+    "grid_samples": true,
+    "named_regions": true,
+    "normalized_lossless_png": true,
+    "runtime_delta_e_comparison": true,
+    "spa_html_pipeline": "IMPLEMENTED_RENDERED_DOM",
+    "spa_source_hash": true,
+    "rendered_dom_hash": true,
+    "screen_spec_comparison": true,
+    "visual_blocks": [
+      "kpi",
+      "card",
+      "chart",
+      "matrix",
+      "panel"
+    ],
+    "empty_visual_block_gate": true
+  },
+  "operational_workflow": {
+    "prompt_router": true,
+    "mandatory_gate": true,
+    "worklog_handoff": true,
+    "human_agent_document_boundary": true,
+    "agentignore": true,
+    "demo_isolation": true,
+    "optional_stack_skill": true,
+    "feature_current_first": true,
+    "worklog_resume_after_current": true,
+    "fixed_five_heading_scaffold": true,
+    "automatic_decomposition_defaults": true,
+    "honesty_correction_protocol": true,
+    "mcp_result_compaction": true,
+    "validation_layers": [
+      "artifact_compile",
+      "rendered_output",
+      "runtime_behavior",
+      "accessibility_color"
+    ]
+  },
+  "design_intent": {
+    "ledger": "DESIGN-CONCEPTS.md",
+    "architecture_decisions": true,
+    "generic_core_plus_verified_stack_pack": true,
+    "organization_specific_names_in_core": false
+  },
+  "state_model": {
+    "project_summary_current": true,
+    "feature_current": true,
+    "feature_history_append_only": true,
+    "worklog_checkpoint_not_current_replacement": true,
+    "architecture_system_current_history": true,
+    "architecture_database_current_history": true,
+    "project_map_feature_routing": true,
+    "shared_file_reverse_index": true,
+    "git_commit_and_pr_linkage": true
+  },
+  "stack_contract": {
+    "user_inputs_required": true,
+    "readiness_manifest": true,
+    "readiness_validator": true,
+    "three_layer_capability_enforcement": true,
+    "feature_model": true,
+    "artifact_contract": true,
+    "communication_contract": true,
+    "evidence_provenance": true,
+    "pitfall_catalog": true,
+    "verified_facts": true,
+    "skeleton_policy": true
+  },
+  "artifacts": {
+    "files": [
+      "evidence-first-agent-workflow-v0.1.6-portable-code-agent-kit.zip",
+      "evidence-first-agent-workflow-v0.1.6-update-from-v0.1.5.zip",
+      "Code-Agent-Kit-en-v0.1.6.zip",
+      "Code-Agent-Kit-ko-v0.1.6.zip",
+      "Code-Agent-Kit-v0.1.6-bilingual.zip"
+    ],
+    "checksums": "SHA256SUMS-v0.1.6.txt"
+  },
+  "portable_code_agent_kit": {
+    "path": "Code-Agent-Kit",
+    "languages": [
+      "en",
+      "ko"
+    ],
+    "mirrored_relative_paths": true,
+    "korean_suffix_removed": true,
+    "independently_copyable": true,
+    "includes_demos": true,
+    "includes_agent_docs": true,
+    "includes_human_docs": true,
+    "includes_tools_scripts_stacks_reference_assets": true,
+    "active_ci_excluded": true,
+    "mirrored_file_count_per_language": 270,
+    "installer_validation": "PASS",
+    "self_contained_link_validation": "PASS"
+  }
+}

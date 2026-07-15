@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+# Evidence-First — commit-layer hard gate.
+# Install:  cp this to .githooks/pre-commit && git config core.hooksPath .githooks
+# Cross-platform: uses the sh bundled with Git for Windows, macOS, Linux.
+ROOT="$(git rev-parse --show-toplevel)"
+GATE="$ROOT/tools/enforce-agent-gates/enforce_gates.py"
+python3 "$GATE" --staged 2>/dev/null || python "$GATE" --staged || exit 1

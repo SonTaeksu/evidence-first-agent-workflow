@@ -1,0 +1,28 @@
+{
+  "schema": "evidence-first/reference-runtime-color-comparison/v1",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "Primary button",
+      "reference_region": "primary",
+      "reference_color": "#3156DF",
+      "runtime_selector": "button.primary-button",
+      "runtime_property": "backgroundColor",
+      "runtime_color": "rgb(49, 86, 223)",
+      "delta_e_2000": 0.0,
+      "max_delta_e": 2.0,
+      "status": "PASS"
+    },
+    {
+      "name": "Page title",
+      "reference_region": "text",
+      "reference_color": "#172033",
+      "runtime_selector": "h1.page-title",
+      "runtime_property": "color",
+      "runtime_color": "rgb(23, 32, 51)",
+      "delta_e_2000": 0.0,
+      "max_delta_e": 2.0,
+      "status": "PASS"
+    }
+  ]
+}

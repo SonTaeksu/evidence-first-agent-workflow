@@ -1,0 +1,28 @@
+name: Stack profile request / 스택 프로필 요청
+description: Request or propose a new stack profile. / 새로운 스택 프로필을 요청하거나 제안합니다.
+title: '[Stack / 스택]: '
+labels:
+- stack
+body:
+- type: input
+  id: stack
+  attributes:
+    label: Stack and framework / 스택 및 프레임워크
+  validations:
+    required: true
+- type: textarea
+  id: gates
+  attributes:
+    label: Available deterministic gates / 사용 가능한 결정론적 게이트
+  validations:
+    required: true
+- type: textarea
+  id: knowledge
+  attributes:
+    label: Official documentation and MCP options / 공식 문서 및 MCP 후보
+  validations:
+    required: true
+- type: textarea
+  id: sample
+  attributes:
+    label: Candidate sample application / 샘플 애플리케이션 후보

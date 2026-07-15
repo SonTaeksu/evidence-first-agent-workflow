@@ -1,0 +1,74 @@
+{
+  "schema": "evidence-first/stack-readiness/v1",
+  "stack_key": "stack-key",
+  "declared_state": "blocked",
+  "required_documents": [
+    "STACK.md",
+    "STACK-INPUTS.md",
+    "AGENTS.stack.md",
+    "SKILL.md",
+    "capability-detection.md",
+    "feature-model.md",
+    "artifact-contract.md",
+    "communication-contract.md",
+    "evidence-provenance.md",
+    "references/_index.md",
+    "references/pitfalls.md",
+    "references/verified-facts.md",
+    "skeletons/README.md",
+    "validation/validation-profile.md"
+  ],
+  "inputs": [
+    {
+      "key": "runtime-sdk-versions",
+      "required": true,
+      "source": "mixed",
+      "status": "unknown",
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "key": "authoritative-sources",
+      "required": true,
+      "source": "user",
+      "status": "unknown",
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "key": "feature-model",
+      "required": true,
+      "source": "user",
+      "status": "unknown",
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "key": "validation-profile",
+      "required": true,
+      "source": "mixed",
+      "status": "unknown",
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "key": "confidentiality",
+      "required": true,
+      "source": "user",
+      "status": "unknown",
+      "evidence": [],
+      "notes": ""
+    }
+  ],
+  "capabilities": [
+    {
+      "key": "shared-api-client",
+      "status": "unknown",
+      "evidence": [],
+      "selected_path": "",
+      "blocks": [
+        "API implementation"
+      ]
+    }
+  ]
+}

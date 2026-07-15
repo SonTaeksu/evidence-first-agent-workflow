@@ -1,0 +1,31 @@
+name: Workflow improvement / 워크플로우 개선
+description: Propose a rule, template, or deterministic-gate change. / 규칙, 템플릿, 결정론적
+  게이트 변경을 제안합니다.
+title: '[Improvement / 개선]: '
+labels:
+- workflow-improvement
+body:
+- type: textarea
+  id: repeated_failure
+  attributes:
+    label: Repeated failure or observation / 반복 실패 또는 관찰
+  validations:
+    required: true
+- type: textarea
+  id: evidence
+  attributes:
+    label: Evidence and occurrence count / 증거 및 발생 횟수
+  validations:
+    required: true
+- type: textarea
+  id: proposal
+  attributes:
+    label: Proposed rule or gate / 제안 규칙 또는 게이트
+  validations:
+    required: true
+- type: textarea
+  id: risk
+  attributes:
+    label: Overfitting or compatibility risk / 과적합 또는 호환성 위험
+  validations:
+    required: true

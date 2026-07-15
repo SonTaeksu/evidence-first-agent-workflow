@@ -1,0 +1,824 @@
+{
+  "schema": "evidence-first/reference-image-manifest/v1",
+  "generated_at": "2026-07-13T13:55:51.721908+00:00",
+  "source": {
+    "filename": "reference-colors.png",
+    "path": "/mnt/data/evidence-first-agent-workflow-v0.1.3-reference-image-pipeline/evidence-first-agent-workflow/tools/reference-image-manifest/examples/reference-colors.png",
+    "bytes": 1024,
+    "sha256": "21274419c392c53031aa41d18a0d0f831ce50e0297bd47d1cbda646ee2cdc694",
+    "format": "PNG",
+    "mime_type": "image/png",
+    "mode": "RGB",
+    "raw_dimensions": [
+      320,
+      180
+    ],
+    "exif_orientation": 1,
+    "exif_orientation_name": "normal"
+  },
+  "normalized": {
+    "mode": "RGBA",
+    "dimensions": [
+      320,
+      180
+    ],
+    "orientation_applied": false,
+    "raw_decoded_pixel_sha256": "f84e831f3e0c7bf77e14466890e04da2d9a2f39b7aa651d712425b0b0caf1be8",
+    "normalized_pixel_sha256": "f84e831f3e0c7bf77e14466890e04da2d9a2f39b7aa651d712425b0b0caf1be8",
+    "has_alpha": false,
+    "alpha_extrema": [
+      255,
+      255
+    ]
+  },
+  "color_profile": {
+    "icc_present": true,
+    "icc_bytes": 588,
+    "icc_sha256": "34f1821d6f894ff9d87d9d58a22a0010e88bed3ebd8bd7d4cb80a9042d22d13c",
+    "icc_description": "sRGB built-in"
+  },
+  "dominant_colors": [
+    {
+      "rgba": [
+        246,
+        248,
+        251,
+        255
+      ],
+      "hex_rgba": "#F6F8FBFF",
+      "hex_rgb": "#F6F8FB",
+      "pixels": 28800,
+      "percentage": 50.0
+    },
+    {
+      "rgba": [
+        49,
+        86,
+        223,
+        255
+      ],
+      "hex_rgba": "#3156DFFF",
+      "hex_rgb": "#3156DF",
+      "pixels": 14400,
+      "percentage": 25.0
+    },
+    {
+      "rgba": [
+        23,
+        32,
+        51,
+        255
+      ],
+      "hex_rgba": "#172033FF",
+      "hex_rgb": "#172033",
+      "pixels": 14400,
+      "percentage": 25.0
+    }
+  ],
+  "grid_samples": [
+    {
+      "grid": [
+        0,
+        0
+      ],
+      "normalized": [
+        0.0,
+        0.0
+      ],
+      "pixel": [
+        0,
+        0
+      ],
+      "rgba": [
+        49,
+        86,
+        223,
+        255
+      ],
+      "hex_rgba": "#3156DFFF",
+      "hex_rgb": "#3156DF"
+    },
+    {
+      "grid": [
+        1,
+        0
+      ],
+      "normalized": [
+        0.250784,
+        0.0
+      ],
+      "pixel": [
+        80,
+        0
+      ],
+      "rgba": [
+        49,
+        86,
+        223,
+        255
+      ],
+      "hex_rgba": "#3156DFFF",
+      "hex_rgb": "#3156DF"
+    },
+    {
+      "grid": [
+        2,
+        0
+      ],
+      "normalized": [
+        0.501567,
+        0.0
+      ],
+      "pixel": [
+        160,
+        0
+      ],
+      "rgba": [
+        23,
+        32,
+        51,
+        255
+      ],
+      "hex_rgba": "#172033FF",
+      "hex_rgb": "#172033"
+    },
+    {
+      "grid": [
+        3,
+        0
+      ],
+      "normalized": [
+        0.749216,
+        0.0
+      ],
+      "pixel": [
+        239,
+        0
+      ],
+      "rgba": [
+        23,
+        32,
+        51,
+        255
+      ],
+      "hex_rgba": "#172033FF",
+      "hex_rgb": "#172033"
+    },
+    {
+      "grid": [
+        4,
+        0
+      ],
+      "normalized": [
+        1.0,
+        0.0
+      ],
+      "pixel": [
+        319,
+        0
+      ],
+      "rgba": [
+        23,
+        32,
+        51,
+        255
+      ],
+      "hex_rgba": "#172033FF",
+      "hex_rgb": "#172033"
+    },
+    {
+      "grid": [
+        0,
+        1
+      ],
+      "normalized": [
+        0.0,
+        0.251397
+      ],
+      "pixel": [
+        0,
+        45
+      ],
+      "rgba": [
+        49,
+        86,
+        223,
+        255
+      ],
+      "hex_rgba": "#3156DFFF",
+      "hex_rgb": "#3156DF"
+    },
+    {
+      "grid": [
+        1,
+        1
+      ],
+      "normalized": [
+        0.250784,
+        0.251397
+      ],
+      "pixel": [
+        80,
+        45
+      ],
+      "rgba": [
+        49,
+        86,
+        223,
+        255
+      ],
+      "hex_rgba": "#3156DFFF",
+      "hex_rgb": "#3156DF"
+    },
+    {
+      "grid": [
+        2,
+        1
+      ],
+      "normalized": [
+        0.501567,
+        0.251397
+      ],
+      "pixel": [
+        160,
+        45
+      ],
+      "rgba": [
+        23,
+        32,
+        51,
+        255
+      ],
+      "hex_rgba": "#172033FF",
+      "hex_rgb": "#172033"
+    },
+    {
+      "grid": [
+        3,
+        1
+      ],
+      "normalized": [
+        0.749216,
+        0.251397
+      ],
+      "pixel": [
+        239,
+        45
+      ],
+      "rgba": [
+        23,
+        32,
+        51,
+        255
+      ],
+      "hex_rgba": "#172033FF",
+      "hex_rgb": "#172033"
+    },
+    {
+      "grid": [
+        4,
+        1
+      ],
+      "normalized": [
+        1.0,
+        0.251397
+      ],
+      "pixel": [
+        319,
+        45
+      ],
+      "rgba": [
+        23,
+        32,
+        51,
+        255
+      ],
+      "hex_rgba": "#172033FF",
+      "hex_rgb": "#172033"
+    },
+    {
+      "grid": [
+        0,
+        2
+      ],
+      "normalized": [
+        0.0,
+        0.502793
+      ],
+      "pixel": [
+        0,
+        90
+      ],
+      "rgba": [
+        238,
+        242,
+        248,
+        255
+      ],
+      "hex_rgba": "#EEF2F8FF",
+      "hex_rgb": "#EEF2F8"
+    },
+    {
+      "grid": [
+        1,
+        2
+      ],
+      "normalized": [
+        0.250784,
+        0.502793
+      ],
+      "pixel": [
+        80,
+        90
+      ],
+      "rgba": [
+        238,
+        242,
+        248,
+        255
+      ],
+      "hex_rgba": "#EEF2F8FF",
+      "hex_rgb": "#EEF2F8"
+    },
+    {
+      "grid": [
+        2,
+        2
+      ],
+      "normalized": [
+        0.501567,
+        0.502793
+      ],
+      "pixel": [
+        160,
+        90
+      ],
+      "rgba": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "hex_rgba": "#FFFFFFFF",
+      "hex_rgb": "#FFFFFF"
+    },
+    {
+      "grid": [
+        3,
+        2
+      ],
+      "normalized": [
+        0.749216,
+        0.502793
+      ],
+      "pixel": [
+        239,
+        90
+      ],
+      "rgba": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "hex_rgba": "#FFFFFFFF",
+      "hex_rgb": "#FFFFFF"
+    },
+    {
+      "grid": [
+        4,
+        2
+      ],
+      "normalized": [
+        1.0,
+        0.502793
+      ],
+      "pixel": [
+        319,
+        90
+      ],
+      "rgba": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "hex_rgba": "#FFFFFFFF",
+      "hex_rgb": "#FFFFFF"
+    },
+    {
+      "grid": [
+        0,
+        3
+      ],
+      "normalized": [
+        0.0,
+        0.748603
+      ],
+      "pixel": [
+        0,
+        134
+      ],
+      "rgba": [
+        238,
+        242,
+        248,
+        255
+      ],
+      "hex_rgba": "#EEF2F8FF",
+      "hex_rgb": "#EEF2F8"
+    },
+    {
+      "grid": [
+        1,
+        3
+      ],
+      "normalized": [
+        0.250784,
+        0.748603
+      ],
+      "pixel": [
+        80,
+        134
+      ],
+      "rgba": [
+        238,
+        242,
+        248,
+        255
+      ],
+      "hex_rgba": "#EEF2F8FF",
+      "hex_rgb": "#EEF2F8"
+    },
+    {
+      "grid": [
+        2,
+        3
+      ],
+      "normalized": [
+        0.501567,
+        0.748603
+      ],
+      "pixel": [
+        160,
+        134
+      ],
+      "rgba": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "hex_rgba": "#FFFFFFFF",
+      "hex_rgb": "#FFFFFF"
+    },
+    {
+      "grid": [
+        3,
+        3
+      ],
+      "normalized": [
+        0.749216,
+        0.748603
+      ],
+      "pixel": [
+        239,
+        134
+      ],
+      "rgba": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "hex_rgba": "#FFFFFFFF",
+      "hex_rgb": "#FFFFFF"
+    },
+    {
+      "grid": [
+        4,
+        3
+      ],
+      "normalized": [
+        1.0,
+        0.748603
+      ],
+      "pixel": [
+        319,
+        134
+      ],
+      "rgba": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "hex_rgba": "#FFFFFFFF",
+      "hex_rgb": "#FFFFFF"
+    },
+    {
+      "grid": [
+        0,
+        4
+      ],
+      "normalized": [
+        0.0,
+        1.0
+      ],
+      "pixel": [
+        0,
+        179
+      ],
+      "rgba": [
+        238,
+        242,
+        248,
+        255
+      ],
+      "hex_rgba": "#EEF2F8FF",
+      "hex_rgb": "#EEF2F8"
+    },
+    {
+      "grid": [
+        1,
+        4
+      ],
+      "normalized": [
+        0.250784,
+        1.0
+      ],
+      "pixel": [
+        80,
+        179
+      ],
+      "rgba": [
+        238,
+        242,
+        248,
+        255
+      ],
+      "hex_rgba": "#EEF2F8FF",
+      "hex_rgb": "#EEF2F8"
+    },
+    {
+      "grid": [
+        2,
+        4
+      ],
+      "normalized": [
+        0.501567,
+        1.0
+      ],
+      "pixel": [
+        160,
+        179
+      ],
+      "rgba": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "hex_rgba": "#FFFFFFFF",
+      "hex_rgb": "#FFFFFF"
+    },
+    {
+      "grid": [
+        3,
+        4
+      ],
+      "normalized": [
+        0.749216,
+        1.0
+      ],
+      "pixel": [
+        239,
+        179
+      ],
+      "rgba": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "hex_rgba": "#FFFFFFFF",
+      "hex_rgb": "#FFFFFF"
+    },
+    {
+      "grid": [
+        4,
+        4
+      ],
+      "normalized": [
+        1.0,
+        1.0
+      ],
+      "pixel": [
+        319,
+        179
+      ],
+      "rgba": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "hex_rgba": "#FFFFFFFF",
+      "hex_rgb": "#FFFFFF"
+    }
+  ],
+  "regions": [
+    {
+      "name": "primary",
+      "box": [
+        0,
+        0,
+        160,
+        90
+      ],
+      "size": [
+        160,
+        90
+      ],
+      "average": {
+        "rgba": [
+          49,
+          86,
+          223,
+          255
+        ],
+        "hex_rgba": "#3156DFFF",
+        "hex_rgb": "#3156DF"
+      },
+      "center": {
+        "rgba": [
+          49,
+          86,
+          223,
+          255
+        ],
+        "hex_rgba": "#3156DFFF",
+        "hex_rgb": "#3156DF"
+      },
+      "dominant_colors": [
+        {
+          "rgba": [
+            49,
+            86,
+            223,
+            255
+          ],
+          "hex_rgba": "#3156DFFF",
+          "hex_rgb": "#3156DF",
+          "pixels": 14400,
+          "percentage": 100.0
+        }
+      ]
+    },
+    {
+      "name": "text",
+      "box": [
+        160,
+        0,
+        320,
+        90
+      ],
+      "size": [
+        160,
+        90
+      ],
+      "average": {
+        "rgba": [
+          23,
+          32,
+          51,
+          255
+        ],
+        "hex_rgba": "#172033FF",
+        "hex_rgb": "#172033"
+      },
+      "center": {
+        "rgba": [
+          23,
+          32,
+          51,
+          255
+        ],
+        "hex_rgba": "#172033FF",
+        "hex_rgb": "#172033"
+      },
+      "dominant_colors": [
+        {
+          "rgba": [
+            23,
+            32,
+            51,
+            255
+          ],
+          "hex_rgba": "#172033FF",
+          "hex_rgb": "#172033",
+          "pixels": 14400,
+          "percentage": 100.0
+        }
+      ]
+    },
+    {
+      "name": "page-background",
+      "box": [
+        0,
+        90,
+        160,
+        180
+      ],
+      "size": [
+        160,
+        90
+      ],
+      "average": {
+        "rgba": [
+          238,
+          242,
+          248,
+          255
+        ],
+        "hex_rgba": "#EEF2F8FF",
+        "hex_rgb": "#EEF2F8"
+      },
+      "center": {
+        "rgba": [
+          238,
+          242,
+          248,
+          255
+        ],
+        "hex_rgba": "#EEF2F8FF",
+        "hex_rgb": "#EEF2F8"
+      },
+      "dominant_colors": [
+        {
+          "rgba": [
+            238,
+            242,
+            248,
+            255
+          ],
+          "hex_rgba": "#EEF2F8FF",
+          "hex_rgb": "#EEF2F8",
+          "pixels": 14400,
+          "percentage": 100.0
+        }
+      ]
+    },
+    {
+      "name": "card-background",
+      "box": [
+        160,
+        90,
+        320,
+        180
+      ],
+      "size": [
+        160,
+        90
+      ],
+      "average": {
+        "rgba": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hex_rgba": "#FFFFFFFF",
+        "hex_rgb": "#FFFFFF"
+      },
+      "center": {
+        "rgba": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hex_rgba": "#FFFFFFFF",
+        "hex_rgb": "#FFFFFF"
+      },
+      "dominant_colors": [
+        {
+          "rgba": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "hex_rgba": "#FFFFFFFF",
+          "hex_rgb": "#FFFFFF",
+          "pixels": 14400,
+          "percentage": 100.0
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "instruction": "Give this manifest and the normalized lossless PNG to the agent before any resized or multimodal preview.",
+    "do_not_replace_source": true
+  }
+}

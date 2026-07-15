@@ -1,0 +1,8 @@
+**/node_modules/
+**/dist/
+**/bin/
+**/obj/
+**/playwright-report/
+**/test-results/
+**/docs/evidence/generated/*.json
+LICENSES/*.txt

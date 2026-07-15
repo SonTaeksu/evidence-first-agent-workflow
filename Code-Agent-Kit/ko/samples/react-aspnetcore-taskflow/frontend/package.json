@@ -1,0 +1,36 @@
+{
+  "name": "taskflow-frontend",
+  "private": true,
+  "version": "0.1.6-alpha",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -b && vite build",
+    "lint": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "e2e": "playwright test",
+    "e2e:color": "playwright test --config=playwright.color.config.ts e2e/color-gate.spec.ts",
+    "e2e:visual": "playwright test --config=playwright.color.config.ts e2e/visual-gate.spec.ts",
+    "color:static": "python ../../../tools/ui-color-gate/check_css_contrast.py --css src/styles.css --config ../../../tools/ui-color-gate/taskflow-color-checks.json --output ../docs/evidence/generated/static-color-contrast.json",
+    "e2e:visual:update": "playwright test --config=playwright.color.config.ts e2e/visual-gate.spec.ts --update-snapshots"
+  },
+  "dependencies": {
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.2",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "6.0.3",
+    "jsdom": "29.1.1",
+    "typescript": "7.0.2",
+    "vite": "8.1.4",
+    "vitest": "4.1.10",
+    "@types/node": "^24.0.0",
+    "@axe-core/playwright": "^4.10.2"
+  }
+}

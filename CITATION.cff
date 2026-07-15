@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this workflow in a report or publication, please cite it."
+title: "Evidence-First Agent Workflow"
+type: software
+authors:
+  - family-names: Son
+    given-names: Taeksu
+    affiliation: "HUENSYSTEM Co., Ltd."
+  - name: "HUENSYSTEM Co., Ltd."
+repository-code: "https://github.com/SonTaeksu/evidence-first-agent-workflow"
+license: "MIT"
+version: "0.1.8-alpha"
+date-released: 2026-07-13

@@ -1,0 +1,36 @@
+{
+  "regions": [
+    {
+      "name": "primary",
+      "units": "normalized",
+      "x": 0,
+      "y": 0,
+      "width": 0.5,
+      "height": 0.5
+    },
+    {
+      "name": "text",
+      "units": "normalized",
+      "x": 0.5,
+      "y": 0,
+      "width": 0.5,
+      "height": 0.5
+    },
+    {
+      "name": "page-background",
+      "units": "normalized",
+      "x": 0,
+      "y": 0.5,
+      "width": 0.5,
+      "height": 0.5
+    },
+    {
+      "name": "card-background",
+      "units": "normalized",
+      "x": 0.5,
+      "y": 0.5,
+      "width": 0.5,
+      "height": 0.5
+    }
+  ]
+}

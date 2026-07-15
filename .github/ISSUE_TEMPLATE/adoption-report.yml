@@ -1,0 +1,51 @@
+name: Adoption report / 도입 결과
+description: Share a real-world workflow adoption result. / 실제 적용 결과를 공유합니다.
+title: '[Adoption / 도입]: '
+labels:
+- adoption
+body:
+- type: markdown
+  attributes:
+    value: 'Successful and unsuccessful results are both useful.
+
+
+      성공과 실패 결과 모두 중요합니다.'
+- type: input
+  id: stack
+  attributes:
+    label: Technology stack / 기술 스택
+  validations:
+    required: true
+- type: input
+  id: model
+  attributes:
+    label: Model and coding-agent tool / 모델 및 코딩 에이전트
+  validations:
+    required: true
+- type: dropdown
+  id: task_type
+  attributes:
+    label: Task type / 작업 유형
+    options:
+    - Feature / 신규 기능
+    - Change / 기능 변경
+    - Bug fix / 버그 수정
+    - Refactor / 리팩터링
+  validations:
+    required: true
+- type: textarea
+  id: applied
+  attributes:
+    label: Workflow components applied / 적용한 워크플로우 구성
+  validations:
+    required: true
+- type: textarea
+  id: result
+  attributes:
+    label: Result, failures, and human correction / 결과, 실패, 사람 수정
+  validations:
+    required: true
+- type: textarea
+  id: handoff
+  attributes:
+    label: Context handoff result / 컨텍스트 핸드오프 결과
