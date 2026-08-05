@@ -52,6 +52,20 @@ jobs:
 
       - run: python -m compileall tools
 
+      # Of the ten self-tests, only `reference-image-manifest` needs anything
+      # outside the standard library. Installed rather than skipped: a self-test
+      # that quietly opts out is the exact failure this file exists to prevent —
+      # and the import is asserted afterwards, naming `ImageCms` specifically,
+      # because it is a separate C extension that some wheels omit. Without the
+      # assertion a broken install would surface as a confusing test failure
+      # instead of a missing dependency.
+      - name: Pillow, for the reference-image self-test
+        shell: bash
+        run: |
+          set -e
+          python -m pip install --quiet --disable-pip-version-check pillow
+          python -c "import PIL, PIL.ImageCms; print('Pillow', PIL.__version__)"
+
       - name: Every tool self-test
         shell: bash
         run: |
