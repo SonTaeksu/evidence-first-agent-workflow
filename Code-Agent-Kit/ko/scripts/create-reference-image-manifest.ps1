@@ -1,4 +1,4 @@
-param(
+﻿param(
     [Parameter(Mandatory = $true)]
     [string]$Image,
 
@@ -9,11 +9,15 @@ param(
 
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $PSScriptRoot
-$ImagePath = Resolve-Path $Image
+$ImagePath = (Resolve-Path -LiteralPath $Image).Path
 $Name = [System.IO.Path]::GetFileNameWithoutExtension($ImagePath)
 $OutputDirectory = Join-Path (Join-Path $Root $OutputRoot) $Name
 
-New-Item -ItemType Directory -Force -Path $OutputDirectory | Out-Null
+# [System.IO.Directory]::CreateDirectory, not New-Item: New-Item has no
+# -LiteralPath parameter at all, so the form this line used to have threw
+# "A parameter cannot be found that matches parameter name 'LiteralPath'".
+# The .NET call is literal by definition and creates intermediate directories.
+[void][System.IO.Directory]::CreateDirectory($OutputDirectory)
 
 $Arguments = @(
     (Join-Path $Root "tools/reference-image-manifest/extract_reference_image.py"),
@@ -25,7 +29,7 @@ $Arguments = @(
 )
 
 if ($Regions) {
-    $Arguments += @("--regions", (Resolve-Path $Regions))
+    $Arguments += @("--regions", (Resolve-Path -LiteralPath $Regions).Path)
 }
 
 python @Arguments

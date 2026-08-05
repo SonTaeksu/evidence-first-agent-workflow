@@ -335,6 +335,12 @@ def to_md(spec, footer=True):
     return "\n".join(L)
 
 import os, shutil, subprocess
+from pathlib import Path
+
+# The kit's exit-code convention differs from argparse's: a usage error is a
+# tool error (1), not a validation failure (2). See tools/_lib/kit_cli.py.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "_lib"))
+from kit_cli import ArgumentParser  # noqa: E402
 
 def _to_url(target):
     return target if re.match(r"^https?://", target) else "file:///"+os.path.abspath(target).replace("\\","/")
@@ -466,7 +472,7 @@ def render_with_playwright(target, wait_ms):
         return render_with_browser(target, wait_ms)
 
 def main():
-    ap=argparse.ArgumentParser()
+    ap=ArgumentParser()
     g=ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--from-file", help="렌더된 outerHTML 파일 (콘솔 스니펫/DevTools로 저장)")
     g.add_argument("--render", help="렌더할 URL/파일 — Playwright 있으면 그걸로, 없으면 설치된 브라우저로 자동 폴백")

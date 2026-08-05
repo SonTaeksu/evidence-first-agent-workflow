@@ -50,6 +50,10 @@ def main() -> int:
             path = stack / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text("# test\n", encoding="utf-8")
+        # The fixture has to contain what its manifest cites. Evidence is measured
+        # now, so a manifest naming a file the fixture does not create is a forgery
+        # and correctly fails -- which is what this fixture used to be.
+        (stack / "global.json").write_text("{}\n", encoding="utf-8")
 
         manifest = {
             "schema": "evidence-first/stack-readiness/v1",
@@ -76,7 +80,12 @@ def main() -> int:
                 {
                     "key": "shared-client",
                     "status": "absent",
-                    "evidence": ["search: no client"],
+                    # A path, not a sentence. This used to read
+                    # "search: no client", which is a description of a search and
+                    # cannot be checked by anything. Where the search was recorded
+                    # is a file, and that file is the evidence -- which is also
+                    # what the shipped stacks already do.
+                    "evidence": ["capability-detection.md"],
                     "selected_path": "approved-default",
                     "blocks": ["API work"],
                 }
@@ -100,7 +109,7 @@ def main() -> int:
         )
         failing = run(stack)
         assert failing.returncode == 2
-        assert "Required input unresolved" in failing.stdout + failing.stderr
+        assert "[check-stack-readiness:input-unresolved]" in failing.stdout + failing.stderr
 
         print("Stack readiness self-test passed.")
         print("Ready path: exit 0")

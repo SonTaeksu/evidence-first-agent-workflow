@@ -10,19 +10,28 @@
     "core": "Core workflow, templates, tools, scripts, demos, reference-assets, adapters, and selected stack; excludes sample and unselected planned stacks."
   },
   "required_root_files": [
-    "README.md",
+    ".agentignore",
     "AGENTS.md",
     "DESIGN-CONCEPTS.md",
-    ".agentignore",
-    "prompts/GATE.md",
-    "templates/core/worklog.md",
+    "LICENSES.md",
+    "README.md",
+    "demos/README.md",
+    "docs/core/command-and-process-safety.md",
+    "docs/core/finding-identifiers.md",
+    "docs/core/gate-design-principles.md",
     "docs/core/state-and-memory-model.md",
     "docs/getting-started/stack-input-requirements.md",
-    "tools/check-stack-readiness/check_stack_readiness.py",
-    "demos/README.md",
+    "prompts/7-update-the-kit.md",
+    "prompts/GATE.md",
     "reference-assets/README.md",
-    "LICENSES.md",
-    "tools/check-kit-installation/check_kit_installation.py"
+    "templates/core/worklog.md",
+    "tools/check-kit-installation/check_kit_installation.py",
+    "tools/check-kit-selfcheck/check_kit_selfcheck.py",
+    "tools/check-last/check_last.py",
+    "tools/check-mirror-parity/check_mirror_parity.py",
+    "tools/check-script-parity/check_script_parity.py",
+    "tools/check-shell-safety/check_shell_safety.py",
+    "tools/check-stack-readiness/check_stack_readiness.py"
   ],
   "portable_sections": [
     "docs",
@@ -46,11 +55,17 @@
     "generated validation evidence"
   ],
   "post_install_validation": "tools/check-kit-installation/check_kit_installation.py",
-  "mirrored_file_count": 270,
+  "mirror_parity_check": "tools/check-mirror-parity/check_mirror_parity.py",
+  "self_check": "tools/check-kit-selfcheck/check_kit_selfcheck.py",
+  "mirrored_file_count": 541,
+  "mirrored_file_count_rule": "all-files",
   "validation": {
     "self_contained_links": "PASS",
     "path_parity": "PASS",
     "language_suffix": "PASS",
     "installer": "PASS"
-  }
+  },
+  "shell_safety_check": "tools/check-shell-safety/check_shell_safety.py",
+  "change_scoped_runner": "tools/check-last/check_last.py",
+  "script_parity_check": "tools/check-script-parity/check_script_parity.py"
 }

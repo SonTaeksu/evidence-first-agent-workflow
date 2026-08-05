@@ -1,0 +1,12 @@
+{
+  "schema": "evidence-first/winforms-screen-spec/v1",
+  "form": "MainForm",
+  "source_asset": "reference skeleton, no external source asset",
+  "required_controls": [
+    { "name": "panelInput", "type": "Panel", "parent": "MainForm" },
+    { "name": "lblName", "type": "Label", "parent": "panelInput" },
+    { "name": "txtName", "type": "TextBox", "parent": "panelInput" },
+    { "name": "btnGreet", "type": "Button", "parent": "MainForm" },
+    { "name": "lblStatus", "type": "Label", "parent": "MainForm" }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "vue-docs": {
+      "type": "http",
+      "url": "https://gitmcp.io/vuejs/docs"
+    },
+    "vue-docs-specialized": {
+      "type": "http",
+      "url": "https://mcp.vue-mcp.org/mcp"
+    }
+  }
+}

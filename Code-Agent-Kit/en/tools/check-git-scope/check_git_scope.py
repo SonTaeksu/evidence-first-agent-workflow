@@ -1,5 +1,16 @@
 # SPDX-License-Identifier: MPL-2.0
-"""Check the final Git change set against expected and acknowledged files."""
+"""Check the final Git change set against expected and acknowledged files.
+
+Findings are tagged `[check-git-scope:<id>]`; see
+docs/core/finding-identifiers.md. The identifier is printed for
+`expected-unchanged` whether it blocks (`--strict`) or only warns — severity is
+not part of an identifier, it lives in `enforcement-matrix.md`.
+
+Exit codes:
+  0  the change set matches expected plus acknowledged scope
+  2  scope mismatch
+  1  tool error
+"""
 
 from __future__ import annotations
 
@@ -8,6 +19,11 @@ import re
 import subprocess
 import sys
 from pathlib import Path
+
+# The kit's exit-code convention differs from argparse's: a usage error is a
+# tool error (1), not a validation failure (2). See tools/_lib/kit_cli.py.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "_lib"))
+from kit_cli import ArgumentParser  # noqa: E402
 
 
 def run(
@@ -62,7 +78,8 @@ def expected_from_design(design: Path) -> list[str]:
     )
     if not match:
         raise RuntimeError(
-            "Design does not contain a '## Expected Files' section."
+            "[check-git-scope:design-without-expected-files] Design does not "
+            "contain a '## Expected Files' section."
         )
 
     return list(
@@ -146,7 +163,7 @@ def apply_scope(paths: list[str], scope: str) -> list[str]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument("--design", type=Path)
     parser.add_argument("--expected")
     parser.add_argument("--expected-file", type=Path)
@@ -192,7 +209,10 @@ def main() -> int:
             )
             if missing:
                 for value in missing:
-                    print(f"FAIL: expected artifact is missing: {value}")
+                    print(
+                        "FAIL: [check-git-scope:expected-artifact-missing] "
+                        f"expected artifact is missing: {value}"
+                    )
                 return 2
 
             print(
@@ -241,7 +261,7 @@ def main() -> int:
             failures += len(unexpected)
             print("\nUnexpected changed files:")
             for value in unexpected:
-                print(f"  - {value}")
+                print(f"  - [check-git-scope:unexpected-change] {value}")
             print(
                 "Record a reason and impact in the worklog, then pass the "
                 "file through --ack or --ack-file."
@@ -251,7 +271,7 @@ def main() -> int:
             label = "FAIL" if args.strict else "WARN"
             print(f"\n{label}: expected but unchanged:")
             for value in missing:
-                print(f"  - {value}")
+                print(f"  - [check-git-scope:expected-unchanged] {value}")
             if args.strict:
                 failures += len(missing)
 

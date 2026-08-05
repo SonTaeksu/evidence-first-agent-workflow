@@ -20,22 +20,81 @@
   ],
   "inputs": [
     {
-      "key": "owner-stack-definition",
+      "key": "runtime-sdk-versions",
       "required": true,
-      "source": "user",
+      "source": "auto",
       "status": "unknown",
       "evidence": [],
-      "notes": "See STACK-INPUTS.md"
+      "notes": "Exact versions in use — not a supported range. Read from the project's own manifests and from the toolchain on the machine that runs validation."
+    },
+    {
+      "key": "authoritative-sources",
+      "required": true,
+      "source": "mixed",
+      "status": "unknown",
+      "evidence": [],
+      "notes": "Which documentation source is authoritative for this stack, and which must not be consulted for it. Recorded in mcp/source-routing.md."
+    },
+    {
+      "key": "feature-model",
+      "required": true,
+      "source": "owner",
+      "status": "unknown",
+      "evidence": [],
+      "notes": "What counts as one feature in this codebase, and what a feature may touch."
+    },
+    {
+      "key": "validation-profile",
+      "required": true,
+      "source": "mixed",
+      "status": "unknown",
+      "evidence": [],
+      "notes": "The exact build, test and lint commands, and what their failure looks like. A command nobody has run is not a validation profile."
+    },
+    {
+      "key": "confidentiality",
+      "required": true,
+      "source": "owner",
+      "status": "unknown",
+      "evidence": [],
+      "notes": "Whether this stack's material may appear in a public repository."
     }
   ],
   "capabilities": [
     {
-      "key": "implementation-path",
+      "key": "language-version",
       "status": "unknown",
       "evidence": [],
       "selected_path": "",
       "blocks": [
-        "all stack-dependent implementation"
+        "block loop-variable-sensitive work"
+      ]
+    },
+    {
+      "key": "htmx-version",
+      "status": "unknown",
+      "evidence": [],
+      "selected_path": "",
+      "blocks": [
+        "block attribute-behaviour assumptions"
+      ]
+    },
+    {
+      "key": "template-engine",
+      "status": "unknown",
+      "evidence": [],
+      "selected_path": "",
+      "blocks": [
+        "block introducing an engine"
+      ]
+    },
+    {
+      "key": "fragment-convention",
+      "status": "unknown",
+      "evidence": [],
+      "selected_path": "",
+      "blocks": [
+        "block inventing a fragment protocol"
       ]
     }
   ]

@@ -1,22 +1,22 @@
-# Rust Stack Profile — Planned
+# Rust
 
-Rust is the preferred next experimental profile.
+Services and tools in Rust with Cargo. The async runtime and the error model are load-bearing choices that pervade the code.
 
-Candidate baseline:
+**State: `blocked`.** Not broken — waiting. The owner inputs in
+`STACK-INPUTS.md` are unanswered, so `check-stack-readiness` derives `blocked`,
+and `tools/check-last` deliberately skips a stack in that state so a
+placeholder does not produce a false alarm on every run.
 
-- Axum
-- Tokio
-- SQLx
-- SQLite or PostgreSQL
-- optional HTMX or React frontend
+What is already here and useful:
 
-Strong deterministic gates make Rust attractive for this workflow:
+- `references/pitfalls.md` — failures in this stack that produce no error message;
+- `capability-detection.md` — how to tell what this project actually uses;
+- `mcp/source-routing.md` — which documentation source is authoritative, and
+  which must not be consulted.
+
+To reach `ready`, answer `STACK-INPUTS.md` with evidence that exists. Evidence is
+measured, not declared:
 
 ```bash
-cargo fmt --check
-cargo check
-cargo clippy -- -D warnings
-cargo test
+python ../../tools/check-stack-readiness/check_stack_readiness.py --stack .
 ```
-
-This directory intentionally remains a placeholder until the React + ASP.NET Core sample produces public feedback.

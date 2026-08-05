@@ -2,6 +2,44 @@
 # Evidence-First — commit-layer hard gate.
 # Install:  cp this to .githooks/pre-commit && git config core.hooksPath .githooks
 # Cross-platform: uses the sh bundled with Git for Windows, macOS, Linux.
-ROOT="$(git rev-parse --show-toplevel)"
-GATE="$ROOT/tools/enforce-agent-gates/enforce_gates.py"
-python3 "$GATE" --staged 2>/dev/null || python "$GATE" --staged || exit 1
+#
+# Two things this deliberately does differently from the obvious version.
+#
+# 1. It falls back to the PowerShell twin. Without that line the `.ps1`
+#    implementations exist and nothing ever calls them, which was the entire
+#    point of writing them: a machine with no Python could not commit at all.
+#
+# 2. It picks an interpreter *first*, then runs the gate exactly once. The
+#    previous version was `python3 "$GATE" --staged 2>/dev/null || python "$GATE"
+#    --staged || exit 1`. When python3 was present and the gate legitimately
+#    blocked, the `||` treated that as "python3 did not work" and retried — and
+#    `2>/dev/null` had already thrown away the findings. On a machine with
+#    python3 but no `python`, the operator saw "python: not found" and a refused
+#    commit with no stated reason. Conflating "the interpreter is missing" with
+#    "the gate found something" is how a gate gets a reputation for lying.
+ROOT="$(git rev-parse --show-toplevel)" || exit 1
+GATE_PY="$ROOT/tools/enforce-agent-gates/enforce_gates.py"
+GATE_PS1="$ROOT/tools/enforce-agent-gates/enforce_gates.ps1"
+
+if command -v python3 >/dev/null 2>&1; then
+    exec python3 "$GATE_PY" --staged
+fi
+if command -v python >/dev/null 2>&1; then
+    exec python "$GATE_PY" --staged
+fi
+
+# No Python. The twin is the only gate this machine has. Note `-Staged`, not
+# `--staged`: the PowerShell parameter style differs, and passing the Python
+# spelling makes the twin error out instead of running — which would look exactly
+# like a blocked commit while checking nothing.
+for interpreter in pwsh powershell pwsh.exe powershell.exe; do
+    if command -v "$interpreter" >/dev/null 2>&1; then
+        exec "$interpreter" -NoProfile -NonInteractive -File "$GATE_PS1" -Staged
+    fi
+done
+
+echo "pre-commit: found no python3, python, pwsh or powershell." >&2
+echo "The evidence-first gate could not run, so this commit is refused rather" >&2
+echo "than passed. Install one of them, or override deliberately:" >&2
+echo "  git commit --no-verify" >&2
+exit 1

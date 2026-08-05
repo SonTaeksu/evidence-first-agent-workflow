@@ -22,16 +22,64 @@
 
 ## 새로운 스택 프로필 규격
 
-새 스택 프로필은 다음 파일을 제공해야 합니다.
+`templates/stack-profile/`이 아니라 `stacks/_template/`을 복사하고, Readiness Validator가 요구하는 문서를 전부 채웁니다.
 
 ```text
-STACK.md
-AGENTS.stack.md
-mcp/source-routing.md
-validation/validation-profile.md
+STACK.md                          references/_index.md
+STACK-INPUTS.md                   references/pitfalls.md
+AGENTS.stack.md                   references/verified-facts.md
+SKILL.md                          skeletons/README.md
+capability-detection.md           validation/validation-profile.md
+feature-model.md
+artifact-contract.md              STACK-READINESS.json
+communication-contract.md
+evidence-provenance.md
 ```
 
+14개 문서가 전부 존재하고 비어 있지 않아야 합니다. 누락되거나 빈 문서는 경고가 아니라 실패입니다.
+
+```bash
+python tools/check-stack-readiness/check_stack_readiness.py --stack stacks/<name>
+```
+
+이 명령이 exit 0을 낼 때만 `ready`로 제출합니다. `provisional`과 `blocked`도 정당한 상태이므로, 어느 상태로 제출하는지와 그 이유를 적어 주세요.
+
+자주 걸리는 두 가지:
+
+- **Evidence는 비울 수 없습니다.** 해결된 Input이나 Capability에 Evidence가 없으면 Validation이 실패합니다. 의도한 설계입니다 — 모델 기억으로 채운 Fact를 확인된 것처럼 넘길 수 없게 합니다.
+- **`declared_state`가 실제와 맞아야 합니다.** 도출 결과가 `blocked`인 Stack에 `ready`를 선언하는 것 자체가 실패입니다.
+
 첫 Pull Request에서 샘플 애플리케이션은 선택 사항이지만, 가능하면 함께 제공하는 것을 권장합니다.
+
+## 새 검사 추가
+
+결정적 검사는 [`docs/core/gate-design-principles.md`](Code-Agent-Kit/ko/docs/core/gate-design-principles.md)를 만족한 뒤에야 `docs/core/enforcement-matrix.md`에 자리를 얻습니다.
+
+- 산문이 지켜내지 못해서 프로그램으로 옮긴 Rule이다
+- 판정이 결정적이고 문구·File 명명에 좌우되지 않는다
+- 알려진 정상 산출물을 돌려 발견 0건을 확인했다
+- **침묵** 실패는 BLOCK하고, 시끄러운 실패는 WARN이어도 된다
+- 면제 경로가 사람이 적은 명시적 Marker이고, 정황에 의한 암묵 면제가 없다
+- Tool이 실패 시 자기 Rule ID를 출력한다 — 모델에게 태깅을 시키지 않는다
+- 판정 근거가 모델 판단이 아니라 Project 문서다
+- 흔한 경우에 Runner가 인자를 요구하지 않는다
+- `self_test.py`가 통과 Fixture와 의도적 실패 Fixture를 모두 덮는다
+- Runner가 필요한 인자를 실제로 넘기는 것을 실행해서 확인했다
+- Exit Code는 통과 `0`, Validation 실패 `2`, Tool 오류 `1`
+- 이 검사가 여전히 못 잡는 것을 빼지 말고 ADVISORY 구간에 적었다
+
+`BLOCK`은 오탐 0을 관측한 뒤에만 주장합니다. 거짓 경보가 한 번 나면 운영자는 `--no-verify`를 쓰기 시작하고, 그 뒤로는 Hook 전체가 무력합니다.
+
+표를 좋아 보이게 하려고 ADVISORY 행을 지우지 마세요. ADVISORY 구간은 커버리지 구멍의 목록이고, 그것은 Roadmap과 같은 것입니다.
+
+## 두 언어 Mirror
+
+`Code-Agent-Kit/en/`과 `Code-Agent-Kit/ko/`는 같은 상대 경로를 가집니다. 번역되는 것은 산문뿐이고 Script는 Byte 동일합니다. Pull Request를 열기 전에 확인하세요.
+
+```bash
+python Code-Agent-Kit/en/tools/check-mirror-parity/check_mirror_parity.py --root Code-Agent-Kit
+python Code-Agent-Kit/en/tools/check-kit-selfcheck/check_kit_selfcheck.py --root Code-Agent-Kit/ko
+```
 
 ## 피드백은 라이선스 의무가 아닙니다
 

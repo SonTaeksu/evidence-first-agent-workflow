@@ -1,4 +1,4 @@
-param(
+﻿param(
     [Parameter(Mandatory = $true)]
     [string]$Source,
 
@@ -16,11 +16,15 @@ param(
 
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $PSScriptRoot
-$SourcePath = Resolve-Path $Source
+$SourcePath = (Resolve-Path -LiteralPath $Source).Path
 $Name = [System.IO.Path]::GetFileNameWithoutExtension($SourcePath)
 $Output = Join-Path (Join-Path $Root $OutputRoot) $Name
 
-New-Item -ItemType Directory -Force -Path $Output | Out-Null
+# [System.IO.Directory]::CreateDirectory, not New-Item: New-Item has no
+# -LiteralPath parameter at all, so the form this line used to have threw
+# "A parameter cannot be found that matches parameter name 'LiteralPath'".
+# The .NET call is literal by definition and creates intermediate directories.
+[void][System.IO.Directory]::CreateDirectory($Output)
 
 $Arguments = @(
     (Join-Path $Root "tools/spa-screen-extractor/extract_spa.py"),

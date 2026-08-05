@@ -1,0 +1,15 @@
+<Window x:Class="MinimalApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Minimal App" Height="200" Width="400">
+    <StackPanel Margin="16">
+        <!-- AutomationProperties.AutomationId is what a UI automation assertion
+             can address. Without it the only handle is the visual tree, which
+             changes whenever the layout does. -->
+        <TextBlock AutomationProperties.AutomationId="GreetingText"
+                   Text="{Binding Greeting}" FontSize="16" />
+        <Button AutomationProperties.AutomationId="GreetButton"
+                Content="Greet" Command="{Binding GreetCommand}"
+                Margin="0,12,0,0" Width="100" HorizontalAlignment="Left" />
+    </StackPanel>
+</Window>

@@ -1,0 +1,136 @@
+# SPDX-License-Identifier: MPL-2.0
+#
+# This repository's own CI. It did not have any.
+#
+# `Code-Agent-Kit/*/templates/ci/github/evidence-first-ci.sample.yml` is a sample
+# for whoever installs the kit; it protects their project, not this one. So for
+# three releases nothing here ran automatically, and the cost was measurable:
+# `check-kit-selfcheck`'s self-test had been failing the whole time, and the seed
+# assertion it guards was completely inert. The self-test caught the defect on the
+# first run. Nobody ran the self-test.
+#
+# Minimum line, per the owner's instruction: every `self_test.py`, and the twin
+# parity harness, on both language mirrors.
+
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  kit:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Both mirrors. The scripts are byte-identical across them by design, so a
+        # divergence is itself a defect — and one that only shows up if both are
+        # actually run.
+        mirror: [en, ko]
+    defaults:
+      run:
+        working-directory: Code-Agent-Kit/${{ matrix.mirror }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          # 3.11 is the supported floor, documented in QUICKSTART.md: `tomllib`
+          # entered the standard library there and one check reads Codex's TOML.
+          # Pinned to the floor rather than to "latest" on purpose — CI passing on
+          # 3.13 says nothing about the oldest interpreter anyone is running.
+          python-version: "3.11"
+
+      # pwsh is preinstalled on GitHub's ubuntu runners. Asserted rather than
+      # assumed, because without it the parity harness exits 1 and the failure
+      # would read as a twin defect instead of a missing dependency.
+      - name: PowerShell is available
+        shell: bash
+        run: pwsh --version
+
+      - run: python -m compileall tools
+
+      - name: Every tool self-test
+        shell: bash
+        run: |
+          set -e
+          for test in tools/*/self_test.py; do
+            echo "== $test"
+            python "$test"
+          done
+
+      # The .ps1 twins are the only gate on a machine without Python. An
+      # unverified twin recorded as verified is worse than one recorded as
+      # unverified, so this failing must fail the job.
+      - name: PowerShell twins agree with their Python originals
+        run: python tools/check-script-parity/check_script_parity.py --root .
+
+      - name: Twin coverage has not regressed
+        shell: bash
+        run: |
+          set -e
+          python tools/check-script-parity/check_script_parity.py --root . --status
+          # `remaining` naming anything means a tool grew a verdict with no twin.
+          # Grepping the report rather than trusting a number keeps this honest
+          # when tools are added.
+          if python tools/check-script-parity/check_script_parity.py --root . --status \
+             | grep -q "remaining: none"; then
+            echo "every applicable tool is twinned"
+          else
+            echo "a tool is missing its PowerShell twin; see the status report above" >&2
+            exit 1
+          fi
+
+      - run: python tools/check-agent-config/check_agent_config.py --root .
+      - run: python tools/check-shell-safety/check_shell_safety.py --root .
+      - run: python tools/check-kit-installation/check_kit_installation.py --root .
+      - run: python tools/check-kit-selfcheck/check_kit_selfcheck.py --root .
+      - run: python tools/check-state-model/check_state_model.py --project-docs samples/react-aspnetcore-taskflow/docs
+
+      # Run the twin too, not just the Python original. The harness proves they
+      # agree on fixtures; this proves the PowerShell side survives the real tree,
+      # which is bigger and stranger than any fixture.
+      - name: The kit self-check, through its PowerShell twin
+        run: pwsh -NoProfile -NonInteractive -File tools/check-kit-selfcheck/check_kit_selfcheck.ps1 -Root .
+      - name: Shell safety, through its PowerShell twin
+        run: pwsh -NoProfile -NonInteractive -File tools/check-shell-safety/check_shell_safety.ps1 -Root .
+
+  mirrors:
+    # Cross-mirror checks need both trees at once, so they cannot live in the
+    # matrix above.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Mirrors hold the same paths and identical shared scripts
+        run: python Code-Agent-Kit/en/tools/check-mirror-parity/check_mirror_parity.py --root Code-Agent-Kit
+
+      - name: The same, through the PowerShell twin
+        run: pwsh -NoProfile -NonInteractive -File Code-Agent-Kit/en/tools/check-mirror-parity/check_mirror_parity.ps1 -Root Code-Agent-Kit
+
+      - name: No proprietary or organization-identifying strings in the public tree
+        run: python Code-Agent-Kit/en/tools/check-sanitization/check_sanitization.py --root .
+
+  enforcement:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Enforce the evidence-first gates on this diff
+        shell: bash
+        run: |
+          BASE="${{ github.event.pull_request.base.sha || github.event.before }}"
+          if [ -z "$BASE" ] || ! git rev-parse --verify "$BASE" >/dev/null 2>&1; then
+            BASE="$(git rev-parse HEAD~1 2>/dev/null || git rev-parse HEAD)"
+          fi
+          python Code-Agent-Kit/en/tools/enforce-agent-gates/enforce_gates.py --base "$BASE"

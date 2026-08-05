@@ -1,7 +1,7 @@
 {
   "name": "evidence-first-agent-workflow",
-  "version": "0.1.8-alpha",
-  "generated": "2026-07-14",
+  "version": "0.1.9-alpha",
+  "generated": "2026-08-04",
   "default_language": "English",
   "sample_stack": {
     "frontend": "React 19.2.7 + TypeScript 7.0.2 + Vite 8.1.4",
@@ -61,9 +61,17 @@
     "portable_kit_self_contained_links": "PASS",
     "portable_kit_language_suffix": "PASS",
     "portable_kit_installer": "PASS",
-    "private_scan": "PASS"
+    "private_scan": "PASS",
+    "csharp_winforms_stack_readiness": "PASS",
+    "kit_selfcheck": "PASS",
+    "kit_selfcheck_self_test": "PASS",
+    "mirror_parity": "PASS",
+    "mirror_parity_self_test": "PASS",
+    "winforms_designer_tree_self_test": "PASS_14_OF_14",
+    "mirrored_file_count_claim": "PASS_VERIFIED_AGAINST_MEASUREMENT",
+    "seed_template_readiness": "PASS"
   },
-  "file_count": 1112,
+  "file_count": 695,
   "documentation": {
     "default_language": "English",
     "korean_supported": true,
@@ -176,8 +184,21 @@
     "includes_human_docs": true,
     "includes_tools_scripts_stacks_reference_assets": true,
     "active_ci_excluded": true,
-    "mirrored_file_count_per_language": 270,
+    "mirrored_file_count_per_language": 327,
     "installer_validation": "PASS",
-    "self_contained_link_validation": "PASS"
-  }
+    "self_contained_link_validation": "PASS",
+    "mirrored_file_count_rule": "all-files",
+    "parity_validation": "PASS",
+    "self_check_validation": "PASS"
+  },
+  "file_count_rule": "all files under the repository root, excluding .git/, _archive/, and Python bytecode",
+  "ready_stacks": [
+    "react-aspnetcore",
+    "csharp-winforms"
+  ],
+  "blocked_stacks": [
+    "go-htmx",
+    "rust",
+    "elixir"
+  ]
 }

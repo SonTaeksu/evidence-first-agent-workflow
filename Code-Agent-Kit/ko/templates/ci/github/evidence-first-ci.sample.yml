@@ -14,14 +14,37 @@ jobs:
           python-version: "3.13"
       - run: python -m pip install -r tools/reference-image-manifest/requirements.txt
       - run: python -m compileall tools
+
+      # self_test 전수. 목록이 아니라 열거로.
+      #
+      # 예전에는 다섯 개를 개별로 적어 두었습니다. 나머지 넷은 존재하면서 한 번도
+      # 실행되지 않았고, 그 넷 중 check-kit-selfcheck는 세 릴리스 내내 실패
+      # 상태였습니다. 그 검사가 다른 도구의 findings를 산문으로 분류했고, 그
+      # 도구의 메시지가 그 사이 식별자를 갖게 되면서 검사가 조용히 부화(不化)한
+      # 것입니다. self_test는 이걸 잡았습니다. 아무도 self_test를 돌리지 않았습니다.
+      #
+      # 손으로 적은 목록은 누가 도구를 추가하는 순간 낡습니다. 그 낡음의 대가는
+      # "강제되는 것처럼 보이지만 강제되지 않는 게이트"입니다. glob은 낡지 않고,
+      # set -e 덕분에 새 self_test는 작성되는 순간 배선됩니다.
+      - name: 모든 도구의 self_test
+        run: |
+          set -e
+          for test in tools/*/self_test.py; do
+            echo "== $test"
+            python "$test"
+          done
+
+      # PowerShell 양벌은 Python 없는 기계의 유일한 게이트이므로, 검증되지 않은
+      # 양벌은 옳다고 가정되는 대신 이 job을 실패시켜야 합니다. pwsh는 GitHub의
+      # ubuntu 러너에 기본 설치돼 있고, 없으면 이 검사는 exit 1 합니다.
+      - name: PowerShell 양벌이 Python 원본과 일치하는지
+        run: python tools/check-script-parity/check_script_parity.py --root .
+
       - run: python tools/check-agent-config/check_agent_config.py --root .
-      - run: python tools/check-stack-readiness/self_test.py
+      - run: python tools/check-shell-safety/check_shell_safety.py --root .
+      - run: python tools/check-kit-selfcheck/check_kit_selfcheck.py --root .
       - run: python tools/check-stack-readiness/check_stack_readiness.py --stack stacks/react-aspnetcore
-      - run: python tools/check-state-model/self_test.py
       - run: python tools/check-state-model/check_state_model.py --project-docs samples/react-aspnetcore-taskflow/docs
-      - run: python tools/check-build-log/self_test.py
-      - run: python tools/reference-image-manifest/self_test.py
-      - run: python tools/spa-screen-extractor/self_test.py
 
   frontend:
     runs-on: ubuntu-latest

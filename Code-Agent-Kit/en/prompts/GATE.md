@@ -154,3 +154,20 @@ Production feature work requires:
 - final Git Diff reviewed.
 
 An isolated demo is exempt from production current/history updates until promoted. It still requires its own README and stated validation.
+
+## Appendix — what a failed completion looks like
+
+Both of these were observed. Neither was reported as a failure at the time.
+
+**A dashboard delivered as empty boxes.** The source mockup had six KPI tiles, five owner cards, a five-by-six matrix and a blocking-items table. What shipped was a title, a few KPI labels, and empty containers with borders. Two causes: the mockup exceeded the context limit so its data structure was never read — it was not split or searched, contrary to `docs/core/source-assets-guide.md` — and the build passed, which was mistaken for the work being done. **An empty screen compiles.**
+
+**Three grids delivered as three empty containers.** The reference image showed three grids with named columns and rows. What shipped was three bordered rectangles. The cause: the task prompt was followed but its extraction steps were skipped, so the image was never decomposed into blocks, columns and rows. **A table is a grid bound to a dataset with rows in it, not an empty container of the right size.**
+
+What prevents both is in this document already, and both runs skipped it:
+
+- §1 requires the source evidence to be extracted **before** Analysis is written, not read casually;
+- §3 requires a Todo block list when a screen has multiple data blocks — one block per Todo, each with its own Micro-Verify;
+- §4 requires `Required visual blocks are non-empty` to be checked against the source, block by block;
+- §5 records rendered output as a **separate layer** from compile, precisely because compile passes on an empty screen.
+
+If the verification table shows `Artifact PASS` and nothing else, the work is not finished — it is unverified.

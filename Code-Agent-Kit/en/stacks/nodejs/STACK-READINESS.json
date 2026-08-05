@@ -1,0 +1,110 @@
+{
+  "schema": "evidence-first/stack-readiness/v1",
+  "stack_key": "nodejs",
+  "declared_state": "blocked",
+  "required_documents": [
+    "STACK.md",
+    "STACK-INPUTS.md",
+    "AGENTS.stack.md",
+    "SKILL.md",
+    "capability-detection.md",
+    "feature-model.md",
+    "artifact-contract.md",
+    "communication-contract.md",
+    "evidence-provenance.md",
+    "references/_index.md",
+    "references/pitfalls.md",
+    "references/verified-facts.md",
+    "skeletons/README.md",
+    "validation/validation-profile.md"
+  ],
+  "inputs": [
+    {
+      "key": "runtime-sdk-versions",
+      "required": true,
+      "source": "auto",
+      "status": "unknown",
+      "evidence": [],
+      "notes": "Exact versions in use — not a supported range. Read from the project's own manifests and from the toolchain on the machine that runs validation."
+    },
+    {
+      "key": "authoritative-sources",
+      "required": true,
+      "source": "mixed",
+      "status": "unknown",
+      "evidence": [],
+      "notes": "Which documentation source is authoritative for this stack, and which must not be consulted for it. Recorded in mcp/source-routing.md."
+    },
+    {
+      "key": "feature-model",
+      "required": true,
+      "source": "owner",
+      "status": "unknown",
+      "evidence": [],
+      "notes": "What counts as one feature in this codebase, and what a feature may touch."
+    },
+    {
+      "key": "validation-profile",
+      "required": true,
+      "source": "mixed",
+      "status": "unknown",
+      "evidence": [],
+      "notes": "The exact build, test and lint commands, and what their failure looks like. A command nobody has run is not a validation profile."
+    },
+    {
+      "key": "confidentiality",
+      "required": true,
+      "source": "owner",
+      "status": "unknown",
+      "evidence": [],
+      "notes": "Whether this stack's material may appear in a public repository."
+    }
+  ],
+  "capabilities": [
+    {
+      "key": "module-system",
+      "status": "unknown",
+      "evidence": [],
+      "selected_path": "",
+      "blocks": [
+        "block adding a module in the other system"
+      ]
+    },
+    {
+      "key": "runtime-version",
+      "status": "unknown",
+      "evidence": [],
+      "selected_path": "",
+      "blocks": [
+        "block use of version-sensitive APIs"
+      ]
+    },
+    {
+      "key": "http-framework",
+      "status": "unknown",
+      "evidence": [],
+      "selected_path": "",
+      "blocks": [
+        "block introducing a framework"
+      ]
+    },
+    {
+      "key": "test-runner",
+      "status": "unknown",
+      "evidence": [],
+      "selected_path": "",
+      "blocks": [
+        "block claiming tests pass"
+      ]
+    },
+    {
+      "key": "typescript",
+      "status": "unknown",
+      "evidence": [],
+      "selected_path": "",
+      "blocks": [
+        "block a mixed-language change"
+      ]
+    }
+  ]
+}

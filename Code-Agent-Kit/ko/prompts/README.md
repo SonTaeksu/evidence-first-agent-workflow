@@ -11,6 +11,8 @@
 | 기존 기능 수정 | `4-modify-feature.md` |
 | 격리된 Demo 작성 | `5-demo-sample.md` |
 | 잘못 구현된 기능 Debug | `6-debug-fix.md` |
+| 이미 킷을 쓰는 Project에서 킷 갱신 | `7-update-the-kit.md` |
+| 기술 스택을 채우거나 추가 | `8-fill-stack.md` |
 
 모든 Prompt는 `GATE.md`를 사용합니다.
 

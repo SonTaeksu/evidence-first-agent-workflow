@@ -1,0 +1,9 @@
+{
+  "schema": "evidence-first/screen-spec/v1",
+  "window": "Minimal App",
+  "elements": [
+    { "automationId": "GreetingText", "role": "text", "initial": "Ready." },
+    { "automationId": "GreetButton", "role": "button", "content": "Greet" }
+  ],
+  "notes": "Addressed by AutomationId, not by position. A specification keyed to coordinates breaks on the first layout change and then gets deleted."
+}

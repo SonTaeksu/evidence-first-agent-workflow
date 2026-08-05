@@ -2,198 +2,304 @@
 
 [English](README.md) | **한국어**
 
-> **처음이세요? [QUICKSTART.ko.md](QUICKSTART.ko.md)부터 보세요 — 한 페이지, 3단계로 결과.** 이 README는 전체 레퍼런스입니다.
+> AI 코딩 도우미가 "완료했습니다!"라고 말합니다. 이 프로젝트는 그 말을 증명하게 만듭니다.
 
-> 소형 모델, 폐쇄망, 장기 Project, 추론이 아니라 검증 지식이 필요한 Stack을 위한 Tool 비종속 Context Management 및 Development Governance Workflow입니다.
+**Alpha 단계.** 상업적 사용을 포함해 무료입니다(MIT). 피드백은 환영하지만 의무는 아닙니다.
 
-## 상태
+---
 
-**Alpha 단계**입니다. 공개 평가를 권장하지만 완전 자율 개발이나 모델과 무관한 보편 품질을 주장하지 않습니다.
+## 문제
 
-## 두 축의 모델
+AI 에이전트(사람 대신 코드를 읽고 쓰는 프로그램)에게 기능을 하나 추가해 달라고 합니다. 몇 분 뒤 이렇게 보고합니다.
 
-```text
-Framework 비종속 Governance Core
-+
-검증된 Stack 또는 조직 Knowledge Pack
-```
+> ✅ 완료! 사용자 목록 화면을 추가하고, API를 수정했고, 전부 정상 동작합니다.
 
-Core는 기억 외부화, Context Routing, 5단계 Gate, 결정론적 Tool 검증을 제공합니다. Stack Pack은 Core가 지어낼 수 없는 Fact, Skeleton, Capability, Contract, Pitfall을 제공합니다.
+그런데 열어 보면, 다음 중 하나가 사실입니다.
 
-[설계 개념 원장](DESIGN-CONCEPTS.ko.md)을 참고하세요.
+- 코드를 한 번도 실행해 보지 않았거나
+- "만들었다"는 화면이 텅 빈 페이지거나
+- 부탁한 적 없는 파일 열한 개를 함께 고쳐 놨거나
+- 내일 새 대화창에서는 전부 잊어버린 채, 이미 해 둔 일을 처음부터 다시 씁니다.
 
-## Portable Code Agent Kit
+에이전트가 일부러 거짓말을 하는 건 아닙니다. "그럴듯한 코드를 썼다"와 "이게 동작하는 걸 확인했다"를 구분할 방법이 없을 뿐입니다. 그리고 여러분도 전부 직접 읽어 보기 전에는 구분할 수 없습니다.
 
-실행 Package를 Repository History 및 Evaluation 자료와 물리적으로 분리했습니다.
+**이 프로젝트는 그 판단을 모델에게서 빼앗아, 종료 코드 0을 내거나 내지 못하거나 둘 중 하나인 프로그램에게 넘깁니다.** (종료 코드는 프로그램이 끝나면서 남기는 숫자이고, 0은 "성공"을 뜻합니다.)
 
-```text
-Code-Agent-Kit/
-├─ en/   # 독립 복사 가능한 영문 Mirror
-└─ ko/   # 독립 복사 가능한 한국어 Mirror
-```
+## 이게 실제로 뭔가요
 
-두 Mirror는 상대 경로가 완전히 같습니다. 한국어 File도 `AGENTS.md`, `worklog.md`처럼 일반 이름을 사용하며 `.ko.md` 접미사가 없습니다.
+여러분의 프로젝트에 **복사해 넣는** 마크다운 문서와 작은 파이썬 스크립트 묶음입니다. 설치할 것도, 서버도, 구독도, 계정도 없습니다.
 
-각 Mirror에는 필요한 `docs/`, `demos/`, Prompt, Template, Stack, Tool, Script, Reference Asset, Hidden Agent Adapter, License, 선택형 Sample이 포함됩니다. 과거 Design Review와 Evaluation 보고서는 Portable Package 밖에 유지합니다.
-
-[Portable Code Agent Kit 구조](Code-Agent-Kit/ko/docs/getting-started/portable-code-agent-kit.md)를 참고하세요.
-
-## 지속 State와 Session Handoff
+파일만 들어가 있으면 에이전트가 그걸 읽고 따릅니다. 요즘 코딩 에이전트는 예외 없이 프로젝트 최상위에 있는 `AGENTS.md`라는 파일을 먼저 읽기 때문입니다.
 
 ```text
-Project Map
-→ Feature Current
-→ Related Files 및 Shared Dependencies
-→ 미완료 작업일 때만 Active Worklog
-→ Source
+your-project/
+├─ AGENTS.md          ← the rules your agent reads first
+├─ prompts/           ← the procedure it follows
+├─ docs/              ← what your project is and what state it's in
+├─ tools/             ← programs that check the work
+└─ ... your actual code
 ```
 
-- **Feature Current**는 이후 모든 수정 작업의 지속적이고 검증된 시작 State입니다.
-- **Feature History**는 Append-only이며 Commit과 PR의 Index입니다.
-- **Worklog**는 Gate 진행, Evidence, Resume Point를 담는 임시 Checkpoint입니다.
-- Worklog는 Current State를 대체하지 않습니다.
+이게 전부입니다. Codex, Claude Code, Cline, Roo Code, Zoo Code를 비롯해 `AGENTS.md`를 읽는 도구라면 무엇에서든 동작합니다.
 
-[State 및 Memory Model](Code-Agent-Kit/ko/docs/core/state-and-memory-model.md)을 참고하세요.
+## 3단계로 시작하기
 
-## Stack마다 사용자 입력이 필요합니다
-
-Generic Core는 File과 Package를 Detection할 수 있지만 다음을 안전하게 지어낼 수 없습니다.
-
-- 지원 SDK 및 Runtime Policy
-- 정본 Framework Reference
-- Golden Skeleton File
-- Feature Boundary
-- 사내 Convention
-- Communication 및 Data Contract
-- Capability 분기 Rule
-- Validation 명령과 실패 신호
-- 보안 등급
-
-필수 입력과 Blocking Capability가 해결되기 전에는 Stack이 Ready가 아닙니다.
+**1. 킷을 프로젝트에 복사합니다.** 원하는 언어 폴더를 고르세요.
 
 ```bash
-python tools/check-stack-readiness/check_stack_readiness.py \
-  --stack stacks/react-aspnetcore
+# English
+cp -r Code-Agent-Kit/en/* your-project/
+# 한국어
+cp -r Code-Agent-Kit/ko/* your-project/
 ```
 
-[Stack 입력 요구사항](Code-Agent-Kit/ko/docs/getting-started/stack-input-requirements.md)을 참고하세요.
+**2. 커밋 검사를 켭니다.** 여러분 프로젝트에서 한 줄이면 됩니다(git 저장소여야 합니다).
 
-## 필수 실행 모델
+```bash
+git config core.hooksPath tools/enforce-agent-gates
+```
+
+**Python 3.11 이상**이나 **PowerShell**, 둘 중 하나만 있으면 됩니다. 모든 검사가 두
+언어로 각각 준비돼 있고, 커밋 검사는 있는 쪽을 씁니다. 둘 다 없으면 그냥 통과시키는
+대신 커밋을 거부합니다.
+
+**3. 에이전트에게 이렇게 말합니다.**
+
+> AGENTS.md를 따르세요. 사용자 목록 화면을 추가해 주세요.
+
+설정은 이걸로 끝입니다. 새로 만드는 프로젝트와 이미 진행 중인 프로젝트의 차이, Windows에서 주의할 점, 필요할 때 검사를 잠시 끄는 방법까지 담은 긴 안내는 [`Code-Agent-Kit/ko/QUICKSTART.md`](Code-Agent-Kit/ko/QUICKSTART.md)에 있습니다.
+
+## 켜고 나면 무엇이 달라지나요
+
+전에는 에이전트가 곧장 코드부터 썼습니다. 이제는 일을 끝내려면 다섯 개의 제목을 먼저 채워야 하고, 그 제목의 이름을 바꾸거나 건너뛸 수 없습니다.
+
+| 제목 | 에이전트가 반드시 적어야 하는 것 |
+|---|---|
+| **1. Analysis** | 이 프로젝트는 무엇이고, 내가 지금 무엇을 건드리려 하며, 아직 모르는 게 무엇인지 |
+| **2. Task** | "끝났다"가 무슨 뜻인지, 그리고 어떤 파일이 바뀔 것으로 보는지 |
+| **3. Todo** | 잘게 나눈 단계와, 각 단계를 어떻게 확인할 것인지 |
+| **4. Checklist** | 다른 곳을 망가뜨리지는 않았는지 |
+| **5. Verification** | 실제로 실행한 명령과, 그 명령이 실제로 낸 종료 코드 |
+
+그리고 에이전트가 커밋을 시도하는 순간, 프로그램이 결과물을 검사합니다.
 
 ```text
-1 Analysis
-→ 2 Task
-→ 3 Todo와 Micro-Verify
-→ 4 Checklist
-→ 5 Verification
+Evidence-First enforcement gate
+  result         : BLOCKED
+  FAIL  [enforce-agent-gates:worklog-missing] project source changed but no worklog was produced.
+  FAIL  [enforce-agent-gates:current-not-updated] source changed but no feature '*.current.md' was updated.
 ```
 
-다섯 Header는 필수 출력 Skeleton입니다. Todo 내부 실패는 해당 Todo만 반복합니다. 잘못된 가정, Scope 문제, Source 충돌, Unknown Capability는 Analysis로 돌아갑니다.
+커밋이 거부됩니다. 모델이 거부하는 게 아니라 스크립트가 거부하는 것이라, 말로 설득할 수가 없습니다.
 
-[필수 Gate](Code-Agent-Kit/ko/prompts/GATE.md)를 참고하세요.
+대괄호 안의 이름은 일부러 넣은 것입니다. 그 규칙 하나에 붙은 영구 이름표라서 검색할 수
+있고, 주변 문구가 바뀐 뒤에도 내년에 그 규칙을 다시 찾을 수 있습니다.
 
-## 결정론적 Evidence
+그리고 이 규칙 하나가 보기보다 훨씬 중요합니다.
 
-포함 Tool:
+> 실행한 명령과 종료 코드가 옆에 함께 적혀 있지 않은 `PASS`는 통과가 아니라 `PENDING`(보류)으로 기록됩니다.
 
-- Stack Readiness Validation
-- State Model Validation
-- Git Scope 및 Document Sync
-- Generic Build Log Scanner
-- Rendered SPA 추출
-- Grid, Form, Button, KPI, Card, Chart, Matrix, Panel Evidence
-- 빈 Visual Block 실패 처리
-- Reference Image Hash, ICC, EXIF, Palette, Region, ΔE00 비교
-- Static 및 Runtime Color Contrast
-- Playwright E2E 및 선택형 Visual Baseline
+이 규칙 하나만으로 가짜 "완료!"의 대부분이 사라집니다.
 
-모델의 “PASS” 선언은 Evidence가 아닙니다. Program Exit Code와 생성 Artifact가 Evidence입니다.
+## 무엇을 얻나요
 
-## 시작 순서
+**에이전트가 더 이상 잊지 않습니다.** 프로젝트의 현재 상태가 대화창이 아니라 파일에 남습니다. 창을 닫아도, 다음 주에 다시 와도, 다른 모델을 써도, 파일을 읽고 이어서 합니다.
 
-1. [시작하기](Code-Agent-Kit/ko/docs/getting-started/README.md)
-2. [설계 개념 원장](DESIGN-CONCEPTS.ko.md)
-3. [State 및 Memory Model](Code-Agent-Kit/ko/docs/core/state-and-memory-model.md)
-4. [Stack 입력 요구사항](Code-Agent-Kit/ko/docs/getting-started/stack-input-requirements.md)
-5. [작업 Prompt Router](Code-Agent-Kit/ko/prompts/README.md)
-6. [React + ASP.NET Core Stack Profile](Code-Agent-Kit/ko/stacks/react-aspnetcore/README.md)
-7. [TaskFlow Sample](Code-Agent-Kit/ko/samples/react-aspnetcore-taskflow/README.md)
-8. [사람용 개발자 Guide](Code-Agent-Kit/ko/docs/human/developer-guide.md)
+**"완료"라는 말에 의미가 생깁니다.** 명령을 실행했고 0이 돌아왔다는 뜻입니다. 변경 내역을 다 읽지 않아도 1초면 확인됩니다.
 
-## 포함 구조
+**작고 저렴한 모델도 쓸 만해집니다.** 판단을 절차가 대신 짊어지기 때문에, 모델이 똑똑할 필요는 없고 단계를 따르기만 하면 됩니다. 아래 [어떤 환경에서 돌아가나요](#어떤-환경에서-돌아가나요)를 보세요.
 
-- 영문 기본·한국어 대응 Governance 문서와 Template
-- Architecture Decision 및 Rejected Alternative
-- Feature Current/History/Worklog Template
-- System 및 Database Architecture State Template
-- 완전한 Verified Stack Template Contract
-- Ready 상태의 React + ASP.NET Core Sample Stack
-- Owner 입력 전 Block된 Go + HTMX, Rust, Elixir Placeholder
-- Codex, Roo Code, Zoo Code, Cline, Claude Code Adapter
-- Project 범위 MCP 예제
-- 결정론적 Tool 및 Self-test
-- React + ASP.NET Core TaskFlow Sample
+**리뷰가 빨라집니다.** 모든 변경에 왜 했는지, 무엇이 바뀔 것으로 봤는지, 확인을 위해 무엇을 실행했는지가 함께 붙어 옵니다.
 
-## Validation Layer
+**어디에도 묶이지 않습니다.** 에이전트를 바꿔도, 모델을 바꿔도, 기술 스택을 바꿔도 됩니다. 규칙은 거기에 상관하지 않습니다.
+
+**폐쇄망에서도 동작합니다.** 기본 상태로는 아무것도 밖으로 보내지 않고, 지식은
+여러분이 관리하는 파일 안에 있습니다. 켤 수 있는 선택형 문서 서버가 *있긴* 합니다(아래
+참고). 켜는 것이 의도적인 한 단계인 이유는, 바로 그것이 여러분의 질문을 밖으로 보내기
+때문입니다.
+
+## 시작 전에 알아 둘 것 둘
+
+### Python이 없어도 됩니다
+
+모든 검사가 두 번 작성돼 있습니다 — 한 번은 Python, 한 번은 PowerShell로. 그리고 둘이
+같은 답을 낸다는 것이 증명돼 있습니다. "낼 것이다"가 아니라 — 프로그램이 같은 입력으로
+둘을 사례별로 돌려 하나라도 어긋나면 실패합니다.
+
+왜 그렇게까지 하는가. PowerShell은 있고 Python은 없는 윈도우 기계가 많고, 그런 기계에서
+Python 전용 검사는 아무 일도 하지 않습니다. 조용히요. 조용히 아무 일도 안 하는 검사는
+검사가 없는 것보다 나쁩니다 — 있다고 착각하게 되니까요.
+
+그래서 Python 3.11 이상 **또는** PowerShell, 둘 중 하나. 둘 다 없으면 통과가 아니라
+거부입니다.
+
+### 에이전트가 추측하는 대신 찾아볼 수 있습니다
+
+AI가 기술적인 답을 틀리는 가장 흔한 방식은 엉뚱한 버전을 자신 있게 기억하는 것입니다.
+그래서 스택마다 어떤 문서 서버에 물어야 하는지 적어 뒀습니다 — .NET은 Microsoft 공식,
+Vue·Next.js·Node·Go·Rust·Elixir는 각 프로젝트의 공식 저장소. 전부 실재하고, 공개되어
+있고, 무료이고, 계정이 필요 없습니다.
+
+그중 14개는 **실제로 연결해서 진짜 질문을 던져** 시험했습니다. 그 시험이 무엇을
+증명했고 무엇을 증명하지 못했는지는
+[`mcp-source-verification.md`](Code-Agent-Kit/ko/docs/core/mcp-source-verification.md)에
+적어 뒀습니다. 절반만 동작한 것 하나와, 권장하지 않기로 한 것 하나도 함께요.
+
+**기본은 꺼져 있습니다.** 스택마다 예시 설정 파일이 있고, 그것을 복사하는 것이 "이
+질문들이 내 기계를 떠나도 괜찮다"고 말하는 방식입니다. 폐쇄망에서는 켜지 마시고, 대신
+문서를 내부에 미러링하십시오. 그 방법도 위 문서에 있습니다.
+
+## 무엇을 치르게 되나요 — 이 부분은 꼭 읽으세요
+
+이건 **느리고, 신중하고, 문서 작업이 많은** 작업 방식입니다. 지금 하려는 일에 맞지 않는다면 쓰지 마세요.
+
+**1. 정말로 더 느립니다.** 에이전트는 상태를 읽고, 계획을 쓰고, 잘게 나눠 작업하고, 확인을 마쳐야 끝났다고 말할 수 있습니다. GPT-5.4 Mini 기준으로 보고된 값은 사용자 관리 화면 하나에 약 20 minutes입니다. 점심때까지 버릴 셈 치고 시제품을 만들 생각이라면, 이건 잘못된 도구입니다.
+
+**2. 토큰을 더 씁니다.** 기능 하나에 대략 45K, 큰 화면 하나는 258K짜리 컨텍스트 창(모델이 한 번에 붙들고 있을 수 있는 글의 양) 가운데 약 143K를 썼습니다. 유료 API에서는 실제 돈입니다.
+
+**3. 문서를 관리해야 합니다.** 기능 상태 파일, 작업 기록, 프로젝트 지도. 긴 프로젝트에서는 값을 하지만, 이틀짜리 프로젝트에서는 순수한 부담입니다.
+
+**4. 검사는 우회할 수 있고, 그게 진짜 위험입니다.** `git commit --no-verify`를 쓰면 전부 건너뜁니다. 이 통로는 일부러 열어 뒀습니다. 처음 코드를 들여올 때와 긴급 상황에 필요하기 때문입니다. 하지만 검사가 멀쩡한 작업을 한 번이라도 잘못 막으면, 사람들은 `--no-verify`를 타이핑하는 법을 배우고, 그때부터는 아무것도 강제되지 않습니다. 그래서 이 프로젝트는 거짓 경보를 놓친 결함보다 더 해로운 것으로 취급하며, 새 검사는 무언가를 막을 수 있게 되기 전에 [Gate 설계 원칙](Code-Agent-Kit/ko/docs/core/gate-design-principles.md)을 만족해야 합니다.
+
+**5. 기계로 검사할 수 없는 것이 아직 많고, 문서가 그렇다고 말합니다.** "정말 상태 파일부터 읽었나요?" "추측하지 않았나요?" 이건 어떤 프로그램도 알 수 없습니다. 대신 각 규칙이 남겨야 할 *산출물*을 강제하므로, 건너뛰면 흔적이 남습니다. [강제화 표](Code-Agent-Kit/ko/docs/core/enforcement-matrix.md)에 어떤 규칙이 실제로 강제되고 어떤 규칙이 권고에 그치는지 정직하게 적혀 있습니다.
+
+**6. 빌드가 초록불이어도 증명되는 건 거의 없습니다.** 프로젝트가 완벽하게 컴파일되면서 빈 화면을 띄울 수 있습니다. 이 킷은 컴파일 / 화면에 그려진 결과 / 실행 중 동작 / 색과 접근성을 서로 다른 것으로 나누고, 각각을 따로 기록하게 만듭니다. `PENDING`을 자주 보게 될 겁니다. `PENDING`은 실패가 아니라 정직한 답입니다.
+
+**7. 에이전트만이 아니라 여러분에게도 학습 곡선이 있습니다.** 다섯 개 제목이 무엇을 위한 것인지 대략은 알아야 합니다. 한 번 훑어보면 되는 정도지만, 0은 아닙니다.
+
+**8. 자기 기술 스택을 추가하는 건 실제 작업입니다.** 다음 절을 보세요. 이 킷은 여러분의 버전, 관례, 명령을 추측하기를 일부러 거부합니다.
+
+**9. Alpha입니다.** 스택 12개가 들어 있지만 그대로 쓸 수 있는 것은 둘뿐입니다. 나머지
+열 개는 그 기술 자체의 사실과 함정이 적힌 상태로 들어 있고, 여러분 프로젝트의 구체적인
+값을 기다립니다. 거친 부분이 있을 테니 제보해 주세요.
+
+## 직접 쓰는 기술 스택 추가하기
+
+가운데에 있는 규칙들은 범용입니다. 킷이 **지어낼 수 없는** 것은 여러분 쪽의 구체적인 사실입니다. 프레임워크 버전이 몇인지, 빌드 명령이 무엇인지, 사내 관례가 무엇인지, 팀이 반복해서 저지르는 실수가 무엇인지. 그걸 추측하는 순간이 바로 에이전트가 자신만만한 헛소리를 내놓는 지점입니다.
+
+그래서 "스택 팩"은 여러분이 채워 넣는 폴더이고, 채워지기 전까지 킷은 그 스택에 의존하는 작업을 **차단**합니다.
+
+### 지금 들어 있는 것
+
+| 스택 | 상태 | 뜻 |
+|---|---|---|
+| React + ASP.NET Core | ready | 채워져 있음, 그대로 사용 |
+| C# Windows Forms (.NET Framework 4.7.2+) | ready | 채워져 있음, 그대로 사용 |
+| WPF, WCF, ASMX (.NET Framework) | blocked | 절반 채워져 있음 — 아래 참고 |
+| Vue.js, Next.js, Node.js | blocked | 절반 채워져 있음 |
+| Go, Go + HTMX, Rust, Elixir | blocked | 절반 채워져 있음 |
+
+**"blocked"는 "비어 있음"이 아닙니다.** 저 열 개에는 아무도 두 번 쓰지 않아도 될 부분이
+이미 들어 있습니다.
+
+- 그 기술에서 누구나 한 번은 당하는 함정 — 오류가 나지 않고 그냥 틀린 결과만 나오는
+  종류입니다. WPF 바인딩은 조용히 실패합니다. WCF에서 binding 이름을 잘못 쓰면 말없이
+  다른 binding을 씁니다. Go는 1.22 이전과 이후로 loop 변수 처리가 달라졌습니다.
+- 추측하는 대신 여러분 프로젝트가 실제로 무엇을 쓰는지 알아내는 방법
+- 어떤 문서 서버에 물어야 하고, 어떤 서버에는 그 질문을 하지 말아야 하는지
+
+빠진 것은 여러분만 아는 것뿐입니다. 버전, 빌드 명령, 데이터베이스, 인증. 그것을 답하기
+전까지 킷은 그 스택 작업을 막습니다 — 버그가 아니라 그게 요점입니다.
+
+### 채우는 방법 — 에이전트에게 맡기기
+
+파일을 손으로 편집하지 않아도 됩니다. 스택 10개가 절반 되어 있으니, 어느 것인지만
+말하십시오.
 
 ```text
-Artifact / Compile
-≠ Rendered Output
-≠ Runtime Behavior
-≠ Accessibility / Color
+prompts/8-fill-stack.md를 따라서 vue 스택을 채워줘.
 ```
 
-Build가 통과해도 화면이 비거나 Runtime이 실패할 수 있습니다. 적용되는 Layer를 각각 기록해야 합니다.
+에이전트가 매니페스트와 lock 파일을 읽어 알아낼 수 있는 것을 알아내고, 읽을 수 없는
+것만 묻고, 그 스택의 두 파일을 함께 쓰고, 검사기를 돌려 나온 말을 보여 줍니다. 기억으로
+채우는 것은 금지돼 있습니다 — 읽을 수 없고 여러분이 말하지도 않았으면 그 칸은 비고 스택은
+blocked로 남습니다. 실패가 아니라 올바른 결과입니다.
 
-## Source Asset
+### 손으로 하기
 
-- Image → 멀티모달 변형 전 Reference Image Manifest
-- SPA → Rendered DOM 및 Screen Specification
-- Static HTML → 원본 보존 및 제한된 구간 검사
-- MCP/Search 결과 → Transcript가 아니라 압축 Fact와 Provenance
+```bash
+# 1. copy the blank form
+cp -r stacks/_template stacks/my-stack
 
-## Stack Profile
+# 2. fill it in (you can have the agent draft most of it)
 
-완전한 Stack Pack:
-
-```text
-STACK.md
-STACK-INPUTS.md
-STACK-READINESS.json
-AGENTS.stack.md
-SKILL.md
-capability-detection.md
-feature-model.md
-artifact-contract.md
-communication-contract.md
-evidence-provenance.md
-references/
-skeletons/
-validation/
+# 3. ask the kit if it's ready
+python tools/check-stack-readiness/check_stack_readiness.py --stack stacks/my-stack
 ```
 
-사내 Library 이름과 조직 전용 Rule은 Generic Core가 아니라 관련 비공개 Stack Pack에 둡니다.
+마지막 명령은 세 단어 중 하나로 답합니다.
 
-## 지원 코딩 Agent
+- **ready** — 필요한 게 전부 채워져 있고 근거도 붙어 있음
+- **provisional** — 쓸 수는 있지만 선택 항목 중 아직 모르는 게 있음
+- **blocked** — 필수 항목이 빠져 있어서 그 스택에 의존하는 작업을 거부함
 
-- Codex
-- Roo Code
-- Zoo Code
-- Cline
-- Claude Code
+**파일이 둘이고, 둘은 일치해야 합니다.** 스택에는 사람이 읽는 표(`STACK-INPUTS.md`)와
+검사기가 읽는 매니페스트(`STACK-READINESS.json`)가 있습니다. 둘은 대조됩니다. 한쪽만
+채우고 다른 쪽을 잊으면 스택이 실패하고, 어느 쪽이 뒤처졌는지 메시지가 알려 줍니다 —
+일부러 그렇게 했습니다. 예전 동작은 이유를 말하지 않고 계속 `blocked`이라고만 하는
+것이었으니까요. 인터뷰 프롬프트가 둘을 맞춰 줍니다.
 
-Tool Adapter는 같은 `AGENTS.md`를 가리키며 Workflow를 다시 정의하지 않습니다.
+**"근거"는 실제로 존재하는 파일을 뜻합니다.** 어떤 사실을 뒷받침하는 것을 적어 두면
+검사기가 그것을 찾아갑니다. 없는 경로는 세지 않습니다. 예전에는 그렇지 않아서, 한 번도
+존재한 적 없는 파일을 가리키면서 `ready`를 주장할 수 있었습니다 — 그러면 그 주장은 아무
+값이 없습니다. 지금은 검사합니다.
 
-## 강제화
+여러분만 알 수 있는 결정은 여러분이 넣습니다. 버전, 빌드와 테스트 명령, 이름 규칙, 데이터베이스가 있는지, 인증이 있는지. 나머지는 에이전트가 초안을 쓸 수 있지만, 사실 하나마다 출처를 밝혀야 하고 확인할 수 없는 것은 추측하는 대신 `⟨verification required⟩`로 표시됩니다.
 
-정직이 우선입니다: 에이전트는 자기 실수를 스스로 보고하고, 불확실하면 추측 대신 멈추며, "완료"를 "검증 통과"로만 간주합니다(`AGENTS.md`). 모델이 자기 채점을 신뢰할 수 없으므로, 규칙은 요청이 아니라 기계로 강제됩니다:
+복사해서 쓸 수 있는 프롬프트가 들어 있는 단계별 안내: [다른 스택 사용하기](Code-Agent-Kit/ko/docs/getting-started/using-another-stack.md).
 
-- **커밋 게이트**와 **CI**(`tools/enforce-agent-gates`)가 워크로그·5단계 Gate·상태 동기화 없이 소스를 바꾼 커밋을 차단합니다;
-- **세척 게이트**(`tools/check-sanitization`)가 공개 전 조직·독점 명칭을 차단합니다.
+### 읽어 볼 만한 실제 사례
 
-커밋 게이트 켜기: `scripts/install-hooks.sh`(Windows는 `install-hooks.ps1`). 자세한 건 enforcement matrix, 선택적 에이전트 스탠스는 `docs/persona.md`.
+**C# Windows Forms** 팩은 부분적으로 교육용 사례로 존재합니다. Windows Forms에는 들여다볼 웹 페이지가 없어서, 흔히 쓰는 "화면이 정말 그려졌나" 검사가 볼 대상 자체가 없습니다. 그 검사를 조용히 빼 버리는 대신, 이 팩은 폼의 디자이너 파일을 읽어 거기 선언된 컨트롤을 코드가 존재하기 *전에* 작성된 명세와 대조합니다. 여러분의 스택도 들여다볼 수 있는 결과물이 없다면, [그 문제를 어떻게 풀었는지 읽어 보세요](Code-Agent-Kit/ko/stacks/csharp-winforms/references/ui-evidence-contract.md).
 
-## 라이선스
+## 어떤 환경에서 돌아가나요
 
-프로젝트 전체가 **MIT License**로 배포됩니다([LICENSE](LICENSE)) — 상업적·비공개 사용 자유, 저작권 고지만 유지. 피드백은 환영하지만 의무 아님.
+설계상 모델을 가리지 않습니다. 관리자가 보고한 내용입니다.
 
+| 어디에서 | 사용한 모델 |
+|---|---|
+| 공개 릴리스 (React + ASP.NET Core 샘플) | Claude Haiku, GPT-5.4 mini |
+| 원래의 사내 버전 | Claude Opus 4.8, Claude Sonnet 5, Claude Haiku, GLM 5.2, Qwen3.6 35B-A3B |
+
+### 작은 로컬 머신에서 돌려 보기
+
+이 절차의 핵심은 판단을 *과정*이 짊어진다는 것이고, 그래서 모델이 클 필요가 없습니다. 가볍게 시험해 봤습니다.
+
+| | |
+|---|---|
+| 에이전트 | Pi Agent |
+| 모델 | Qwen3.6 35B A3B Compact (로컬) |
+| 머신 | 노트북, **6 GB VRAM**, 32 GB RAM |
+| 결과 | 사람이 개입한 상태로, 기능 하나를 끝까지 완성 |
+| 속도 | 처음에는 **45 tokens/second** 정도, 컨텍스트가 길어지면서 대략 **21 tokens/second**까지 하락 |
+
+**주의사항을 꼭 읽으세요. 중요합니다.**
+
+- 이건 **가벼운 시험**이지 벤치마크가 아닙니다. 통제된 조건에서 측정한 것이 아무것도 없습니다.
+- **원래의 사내 버전**에서 돌린 것이지 이 공개 릴리스가 아닙니다. 공개 킷은 아직 이 구성에서 시험되지 않았습니다.
+- **사람이 개입해야 했습니다.** 개입한 내용은 비공개 스택의 서버 호출 관례와 클라이언트 쪽 표시 문제였고, 워크플로 자체 때문은 아니었습니다. 기능은 구현됐습니다.
+- **느립니다.** 긴 컨텍스트에서 21 tokens/second는 체감될 만큼 느립니다. 6 GB의 VRAM에서 돌리는 대가로는 정직한 거래입니다.
+
+평범한 사양의 장비에서 시도해 보셨다면 [어땠는지 알려 주세요](ADOPTION.ko.md). 잘 안 됐더라도요. 실패 보고가 성공 보고보다 훨씬 쓸모 있습니다.
+
+## 다음에 볼 곳
+
+| 이런 게 필요하면 | 읽을 것 |
+|---|---|
+| 그냥 시작하기 | [QUICKSTART.ko.md](QUICKSTART.ko.md) |
+| 전체 기능 목록과 구조 보기 | [OVERVIEW.ko.md](OVERVIEW.ko.md) |
+| *왜* 이렇게 만들었는지 이해하기 | [DESIGN-CONCEPTS.ko.md](DESIGN-CONCEPTS.ko.md) |
+| 커밋 게이트가 정말 막는지 확인하기 | [gate-test-guide.md](gate-test-guide.md) |
+| 내 스택 추가하기 | [다른 스택 사용하기](Code-Agent-Kit/ko/docs/getting-started/using-another-stack.md) |
+| 무엇이 강제되고 무엇이 아닌지 보기 | [강제화 표](Code-Agent-Kit/ko/docs/core/enforcement-matrix.md) |
+| 어떤 문서 서버를 신뢰하고 왜인지 알기 | [MCP 출처 검증](Code-Agent-Kit/ko/docs/core/mcp-source-verification.md) |
+| 기존 검사를 망가뜨리지 않고 새 검사 쓰기 | [Gate 설계 원칙](Code-Agent-Kit/ko/docs/core/gate-design-principles.md) |
+| 에이전트가 아니라 사람으로서 읽기 | [개발자 가이드](Code-Agent-Kit/ko/docs/human/developer-guide.md) |
+| 써 본 결과 알려 주기 | [ADOPTION.ko.md](ADOPTION.ko.md) |
+| 기여하기 | [CONTRIBUTING.ko.md](CONTRIBUTING.ko.md) |
+
+## 상태와 라이선스
+
+**Alpha 단계.** 공개 평가를 권장합니다. 이 프로젝트는 완전 자율 개발을 주장하지 **않으며**, 모든 모델에서 같은 품질이 나온다고도 주장하지 않습니다.
+
+**MIT License**([LICENSE](LICENSE))로 배포됩니다. 상업적 사용과 비공개 소스 사용이 자유롭고, 저작권 고지만 유지하면 됩니다. 피드백은 환영하지만 라이선스 조건은 아닙니다.

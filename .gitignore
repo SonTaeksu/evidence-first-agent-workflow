@@ -39,3 +39,9 @@ reference-assets/spa/*
 
 # Visual Studio
 .vs/
+
+# archived files kept out of the portable kit
+_archive/
+
+# check-last baseline marker (runtime, not kit content)
+.evidence-first/

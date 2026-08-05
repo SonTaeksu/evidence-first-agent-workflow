@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "microsoft-learn": {
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp"
+    },
+    "asmx-docs": {
+      "type": "http",
+      "url": "https://gitmcp.io/dotnet/AspNetDocs"
+    }
+  }
+}

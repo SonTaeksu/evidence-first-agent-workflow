@@ -1,5 +1,17 @@
 # SPDX-License-Identifier: MPL-2.0
-"""Validate project routing, feature state, history, and worklog structure."""
+"""Validate project routing, feature state, history, and worklog structure.
+
+Findings are tagged `[check-state-model:<id>]`; see
+docs/core/finding-identifiers.md. The identifiers are what
+tools/check-script-parity compares against the `.ps1` twin — comparing exit
+codes alone would let two implementations fail for different reasons and look
+identical.
+
+Exit codes:
+  0  the state model is well-formed
+  2  at least one structural finding
+  1  tool error
+"""
 
 from __future__ import annotations
 
@@ -7,6 +19,11 @@ import argparse
 import re
 import sys
 from pathlib import Path
+
+# The kit's exit-code convention differs from argparse's: a usage error is a
+# tool error (1), not a validation failure (2). See tools/_lib/kit_cli.py.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "_lib"))
+from kit_cli import ArgumentParser  # noqa: E402
 
 
 PROJECT_MAP_SECTIONS = [
@@ -56,16 +73,24 @@ def require_sections(
     text: str,
     sections: list[tuple[str, ...]],
     failures: list[str],
+    finding: str,
 ) -> None:
+    """`finding` differs per document kind on purpose.
+
+    A single `section-missing` identifier across the Project Map, a feature
+    current document and the worklog template would tell the operator that
+    *something* is missing a section, which is the part they already knew.
+    """
     for alternatives in sections:
         if not any(section in text for section in alternatives):
             failures.append(
-                f"{label}: missing section '{alternatives[0]}'"
+                f"{label}: [check-state-model:{finding}] "
+                f"missing section '{alternatives[0]}'"
             )
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument("--project-docs", required=True, type=Path)
     parser.add_argument(
         "--worklog-template",
@@ -81,7 +106,9 @@ def main() -> int:
 
         project_map = docs / "project-map.md"
         if not project_map.exists():
-            failures.append("Missing project-map.md")
+            failures.append(
+                "[check-state-model:missing-project-map] Missing project-map.md"
+            )
         else:
             text = project_map.read_text(encoding="utf-8")
             require_sections(
@@ -89,6 +116,7 @@ def main() -> int:
                 text,
                 PROJECT_MAP_SECTIONS,
                 failures,
+                "project-map-section-missing",
             )
             checks.append("project map")
 
@@ -99,26 +127,35 @@ def main() -> int:
             if not path.name.endswith(".current.ko.md")
         ]
         if not current_files:
-            failures.append("No feature current documents found.")
+            failures.append(
+                "[check-state-model:no-current-document] "
+                "No feature current documents found."
+            )
 
         for current in current_files:
             text = current.read_text(encoding="utf-8")
             fm = front_matter(text)
             if not fm:
-                failures.append(f"{current.name}: missing YAML front matter")
+                failures.append(
+                    f"{current.name}: [check-state-model:missing-front-matter] "
+                    "missing YAML front matter"
+                )
             for field in FRONT_MATTER_FIELDS:
                 if not re.search(
                     rf"(?m)^{re.escape(field)}\s*:",
                     fm,
                 ):
                     failures.append(
-                        f"{current.name}: missing front-matter field {field}"
+                        f"{current.name}: "
+                        "[check-state-model:front-matter-field-missing] "
+                        f"missing front-matter field {field}"
                     )
             require_sections(
                 current.name,
                 text,
                 CURRENT_SECTIONS,
                 failures,
+                "current-section-missing",
             )
 
             feature_key_match = re.search(r"(?m)^feature\s*:\s*(.+)$", fm)
@@ -127,7 +164,8 @@ def main() -> int:
                 history = features / f"{feature_key}.history.md"
                 if not history.exists():
                     failures.append(
-                        f"{current.name}: missing {history.name}"
+                        f"{current.name}: [check-state-model:missing-history] "
+                        f"missing {history.name}"
                     )
                 else:
                     history_text = history.read_text(encoding="utf-8")
@@ -136,7 +174,9 @@ def main() -> int:
                         for marker in ("Append-only", "Append-only입니다")
                     ):
                         failures.append(
-                            f"{history.name}: append-only rule not declared"
+                            f"{history.name}: "
+                            "[check-state-model:append-only-not-declared] "
+                            "append-only rule not declared"
                         )
             checks.append(current.name)
 
@@ -144,14 +184,21 @@ def main() -> int:
             current = docs / "architecture" / f"{area}.current.md"
             history = docs / "architecture" / f"{area}.history.md"
             if not current.exists():
-                failures.append(f"Missing architecture/{area}.current.md")
+                failures.append(
+                    "[check-state-model:missing-architecture-document] "
+                    f"Missing architecture/{area}.current.md"
+                )
             if not history.exists():
-                failures.append(f"Missing architecture/{area}.history.md")
+                failures.append(
+                    "[check-state-model:missing-architecture-document] "
+                    f"Missing architecture/{area}.history.md"
+                )
             elif not any(
                 marker in history.read_text(encoding="utf-8")[:500]
                 for marker in ("Append-only", "Append-only입니다")
             ):
                 failures.append(
+                    "[check-state-model:append-only-not-declared] "
                     f"architecture/{area}.history.md: "
                     "append-only rule not declared"
                 )
@@ -176,12 +223,16 @@ def main() -> int:
         if "current:" not in front_matter(
             text.replace("```yaml", "---", 1).replace("```", "---", 1)
         ) and "current:" not in text[:500]:
-            failures.append("worklog template: missing current path")
+            failures.append(
+                "[check-state-model:template-missing-current-path] "
+                "worklog template: missing current path"
+            )
         require_sections(
             "worklog template",
             text,
             WORKLOG_SECTIONS,
             failures,
+            "template-section-missing",
         )
 
         if failures:

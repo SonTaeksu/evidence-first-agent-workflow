@@ -154,3 +154,20 @@ Production Feature 작업은 다음이 필요합니다.
 - 최종 Git Diff 검토
 
 격리 Demo는 Production으로 승격하기 전까지 Production Current/History 갱신이 면제됩니다. 자체 README와 명시된 Validation은 필요합니다.
+
+## 부록 — 실패한 완료는 이렇게 생겼다
+
+둘 다 실제 관측입니다. 그때 둘 다 실패로 보고되지 않았습니다.
+
+**빈 상자로 납품된 대시보드.** 원본 목업에는 KPI 6종, 담당 카드 5개, 5×6 매트릭스, 차단 항목 테이블이 있었습니다. 나온 것은 제목, KPI 라벨 몇 개, 그리고 **테두리만 있는 빈 컨테이너**였습니다. 원인 둘: 목업이 Context 한도를 넘어 데이터 구조를 아예 읽지 않았고(나눠 읽거나 검색하지 않음 — `docs/core/source-assets-guide.md` 위반), Build가 통과한 것을 작업이 끝난 것으로 착각했습니다. **빈 화면도 Compile은 통과합니다.**
+
+**빈 컨테이너 3개로 납품된 그리드 3개.** Reference 이미지에는 컬럼명과 행 데이터를 가진 Grid 3개가 있었습니다. 나온 것은 테두리 사각형 3개였습니다. 원인: 작업 Prompt는 따랐지만 그 안의 추출 단계를 건너뛰어, 이미지를 Block·Column·Row로 분해하지 않았습니다. **표는 크기만 맞는 빈 컨테이너가 아니라, 행이 들어 있는 Dataset에 Binding된 Grid입니다.**
+
+둘 다 막는 방법이 이 문서에 이미 있고, 두 실행 모두 그것을 건너뛰었습니다.
+
+- §1은 Analysis를 쓰기 **전에** Source Evidence를 추출할 것을 요구합니다. 대충 훑는 것이 아닙니다
+- §3은 화면에 데이터 Block이 여럿이면 Todo Block 목록을 요구합니다 — Block 하나당 Todo 하나, 각각 자기 Micro-Verify를 가집니다
+- §4는 `필수 Visual Block이 비어 있지 않음`을 Source와 Block 단위로 대조할 것을 요구합니다
+- §5는 Rendered Output을 Compile과 **별도 Layer**로 기록합니다. 빈 화면에서 Compile이 통과하기 때문입니다
+
+Verification 표에 `Artifact PASS`만 있고 나머지가 비어 있으면, 그 작업은 끝난 것이 아니라 **검증되지 않은 것**입니다.

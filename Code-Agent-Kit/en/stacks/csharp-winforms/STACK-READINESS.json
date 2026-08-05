@@ -1,0 +1,194 @@
+{
+  "schema": "evidence-first/stack-readiness/v1",
+  "stack_key": "csharp-winforms",
+  "declared_state": "ready",
+  "required_documents": [
+    "STACK.md",
+    "STACK-INPUTS.md",
+    "AGENTS.stack.md",
+    "SKILL.md",
+    "capability-detection.md",
+    "feature-model.md",
+    "artifact-contract.md",
+    "communication-contract.md",
+    "evidence-provenance.md",
+    "references/_index.md",
+    "references/pitfalls.md",
+    "references/verified-facts.md",
+    "skeletons/README.md",
+    "validation/validation-profile.md"
+  ],
+  "inputs": [
+    {
+      "key": "runtime-sdk-versions",
+      "required": true,
+      "source": "auto",
+      "status": "detected",
+      "evidence": [
+        "skeletons/MinimalApp/MinimalApp.csproj",
+        "skeletons/MinimalApp/App.config"
+      ],
+      "notes": "Reference skeleton only. TargetFramework net472, supportedRuntime 4.7.2."
+    },
+    {
+      "key": "authoritative-sources",
+      "required": true,
+      "source": "mixed",
+      "status": "confirmed",
+      "evidence": [
+        "mcp/source-routing.md",
+        "evidence-provenance.md"
+      ],
+      "notes": "Microsoft Learn routing for Windows Forms and .NET Framework."
+    },
+    {
+      "key": "golden-skeletons",
+      "required": true,
+      "source": "owner",
+      "status": "confirmed",
+      "evidence": [
+        "skeletons/README.md",
+        "skeletons/MinimalApp/MainForm.Designer.cs"
+      ],
+      "notes": "Project, configuration, and manifest files are schema-sensitive."
+    },
+    {
+      "key": "feature-model",
+      "required": true,
+      "source": "owner",
+      "status": "confirmed",
+      "evidence": [
+        "feature-model.md"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "communication-contract",
+      "required": true,
+      "source": "owner",
+      "status": "confirmed",
+      "evidence": [
+        "communication-contract.md",
+        "skeletons/MinimalApp/Services/IGreetingService.cs"
+      ],
+      "notes": "Single service entry point and the UI thread boundary."
+    },
+    {
+      "key": "validation-profile",
+      "required": true,
+      "source": "mixed",
+      "status": "confirmed",
+      "evidence": [
+        "validation/validation-profile.md",
+        "validation/build.md",
+        "validation/ui.md"
+      ],
+      "notes": "MSBuild, VSTest, and designer-tree comparison."
+    },
+    {
+      "key": "confidentiality",
+      "required": true,
+      "source": "owner",
+      "status": "confirmed",
+      "evidence": [
+        "STACK-INPUTS.md"
+      ],
+      "notes": "Synthetic public skeleton. No organizational content."
+    }
+  ],
+  "capabilities": [
+    {
+      "key": "project-format",
+      "status": "present",
+      "evidence": [
+        "skeletons/MinimalApp/MinimalApp.csproj"
+      ],
+      "selected_path": "sdk-style-net472",
+      "blocks": [
+        "build and test commands"
+      ]
+    },
+    {
+      "key": "package-management",
+      "status": "absent",
+      "evidence": [
+        "capability-detection.md"
+      ],
+      "selected_path": "no-package-references-in-skeleton",
+      "blocks": [
+        "package changes"
+      ]
+    },
+    {
+      "key": "designer-generated-code",
+      "status": "present",
+      "evidence": [
+        "skeletons/MinimalApp/MainForm.Designer.cs"
+      ],
+      "selected_path": "designer-owns-layout",
+      "blocks": [
+        "layout edits"
+      ]
+    },
+    {
+      "key": "dpi-awareness",
+      "status": "present",
+      "evidence": [
+        "skeletons/MinimalApp/App.config",
+        "skeletons/MinimalApp/app.manifest"
+      ],
+      "selected_path": "per-monitor-v2-via-app-config",
+      "blocks": [
+        "scaling and layout work"
+      ]
+    },
+    {
+      "key": "ui-automation",
+      "status": "absent",
+      "evidence": [
+        "references/ui-evidence-contract.md",
+        "validation/ui.md"
+      ],
+      "selected_path": "designer-tree-extraction-only",
+      "blocks": [
+        "runtime behaviour claims"
+      ]
+    },
+    {
+      "key": "data-access",
+      "status": "not-applicable",
+      "evidence": [],
+      "selected_path": "none",
+      "blocks": []
+    },
+    {
+      "key": "authentication-provider",
+      "status": "not-applicable",
+      "evidence": [],
+      "selected_path": "none",
+      "blocks": []
+    },
+    {
+      "key": "localization",
+      "status": "absent",
+      "evidence": [
+        "capability-detection.md"
+      ],
+      "selected_path": "invariant-culture-only",
+      "blocks": [
+        "resource changes"
+      ]
+    },
+    {
+      "key": "analyzer-policy",
+      "status": "present",
+      "evidence": [
+        "skeletons/MinimalApp/MinimalApp.csproj"
+      ],
+      "selected_path": "treat-warnings-as-errors",
+      "blocks": [
+        "warning suppression"
+      ]
+    }
+  ]
+}

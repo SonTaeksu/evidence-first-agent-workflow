@@ -9,6 +9,11 @@ import subprocess
 import sys
 from pathlib import Path
 
+# The kit's exit-code convention differs from argparse's: a usage error is a
+# tool error (1), not a validation failure (2). See tools/_lib/kit_cli.py.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "_lib"))
+from kit_cli import ArgumentParser  # noqa: E402
+
 
 def git(root: Path, *args: str) -> list[str]:
     result = subprocess.run(
@@ -54,7 +59,7 @@ def project_map_paths(project_map: Path) -> set[str]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument("--base", default="main")
     parser.add_argument("--scope", required=True)
     parser.add_argument("--current", required=True, type=Path)
@@ -88,22 +93,23 @@ def main() -> int:
 
     if code_changed and not changed_state:
         errors.append(
-            "Code changed but current/history/project-map did not change."
+            "[check-document-sync:state-not-updated] code changed but "
+            "current/history/project-map did not"
         )
 
     sample_root = root / scope
     project_map_file = sample_root / args.project_map
     if not project_map_file.exists():
-        errors.append(f"Missing Project Map: {project_map_file}")
+        errors.append(f"[check-document-sync:missing-project-map] {project_map_file}")
     else:
         for item in sorted(project_map_paths(project_map_file)):
             candidate = sample_root / item
             if not candidate.exists():
-                errors.append(f"Project Map points to a missing path: {item}")
+                errors.append(f"[check-document-sync:project-map-dangling-path] {item}")
 
     for state in (args.current, args.history):
         if not (sample_root / state).exists():
-            errors.append(f"Missing state file: {state}")
+            errors.append(f"[check-document-sync:missing-state-file] {state}")
 
     if errors:
         for error in errors:

@@ -11,6 +11,12 @@ extract_palette.py — 목업 이미지에서 색을 '코드로' 추출한다 (�
 """
 import sys, json, colorsys, argparse
 from collections import Counter
+from pathlib import Path
+
+# The kit's exit-code convention differs from argparse's: a usage error is a
+# tool error (1), not a validation failure (2). See tools/_lib/kit_cli.py.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "_lib"))
+from kit_cli import ArgumentParser  # noqa: E402
 try:
     from PIL import Image
 except ImportError:
@@ -42,7 +48,7 @@ BUCKET_TOKEN = {
 }
 
 def main():
-    ap=argparse.ArgumentParser()
+    ap=ArgumentParser()
     ap.add_argument("image"); ap.add_argument("--colors",type=int,default=14)
     ap.add_argument("--out",default="palette.md")
     ap.add_argument("--regions",default="",help='소면적 핵심색 정밀샘플: "x,y,w,h=이름; x,y,w,h=이름"')

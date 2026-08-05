@@ -3,6 +3,46 @@
 **English** | [한국어](CHANGELOG.ko.md)
 
 
+## v0.1.9-alpha — Desktop stack, self-checking kit, and a beginner-first entry point (2026-08-04)
+
+### Added — C# Windows Forms stack (ready)
+- `stacks/csharp-winforms/` for .NET Framework 4.7.2 and later: all fourteen required documents, a reference skeleton (`skeletons/MinimalApp/` — SDK-style `net472` project, `App.config` per-monitor v2 DPI, Windows 10 manifest declaration, designer/behaviour separation, single service boundary), and MSBuild/VSTest validation profile. `check_stack_readiness` reports `READY`, exit 0, in both mirrors.
+- `references/ui-evidence-contract.md` and `tools/extract_designer_tree.py` + `check_designer_spec.py`: Windows Forms produces no rendered document, so the rendered-output layer reads the designer control tree and compares it against a screen specification written during Gate §1. Comments are blanked length-preservingly before matching and string literals are preserved; fourteen self-test cases, half of which assert that something is *kept*.
+- Every version-sensitive fact in `references/verified-facts.md` and `evidence-provenance.md` cites Microsoft Learn with a verification date.
+
+### Added — the kit now checks itself
+- `tools/check-kit-selfcheck/`: copies each documented copy source exactly as the kit instructs and runs the kit's own readiness validator on it. A blank seed is *supposed* to report `blocked`, so unresolved inputs are ignored and only structural failures count. Also requires every stack declaring `ready` to validate as ready.
+- `tools/check-mirror-parity/`: relative-path set equality between mirrors, byte-identity of non-prose files, and counted claims compared against measurement. A count whose counting rule is not recorded is a WARN, not a FAIL — the claim may be correct under a rule the document never wrote down. Build residue is excluded from measurement and warned.
+- Both are registered in `docs/core/enforcement-matrix.md`, `KIT-MANIFEST.json`, and `check_kit_installation.py`.
+
+### Added — gate design principles
+- `docs/core/gate-design-principles.md` (en/ko): the conditions a new deterministic check must satisfy before it is allowed to block anything, generalized from the private kit's own enforcement-design principles and its record of twelve observed sessions.
+- Grounded in the three observed facts the private kit derives every rule from: a rule written in a document is not followed regardless of model class; context compaction erases rules, so weight must move to the always-resident file and to the hook; and a self-reported "done" cannot be trusted, with rationalized failure as the dangerous form.
+- Nine principles: a document cannot enforce, only a machine judgement did; block only what is certain; when uncertain WARN — **but a silent failure must block**, so the most dangerous case does not end up the most weakly guarded; the escape hatch is an explicit marker written by a person, never an implicit circumstance; the rule ID belongs to the tool, not to the model; the basis for judgement lives in a project document; removing a decision raises execution, so the runner takes no arguments for the common case; compile and test passing is not behaviour; your own output fails the same way, so verify artifacts by measurement and generate documents from a diff and a count.
+- A closing section requires the honest limits to be published rather than hidden, including the three structural walls no principle removes: a check only fires if something triggers it, without CI there is no way to beat an uncooperative model, and context compaction cannot be fixed with a tool.
+
+### Fixed
+- `docs/core/honesty-and-correction.md` (en) was truncated mid-sentence at "Correct code with a wrong d". Restored, using the intact Korean mirror as the reference.
+- `templates/stack-profile/` was missing `validation/validation-profile.md`, which its own `STACK-READINESS.json` lists as required. Copying it as `docs/getting-started/using-another-stack.md` instructs therefore failed readiness validation. Added, along with `mcp/source-routing.md` which `SKILL.md` referenced but which did not exist.
+- `docs/core/enforcement-matrix.md` cited a tool named `check-portable-kit`; the tool on disk is `check-kit-installation`.
+- `KIT-MANIFEST.json` claimed `mirrored_file_count: 270`, which matched no plausible counting rule. Added `mirrored_file_count_rule` and set the value to the measurement. The claim is now machine-checked.
+
+### Changed — documentation entry point
+- `README.md` / `README.ko.md` rewritten for a reader who is competent at programming but new to AI coding agents: the problem, a three-step start, what changes, what you get, **what it costs you** (nine numbered items, including that the gate is bypassable and that a false alarm is the real risk), how to add your own stack, and what hardware and models it runs on.
+- `OVERVIEW.md` / `OVERVIEW.ko.md` (new) hold the previous README's full reference content, plus an "honest boundaries" section.
+- `QUICKSTART`, `CONTRIBUTING`, and `ADOPTION` updated in both languages. `CONTRIBUTING` previously stated that a new stack profile needs four files; it needs fourteen, and following the old text produced a stack that fails validation.
+- `ADOPTION` now asks for model, agent tool, GPU and VRAM, RAM, quantization, context window, observed speed, and how far the run got — because the claim that small models suffice needs evidence from machines other than the maintainer's.
+
+### Reported — low-specification run
+- Pi Agent with Qwen3.6 35B A3B Compact on a laptop with 6 GB VRAM and 32 GB RAM completed a feature end to end with human intervention. Approximately 45 tokens/second initially, falling to roughly 21 tokens/second as the context grew. This was a light test on the original internal version, not a benchmark and not this public release; the interventions concerned the private stack's server-call convention and a client-side display detail, not the workflow.
+
+### Verified
+- 19 gates run, 0 failures: stack readiness (2 stacks × 2 mirrors), kit self-check (2), kit installation (2), mirror parity, five self-tests, and the designer tools in both mirrors.
+- `check_sanitization` over 689 files: CLEAN, 0 warnings.
+- 64 Python files compile.
+- Mirrors measure 327 files each, paths identical, all 68 shared scripts byte-identical.
+
+
 ## v0.1.8-alpha — Enforced honesty, process safety, and stack on-ramp (2026-07-15)
 
 ### Added — honesty and evidence rules (AGENTS.md, always loaded)

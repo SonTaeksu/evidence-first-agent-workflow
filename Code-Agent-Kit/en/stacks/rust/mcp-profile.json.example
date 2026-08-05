@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "rust-book": {
+      "type": "http",
+      "url": "https://gitmcp.io/rust-lang/book"
+    },
+    "rust-reference": {
+      "type": "http",
+      "url": "https://gitmcp.io/rust-lang/reference"
+    }
+  }
+}

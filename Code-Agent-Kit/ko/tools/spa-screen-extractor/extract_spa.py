@@ -14,6 +14,11 @@ from typing import Any
 
 import extract_screen as engine
 
+# The kit's exit-code convention differs from argparse's: a usage error is a
+# tool error (1), not a validation failure (2). See tools/_lib/kit_cli.py.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "_lib"))
+from kit_cli import ArgumentParser  # noqa: E402
+
 
 def sha256_text(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
@@ -175,7 +180,7 @@ def markdown_pages(payload: dict[str, Any], language: str) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--from-file")
     mode.add_argument("--browser")

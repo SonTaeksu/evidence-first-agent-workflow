@@ -10,6 +10,11 @@ import sys
 from pathlib import Path
 from typing import Any
 
+# The kit's exit-code convention differs from argparse's: a usage error is a
+# tool error (1), not a validation failure (2). See tools/_lib/kit_cli.py.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "_lib"))
+from kit_cli import ArgumentParser  # noqa: E402
+
 
 def normalize(value: str) -> str:
     return re.sub(r"[\s_\-]+", "", value).casefold()
@@ -65,7 +70,7 @@ def select_grid(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument("--reference", required=True, type=Path)
     parser.add_argument("--implementation", required=True, type=Path)
     parser.add_argument("--mapping", type=Path)

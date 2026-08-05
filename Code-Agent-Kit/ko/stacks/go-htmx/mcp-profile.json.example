@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "go-htmx-docs": {
+      "type": "http",
+      "url": "https://gitmcp.io/donseba/go-htmx"
+    },
+    "deepwiki": {
+      "type": "http",
+      "url": "https://mcp.deepwiki.com/mcp"
+    }
+  }
+}

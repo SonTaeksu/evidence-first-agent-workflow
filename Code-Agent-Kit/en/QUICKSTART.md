@@ -16,7 +16,16 @@ project map, work in clear steps, and **prove** the result — or its commit is 
 ## Set it up
 
 1. Copy the **contents of this folder** into your project root.
-2. Make sure the project is a **git repository** and **Python** is installed (`python --version`).
+2. Make sure the project is a **git repository**, and that you have **either**:
+   - **Python 3.11 or newer** (`python --version`) — this is the supported floor.
+     3.11 is where `tomllib` entered the standard library, and one check reads
+     Codex's TOML adapter config. No third-party TOML parser is vendored; a tool
+     that needs it says so and exits 1 rather than crashing.
+   - **or PowerShell** (`pwsh` 7, or Windows PowerShell 5.1) and no Python at all.
+     Every check ships a PowerShell twin whose verdict is proven equal to the
+     Python original, and the commit hook falls back to it. Four checks cannot be
+     twinned and say so instead of pretending — see
+     [`docs/core/finding-identifiers.md`](docs/core/finding-identifiers.md).
 3. Turn on the commit gate — one line, no script needed:
 
    ```bash

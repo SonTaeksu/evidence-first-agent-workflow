@@ -1,5 +1,12 @@
 # MCP Knowledge Routing
 
+> Which servers exist, which were actually reached, and which were only named:
+> [`mcp-source-verification.md`](mcp-source-verification.md). Every endpoint the
+> stack profiles route to is listed there with the result of a real `tools/call`,
+> and the untested ones are separated out and labelled. A server nobody has
+> connected to reads exactly like an invented one, so the distinction is kept in
+> writing rather than in memory.
+
 ## Source priority
 
 1. Current project code and generated artifacts

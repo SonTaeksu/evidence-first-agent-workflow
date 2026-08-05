@@ -2,12 +2,20 @@
 
 A stack profile contains the facts the generic core cannot invent.
 
-| Stack | Status | Owner inputs still required |
-|---|---|---|
-| React + ASP.NET Core sample | ready for the included sample | adopted projects must reconfirm auth, data access, shared clients, versions, deployment, and validation |
-| Go + HTMX | planned / blocked | Go version, router, template engine, HTMX version, fragment conventions, auth, DB, asset build |
-| Rust | planned / blocked | MSRV/toolchain, web framework, async runtime, error model, DB, auth, deployment |
-| Elixir | planned / blocked | Elixir/OTP/Phoenix/LiveView versions, Context boundaries, Ecto, auth, assets, deployment |
+| Stack | Directory | Status | Owner inputs still required |
+|---|---|---|---|
+| React + ASP.NET Core sample | `stacks/react-aspnetcore` | ready for the included sample | adopted projects must reconfirm auth, data access, shared clients, versions, deployment, and validation |
+| C# Windows Forms (.NET Framework 4.7.2+) | `stacks/csharp-winforms` | ready for the included skeleton | adopted projects must reconfirm project format, package management, data access, auth, UI automation, localization, and deployment |
+| WPF (.NET Framework 4.7.2+) | `stacks/csharp-wpf` | planned / blocked | framework version, MVVM pattern, DI container, UI automation, localization — skeleton present but not yet compiled |
+| WCF (.NET Framework 4.7.2+) | `stacks/csharp-wcf` | planned / blocked | framework version, binding and security mode, hosting model, proxy generation, external consumers |
+| ASMX Web Service 2.0 (.NET Framework 4+) | `stacks/csharp-asmx` | planned / blocked | framework version, SOAP version, proxy generation, authentication, whether external consumers exist |
+| Vue.js | `stacks/vue` | planned / blocked | major version (2 or 3 — a hard boundary), build tool, state management, test runner, TypeScript |
+| Next.js | `stacks/nextjs` | planned / blocked | major version, router mode (App or Pages), rendering strategy, data layer, auth |
+| Node.js | `stacks/nodejs` | planned / blocked | module system (ESM or CommonJS), runtime version, HTTP framework, test runner, TypeScript |
+| Go | `stacks/go` | planned / blocked | go directive (1.22 changed loop-variable scope), router, data access, logging |
+| Go + HTMX | `stacks/go-htmx` | planned / blocked | everything Go requires, plus HTMX version, template engine, and the fragment convention |
+| Rust | `stacks/rust` | planned / blocked | edition and MSRV, async runtime, web framework, error model, data access |
+| Elixir | `stacks/elixir` | planned / blocked | Elixir, OTP, Phoenix and LiveView versions, Ecto, project shape, asset pipeline |
 
 To create a stack:
 
@@ -17,8 +25,14 @@ To create a stack:
 4. complete `STACK-READINESS.json`;
 5. run the readiness validator.
 
+Confirm the copy source itself passes the kit's own validation:
+
+```bash
+python ../tools/check-kit-selfcheck/check_kit_selfcheck.py --root ..
+```
+
 Stack-specific internal names belong in the relevant private stack pack, not the generic core.
 
 ## Add or switch stacks
 
-React + ASP.NET Core is the one ready example; the others are placeholders. To fill a placeholder or add a new stack (e.g. a desktop or legacy UI), see [`../docs/getting-started/using-another-stack.md`](../docs/getting-started/using-another-stack.md).
+Two stacks are filled in; the rest are placeholders. React + ASP.NET Core shows a web stack with a rendered document to inspect; C# Windows Forms shows a desktop stack that has none, and how the rendered-output layer is served without one. To fill a placeholder or add a new stack, see [`../docs/getting-started/using-another-stack.md`](../docs/getting-started/using-another-stack.md).
