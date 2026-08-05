@@ -130,21 +130,25 @@ jobs:
       - name: No proprietary or organization-identifying strings in the public tree
         run: python Code-Agent-Kit/en/tools/check-sanitization/check_sanitization.py --root .
 
-  enforcement:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Enforce the evidence-first gates on this diff
-        shell: bash
-        run: |
-          BASE="${{ github.event.pull_request.base.sha || github.event.before }}"
-          if [ -z "$BASE" ] || ! git rev-parse --verify "$BASE" >/dev/null 2>&1; then
-            BASE="$(git rev-parse HEAD~1 2>/dev/null || git rev-parse HEAD)"
-          fi
-          python Code-Agent-Kit/en/tools/enforce-agent-gates/enforce_gates.py --base "$BASE"
+# There is deliberately no job that runs `enforce-agent-gates` against this
+# repository's own diff.
+#
+# An earlier revision of this file had one, and it blocked with
+# `[enforce-agent-gates:current-not-updated]` and
+# `[enforce-agent-gates:history-not-appended]` — because this repository has no
+# `docs/features/`, and never has. That is not an omission. The feature state
+# model governs a project that *installs* the kit; this is where the kit is
+# built, and its own development is recorded in `docs/worklogs/`. Note that
+# `check-state-model` above already points at `samples/`, not at the repository
+# root, for exactly this reason.
+#
+# The mistake was to satisfy that block by writing the two documents it asked
+# for. Ceremony produced to make a checker happy is the failure mode this whole
+# project exists to prevent, and the owner rejected it.
+#
+# The gate itself is not left unverified. `check-script-parity` in the `kit` job
+# exercises `enforce-agent-gates` over 11 fixtures built as real git
+# repositories — six pinned to exit 2, four to exit 0, one to exit 1 — on both
+# mirrors. That tests the gate's behaviour on trees shaped like a project that
+# adopted the kit, which is what it is for. Applying it here tested nothing and
+# asserted something false.
