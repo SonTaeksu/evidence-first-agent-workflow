@@ -9,8 +9,13 @@ technology.
 | Stack | State | Meaning |
 |---|---|---|
 | `react-aspnetcore` | ready | fully filled in → use as-is |
-| `go-htmx`, `rust`, `elixir` | blocked | empty shell → must be filled before use |
+| `csharp-winforms` | ready | fully filled in → use as-is (desktop, .NET Framework 4.7.2+) |
+| ten more: `csharp-wpf`, `csharp-wcf`, `csharp-asmx`, `vue`, `nextjs`, `nodejs`, `go`, `go-htmx`, `rust`, `elixir` | blocked | half filled in → the technology's constraints, traps, capability detection and documentation routing are already there; your project's specifics are not |
 | `_template` | — | the blank form you copy to make a new stack |
+
+`csharp-winforms` is worth reading even if you don't use it: Windows Forms has no rendered
+document, so it shows how a stack supplies the rendered-output layer when the usual route
+doesn't exist — see its `references/ui-evidence-contract.md`.
 
 Check a stack's state:
 
@@ -89,9 +94,22 @@ Pitfalls go in `references/pitfalls.md` (✗ common mistake -> ✓ this stack's 
 
 > So: **MCP = `.mcp.json` (connect) + `source-routing.md` (where to use it)**, **md = write directly under `references/`**. The agent reads both and picks the right one.
 
-## Filling a stack (only when it's blocked or brand-new)
+## The easy way: let the agent interview you
 
-- **Existing empty stack (go/rust/elixir)** → fill the files in that folder.
+```text
+Follow prompts/8-fill-stack.md. Fill in the vue stack.
+```
+
+The agent reads your manifests and lock files to detect what it can, asks you only
+what it cannot read, writes **both** `STACK-INPUTS.md` and `STACK-READINESS.json`
+together, then runs the checker and reports what it said. Editing the two files by
+hand works too, and the rest of this page describes that — but they are compared
+now, and a disagreement makes the stack fail, so keeping them in step by hand is
+the part worth delegating.
+
+## Filling a stack by hand (only when it's blocked or brand-new)
+
+- **Existing half-filled stack** → fill the blank cells in that folder. Ten of them are waiting.
 - **Brand-new stack (e.g. desktop or in-house UI)** → copy the form:
   `cp -r stacks/_template stacks/<your-stack>`
 
@@ -103,6 +121,9 @@ only mark something "verified" when it's confirmed from evidence):
 
 Then fill until `check-stack-readiness` reports **ready**, and that stack works just like
 React + ASP.NET Core.
+
+> Confirm the blank form itself still passes: `python tools/check-kit-selfcheck/check_kit_selfcheck.py --root .`
+> A template that cannot pass the kit's own checks leaves you no exit but `--no-verify`.
 
 ## Filling it with AI (you don't hand-write everything)
 

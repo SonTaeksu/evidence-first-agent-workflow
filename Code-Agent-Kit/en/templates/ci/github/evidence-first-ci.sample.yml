@@ -14,14 +14,38 @@ jobs:
           python-version: "3.13"
       - run: python -m pip install -r tools/reference-image-manifest/requirements.txt
       - run: python -m compileall tools
+
+      # Every self-test, by enumeration rather than by list.
+      #
+      # This used to name five of them individually. Four others existed and were
+      # never run, and one of those four — check-kit-selfcheck — had been failing
+      # for three releases: its check classified another tool's findings by prose,
+      # the other tool's messages had since gained identifiers, and the assertion
+      # silently became inert. The self-test caught it. Nothing ran the self-test.
+      #
+      # A hand-written list goes stale the moment somebody adds a tool, and the
+      # cost of that staleness is a gate that looks enforced and is not. The glob
+      # cannot go stale, and `set -e` means a new self-test is wired in the moment
+      # it is written.
+      - name: Every tool self-test
+        run: |
+          set -e
+          for test in tools/*/self_test.py; do
+            echo "== $test"
+            python "$test"
+          done
+
+      # The PowerShell twins are the only gate on a machine without Python, so an
+      # unverified twin must fail this job rather than be assumed correct. pwsh is
+      # preinstalled on GitHub's ubuntu runners; this check exits 1 without it.
+      - name: PowerShell twins agree with their Python originals
+        run: python tools/check-script-parity/check_script_parity.py --root .
+
       - run: python tools/check-agent-config/check_agent_config.py --root .
-      - run: python tools/check-stack-readiness/self_test.py
+      - run: python tools/check-shell-safety/check_shell_safety.py --root .
+      - run: python tools/check-kit-selfcheck/check_kit_selfcheck.py --root .
       - run: python tools/check-stack-readiness/check_stack_readiness.py --stack stacks/react-aspnetcore
-      - run: python tools/check-state-model/self_test.py
       - run: python tools/check-state-model/check_state_model.py --project-docs samples/react-aspnetcore-taskflow/docs
-      - run: python tools/check-build-log/self_test.py
-      - run: python tools/reference-image-manifest/self_test.py
-      - run: python tools/spa-screen-extractor/self_test.py
 
   frontend:
     runs-on: ubuntu-latest

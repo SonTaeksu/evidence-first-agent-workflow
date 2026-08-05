@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "go-docs": {
+      "type": "http",
+      "url": "https://gitmcp.io/golang/go"
+    }
+  }
+}

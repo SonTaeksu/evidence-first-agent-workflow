@@ -1,14 +1,44 @@
 # SPDX-License-Identifier: MPL-2.0
-"""Validate project instruction and MCP configuration files for supported agents."""
+"""Validate project instruction and MCP configuration files for supported agents.
+
+Requires **Python 3.11 or newer**, because Codex's adapter configuration is TOML
+and `tomllib` is the standard-library parser from 3.11 on. The floor is a decision,
+recorded in `QUICKSTART.md`: closed-network machines are on 3.11+, so no
+third-party parser is vendored.
+
+On an older interpreter this used to die with a bare `ModuleNotFoundError`
+traceback at import time — an unhandled crash, which is the one shape of failure
+a runner cannot classify. `except SystemExit`? No. `except ImportError`? Never
+reached, because the import was at module scope. It now exits **1** with the
+requirement stated, so "this machine cannot run the check" is distinguishable
+from "this configuration is wrong".
+
+Findings are tagged `[check-agent-config:<id>]`; see
+docs/core/finding-identifiers.md.
+
+Exit codes:
+  0  every supported adapter configuration is valid
+  2  at least one configuration is invalid
+  1  tool error, including an interpreter older than 3.11
+"""
 
 from __future__ import annotations
 
 import argparse
 import json
 import sys
-import tomllib
 from pathlib import Path
 from typing import Any
+
+try:
+    import tomllib
+except ModuleNotFoundError:  # Python < 3.11
+    tomllib = None
+
+# The kit's exit-code convention differs from argparse's: a usage error is a
+# tool error (1), not a validation failure (2). See tools/_lib/kit_cli.py.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "_lib"))
+from kit_cli import ArgumentParser  # noqa: E402
 
 
 REQUIRED_SERVERS = {"microsoft-learn", "context7"}
@@ -29,9 +59,23 @@ def check_servers(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path.cwd())
     args = parser.parse_args()
+
+    # Checked here rather than at import so the message is a normal tool error
+    # with a normal exit code, not a traceback.
+    if tomllib is None:
+        print(
+            "[check-agent-config:interpreter-too-old] this check reads "
+            ".codex/config.toml and needs tomllib, added to the standard library "
+            f"in Python 3.11. This interpreter is "
+            f"{sys.version_info.major}.{sys.version_info.minor}. "
+            "Codex accepts no JSON alternative for adapter configuration, so "
+            "there is nothing to fall back to: run it on 3.11 or newer.",
+            file=sys.stderr,
+        )
+        return 1
     root = args.root.resolve()
 
     errors: list[str] = []

@@ -1,4 +1,4 @@
-# Wire the Evidence-First commit-layer gate into this repository (Windows).
+﻿# Wire the Evidence-First commit-layer gate into this repository (Windows).
 $ErrorActionPreference = "Stop"
 $root = (git rev-parse --show-toplevel).Trim()
 New-Item -ItemType Directory -Force -Path "$root/.githooks" | Out-Null

@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: MPL-2.0
+﻿# SPDX-License-Identifier: MPL-2.0
 <#
 .SYNOPSIS
   extract_palette_A.ps1 - 목업 이미지에서 '지정 영역'의 색을 코드로 추출(눈대중 금지). [가벼움]

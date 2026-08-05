@@ -8,8 +8,13 @@ React + ASP.NET Core는 "지금 완성돼 있는 예시"일 뿐입니다. 꼭 �
 | 스택 | 상태 | 뜻 |
 |---|---|---|
 | `react-aspnetcore` | ready | 내용이 다 채워짐 → 바로 사용 |
-| `go-htmx`, `rust`, `elixir` | blocked | 빈 껍데기 → 쓰려면 채워야 함 |
+| `csharp-winforms` | ready | 내용이 다 채워짐 → 바로 사용 (데스크톱, .NET Framework 4.7.2+) |
+| 나머지 10개: `csharp-wpf`, `csharp-wcf`, `csharp-asmx`, `vue`, `nextjs`, `nodejs`, `go`, `go-htmx`, `rust`, `elixir` | blocked | 절반 채워져 있음 → 그 기술의 제약·함정·capability 탐지·문서 라우팅은 이미 있고, 여러분 프로젝트의 구체적인 값이 없음 |
 | `_template` | — | 새 스택 만들 때 복사하는 빈 양식 |
+
+`csharp-winforms`는 쓰지 않더라도 읽어둘 만합니다. Windows Forms에는 Rendered 문서가 없어서,
+평소 경로가 존재하지 않을 때 Stack이 Rendered Output Layer를 어떻게 대신 확보하는지 보여줍니다 —
+그 Stack의 `references/ui-evidence-contract.md` 참고.
 
 상태 확인:
 
@@ -78,7 +83,19 @@ python tools/check-stack-readiness/check_stack_readiness.py --stack stacks/<이�
 
 > 즉 **MCP = `.mcp.json`(연결) + `source-routing.md`(어디에 쓸지)**, **md = `references/`에 직접 기록**. 에이전트는 이 둘을 읽어 알아서 골라 씁니다.
 
-## 스택 채우기 (blocked거나 새로 만들 때만)
+## 쉬운 길: 에이전트가 인터뷰하게 한다
+
+```text
+prompts/8-fill-stack.md를 따라서 vue 스택을 채워줘.
+```
+
+에이전트가 매니페스트와 lock 파일을 읽어 탐지할 수 있는 것을 탐지하고, 읽을 수 없는
+것만 물어보고, `STACK-INPUTS.md`와 `STACK-READINESS.json`을 **함께** 쓰고, 검사기를
+돌려 나온 말을 그대로 전합니다. 두 파일을 손으로 고쳐도 되고 이 페이지의 나머지가 그
+방법이지만 — 이제 둘이 대조되고 어긋나면 스택이 실패하므로, 손으로 맞춰 두는 일이야말로
+넘겨 둘 만한 부분입니다.
+
+## 스택 손으로 채우기 (blocked거나 새로 만들 때만)
 
 - **이미 있는 빈 스택(go/rust/elixir)** → 그 폴더의 파일을 채운다.
 - **완전히 새 스택(예: 데스크톱·사내 UI)** → 양식을 복사한다: `cp -r stacks/_template stacks/<내스택>`
@@ -89,6 +106,9 @@ python tools/check-stack-readiness/check_stack_readiness.py --stack stacks/<이�
 - `validation/validation-profile.md` — 검증 명령(+ dev 서버는 `run_service.py`)
 
 그다음 `check-stack-readiness`가 **ready**라고 할 때까지 채우면, 그 스택도 react처럼 바로 쓸 수 있습니다.
+
+> 빈 양식 자체가 여전히 통과하는지 확인하세요: `python tools/check-kit-selfcheck/check_kit_selfcheck.py --root .`
+> 킷 자신의 검사를 통과하지 못하는 Template은 `--no-verify` 말고는 출구를 남기지 않습니다.
 
 ## AI로 채우기 (직접 다 쓰지 않아도 됨)
 

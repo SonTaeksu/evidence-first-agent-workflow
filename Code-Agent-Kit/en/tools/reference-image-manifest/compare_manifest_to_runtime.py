@@ -11,6 +11,11 @@ import sys
 from pathlib import Path
 from typing import Any
 
+# The kit's exit-code convention differs from argparse's: a usage error is a
+# tool error (1), not a validation failure (2). See tools/_lib/kit_cli.py.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "_lib"))
+from kit_cli import ArgumentParser  # noqa: E402
+
 
 RGB_PATTERN = re.compile(
     r"rgba?\(\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\s*,\s*"
@@ -149,7 +154,7 @@ def runtime_items(payload: Any) -> list[dict[str, Any]]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument("--manifest", required=True, type=Path)
     parser.add_argument("--runtime", required=True, type=Path)
     parser.add_argument("--config", required=True, type=Path)

@@ -2,11 +2,41 @@
 
 [English](PRE-COMMIT-VALIDATION.md) | **한국어**
 
-- Release Candidate: `v0.1.6-alpha`
-- 날짜: `2026-07-14`
+- Release Candidate: `v0.1.9-alpha`
+- 날짜: `2026-08-04`
 - 상태: **부분 완료 — Local 또는 CI Application Gate가 남음**
 
-## 생성 환경에서 통과
+## 생성 환경에서 통과 — v0.1.9-alpha
+
+| Gate | 결과 |
+|---|---|
+| Stack Readiness, `react-aspnetcore`, 양쪽 Mirror | PASS — exit 0 |
+| Stack Readiness, `csharp-winforms`, 양쪽 Mirror | PASS — exit 0, 상태 READY |
+| Kit Self-check, 양쪽 Mirror | PASS — exit 0, 두 Seed Template 모두 구조적 실패 없음 |
+| Kit Self-check Self-test | PASS — 완전한 Seed 통과, 불완전한 Seed는 exit 2로 거부 |
+| Mirror Parity, `en` vs `ko` | PASS — 각 327 경로, 고아 0, Shared Script 68개 Byte 동일, 경고 0 |
+| Mirror Parity Self-test | PASS — 6/6 케이스 |
+| 수치 주장 검증 | PASS — `mirrored_file_count` 327이 기록된 규칙의 실측과 일치 |
+| Windows Forms Designer Tree Tool, 양쪽 Mirror | PASS — 14/14 케이스 |
+| Kit Installation 검사, 양쪽 Mirror | PASS — exit 0 |
+| Python 컴파일, 킷 전체 | PASS — 64개 File, 실패 0 |
+| Sanitization Scan, 저장소 전체 | PASS — 689개 File, CLEAN, 경고 0 |
+| 기존 Tool Self-test (state-model·build-log·stack-readiness·SPA extractor·reference-image) | PASS |
+
+**합계: Gate 19개 실행, 실패 0.**
+
+### 이번 릴리스가 수정한 결함과 발견 경로
+
+| 결함 | 발견 주체 |
+|---|---|
+| `templates/stack-profile/`에 자기 Manifest가 요구하는 문서 누락 | 신규 Kit Self-check, 첫 실행 |
+| `KIT-MANIFEST.json`의 File 개수가 어떤 규칙과도 불일치 | 신규 Mirror Parity 검사 |
+| `docs/core/honesty-and-correction.md` (en) 문장 중간 절단 | 사람이 읽어서 발견. 이를 덮는 검사가 없음 |
+| `enforcement-matrix.md`가 존재하지 않는 Tool 인용 | 사람이 읽어서 발견. 이를 덮는 검사가 없음 |
+
+뒤의 두 건은 정직하게 기록합니다 — 네 건 중 두 건은 프로그램이 아니라 사람이 찾았습니다. 문서와 Tool 이름의 표류, 그리고 File 중간 절단은 현재 기계로 검사되지 않습니다.
+
+## 생성 환경에서 통과 — v0.1.6-alpha 기준선
 
 | Gate | 결과 |
 |---|---|

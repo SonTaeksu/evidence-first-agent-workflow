@@ -2,11 +2,41 @@
 
 **English** | [한국어](PRE-COMMIT-VALIDATION.ko.md)
 
-- Release candidate: `v0.1.6-alpha`
-- Date: `2026-07-14`
+- Release candidate: `v0.1.9-alpha`
+- Date: `2026-08-04`
 - Status: **PARTIAL — local or CI application gates remain**
 
-## Passed in the generation environment
+## Passed in the generation environment — v0.1.9-alpha
+
+| Gate | Result |
+|---|---|
+| Stack readiness, `react-aspnetcore`, both mirrors | PASS — exit 0 |
+| Stack readiness, `csharp-winforms`, both mirrors | PASS — exit 0, state READY |
+| Kit self-check, both mirrors | PASS — exit 0, no structural failure in either seed template |
+| Kit self-check self-test | PASS — complete seed accepted, incomplete seed rejected with exit 2 |
+| Mirror parity, `en` vs `ko` | PASS — 327 paths each, 0 orphans, 68 shared scripts byte-identical, 0 warnings |
+| Mirror parity self-test | PASS — 6 of 6 cases |
+| Counted-claim verification | PASS — `mirrored_file_count` 327 matches measurement under the recorded rule |
+| Windows Forms designer-tree tools, both mirrors | PASS — 14 of 14 cases |
+| Kit installation check, both mirrors | PASS — exit 0 |
+| Python compilation, whole kit | PASS — 64 files, 0 failures |
+| Sanitization scan, whole repository | PASS — 689 files, CLEAN, 0 warnings |
+| Existing tool self-tests (state-model, build-log, stack-readiness, SPA extractor, reference-image) | PASS |
+
+**Total: 19 gates run, 0 failures.**
+
+### Defects this release repaired, and how they were found
+
+| Defect | Found by |
+|---|---|
+| `templates/stack-profile/` missing a document its own manifest requires | the new kit self-check, on its first run |
+| `KIT-MANIFEST.json` file count matching no counting rule | the new mirror-parity check |
+| `docs/core/honesty-and-correction.md` (en) truncated mid-sentence | manual read-through; no check covers this |
+| `enforcement-matrix.md` citing a tool that does not exist | manual read-through; no check covers this |
+
+The last two are recorded honestly: two of the four defects were found by a person, not by a program. Document-to-tool name drift and mid-file truncation are not currently machine-checked.
+
+## Passed in the generation environment — v0.1.6-alpha baseline
 
 | Gate | Result |
 |---|---|

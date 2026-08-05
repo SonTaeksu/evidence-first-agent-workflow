@@ -17,6 +17,11 @@ import re
 import sys
 from pathlib import Path
 
+# The kit's exit-code convention differs from argparse's: a usage error is a
+# tool error (1), not a validation failure (2). See tools/_lib/kit_cli.py.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "_lib"))
+from kit_cli import ArgumentParser  # noqa: E402
+
 # Hard-block: organization / product / proprietary identifiers.
 DENY = [
     (r"한화\s*시스템", "org name (Hanwha Systems)"),
@@ -70,7 +75,7 @@ def iter_files(root, allow):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Public-release sanitization gate.")
+    ap = ArgumentParser(description="Public-release sanitization gate.")
     ap.add_argument("--root", type=Path, default=Path("."))
     ap.add_argument("--extra-deny", action="append", default=[])
     ap.add_argument("--allow-glob", action="append", default=[])
@@ -96,13 +101,13 @@ def main():
         for i, line in enumerate(text.splitlines(), 1):
             for rx, why in deny:
                 if rx.search(line):
-                    blocks.append(rel + ":" + str(i) + ": [" + why + "] " + line.strip()[:100])
+                    blocks.append(rel + ":" + str(i) + ": [check-sanitization:denylisted-string] (" + why + ") " + line.strip()[:100])
             for rx, why in SECRET:
                 if rx.search(line):
-                    blocks.append(rel + ":" + str(i) + ": [" + why + "] (redacted)")
+                    blocks.append(rel + ":" + str(i) + ": [check-sanitization:hardcoded-secret] (" + why + ") (redacted)")
             for rx, why in review:
                 if rx.search(line):
-                    entry = rel + ":" + str(i) + ": [" + why + "] " + line.strip()[:100]
+                    entry = rel + ":" + str(i) + ": [check-sanitization:review-term] (" + why + ") " + line.strip()[:100]
                     (blocks if args.strict_review else warns).append(entry)
 
     print("Sanitization scan: " + str(scanned) + " files under " + str(root))

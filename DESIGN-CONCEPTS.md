@@ -133,6 +133,8 @@ Artifact or compile success
 
 A build can pass while visual blocks are empty or runtime behavior fails. UI work records all applicable layers separately.
 
+**When a stack has no rendered document, the layer is replaced, not dropped.** A desktop UI framework may produce nothing a program can inspect without launching the application. The temptation is to let the rendered-output layer collapse into "the build succeeded" — which is exactly the failure this concept exists to prevent. The stack pack must supply a substitute declaration that a program can compare against a specification written before implementation. The C# Windows Forms pack does this by parsing the designer file's control tree; see `stacks/csharp-winforms/references/ui-evidence-contract.md`.
+
 ### B3. Primary-source provenance
 
 Stack facts record:
@@ -205,6 +207,24 @@ An honesty rule assumes the model can evaluate its own output; a weaker model wi
 - color contrast and runtime colors;
 - binding or contract evidence when the stack adapter supports it.
 
+### E3. Gate design, and the cost of a false positive
+
+A gate survives on the assumption that a failure means a real defect. One false alarm breaks that assumption, the operator starts using `--no-verify`, and the whole hook goes inert. The cost of a false positive is not one wasted minute; it is every check you have.
+
+This inverts the usual instinct: a check that might be wrong stays at WARN, and `BLOCK` is claimed only after zero false positives have been observed on real material.
+
+But the naive application of that rule produces a matrix where trivial issues block and catastrophic ones merely warn. So the second half of the rule matters as much as the first: **a silent failure must block.** A loud failure — a build error, an exception — can afford to be a warning, because something else surfaces it. A response that returns success with zero rows, a screen that renders empty, a run that exits 0 having done nothing: nothing else surfaces those. Certainty is why a check may block; being unobservable is why it must.
+
+The remaining conditions, derived from the same observations:
+
+- **The escape hatch is an explicit marker, never an implicit one.** Every check needs a way out or the first legitimate exception kills it — but the way out is a declaration of intent written by a person, not a circumstance like "the file already exists". An implicit exemption is indistinguishable from the defect it was meant to allow.
+- **The rule ID belongs to the tool.** The check prints its own identifier on failure. Asking the model to tag its output with the rule it satisfied is a step that gets skipped, and small models skip it always. Traceability that survives without the model's cooperation is the only kind worth having.
+- **The basis for judgement lives in a project document.** A check that depends on the model deciding "does this project use X" is one the model walks around by deciding differently tomorrow. Record the decision once in project state and have the check read it.
+- **Removing a decision raises execution.** A check that requires choosing which files to pass does not get run; deciding the arguments is itself a step, and that step is what gets skipped. The runner takes no arguments for the common case.
+- **Your own output fails the same way.** A template the kit tells the user to copy must pass the kit's own validation unmodified, or the only exit is bypassing the gate. Verify artifacts by measurement rather than re-reading them, and generate documents from a diff and a count — every hand-copied number is a place the document goes stale silently.
+
+The full statement, with the observed failures each rule was derived from, is in `docs/core/gate-design-principles.md`.
+
 ## F. Rejected alternatives
 
 The following approaches were rejected:
@@ -227,6 +247,9 @@ Rejected decisions are recorded under `docs/architecture/decisions/` so future a
 - Session compression loses design decisions; current, history, worklog, and decisions protect against that loss.
 - MCP retrieval still consumes context. Summarize verified facts and provenance, then discard unnecessary retrieval text.
 - Niche-framework facts require primary-source verification.
+- An observation is not a diagnosis. Counting how often a term appears says nothing about whether a rule is scoped — the scope may live in one of those occurrences. The dangerous outcome is not a missed defect but a confident correction built on a wrong reading, because it edits working material.
+- Numbers written by hand into documents go stale silently. Generate them, or record the rule by which they can be measured. A number with neither is unverifiable, and no amount of reading will settle it.
+- A check the project writes about itself finds defects the project could not see. Two of the four defects repaired in v0.1.9 were found by the kit's new self-check on its first run; the other two were found by a person reading, and are still not machine-checkable.
 
 ## H. Public positioning
 

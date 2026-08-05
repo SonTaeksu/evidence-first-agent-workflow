@@ -7,8 +7,17 @@ import re
 import sys
 from pathlib import Path
 
+# The kit's exit-code convention differs from argparse's: a usage error is a
+# tool error (1), not a validation failure (2). See tools/_lib/kit_cli.py.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "_lib"))
+from kit_cli import ArgumentParser  # noqa: E402
+
 LINK = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
 REQUIRED_FILES = {
+    # Shared by every tool. A partial copy that omits it leaves each tool dying on
+    # `from kit_cli import ...` -- an installation fault reported here, once,
+    # rather than as a traceback from whichever tool happened to run first.
+    "tools/_lib/kit_cli.py",
     "README.md",
     "AGENTS.md",
     "DESIGN-CONCEPTS.md",
@@ -30,6 +39,15 @@ REQUIRED_FILES = {
     "reference-assets/README.md",
     "tools/check-stack-readiness/check_stack_readiness.py",
     "tools/check-state-model/check_state_model.py",
+    "tools/check-kit-selfcheck/check_kit_selfcheck.py",
+    "tools/check-mirror-parity/check_mirror_parity.py",
+    "tools/check-shell-safety/check_shell_safety.py",
+    "tools/check-last/check_last.py",
+    "tools/check-script-parity/check_script_parity.py",
+    "docs/core/finding-identifiers.md",
+    "prompts/7-update-the-kit.md",
+    "docs/core/command-and-process-safety.md",
+    "docs/core/gate-design-principles.md",
     "scripts/pre-commit-validate.ps1",
     "LICENSES.md",
     "KIT-MANIFEST.json",
@@ -49,7 +67,7 @@ REQUIRED_DIRS = {
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path.cwd())
     args = parser.parse_args()
     root = args.root.resolve()
@@ -58,17 +76,17 @@ def main() -> int:
     for relative in sorted(REQUIRED_FILES):
         path = root / relative
         if not path.is_file():
-            failures.append(f"missing required file: {relative}")
+            failures.append(f"[check-kit-installation:missing-file] required file: {relative}")
 
     for relative in sorted(REQUIRED_DIRS):
         path = root / relative
         if not path.is_dir():
-            failures.append(f"missing required directory: {relative}")
+            failures.append(f"[check-kit-installation:missing-directory] required directory: {relative}")
 
     for path in root.rglob("*"):
         if path.is_file() and ".ko.md" in path.name:
             failures.append(
-                f"language suffix remains: {path.relative_to(root)}"
+                f"[check-kit-installation:language-suffix] {path.relative_to(root)}"
             )
 
     for path in root.rglob("*.md"):
@@ -86,13 +104,13 @@ def main() -> int:
                 resolved.relative_to(root)
             except ValueError:
                 failures.append(
-                    f"{path.relative_to(root)}: link escapes kit root: "
+                    f"{path.relative_to(root)}: [check-kit-installation:link-escapes-root] "
                     f"{raw_target}"
                 )
                 continue
             if not resolved.exists():
                 failures.append(
-                    f"{path.relative_to(root)}: missing link target: "
+                    f"{path.relative_to(root)}: [check-kit-installation:missing-link-target] "
                     f"{raw_target}"
                 )
 

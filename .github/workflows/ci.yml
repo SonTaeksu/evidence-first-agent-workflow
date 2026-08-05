@@ -1,0 +1,154 @@
+# SPDX-License-Identifier: MPL-2.0
+#
+# This repository's own CI. It did not have any.
+#
+# `Code-Agent-Kit/*/templates/ci/github/evidence-first-ci.sample.yml` is a sample
+# for whoever installs the kit; it protects their project, not this one. So for
+# three releases nothing here ran automatically, and the cost was measurable:
+# `check-kit-selfcheck`'s self-test had been failing the whole time, and the seed
+# assertion it guards was completely inert. The self-test caught the defect on the
+# first run. Nobody ran the self-test.
+#
+# Minimum line, per the owner's instruction: every `self_test.py`, and the twin
+# parity harness, on both language mirrors.
+
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  kit:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Both mirrors. The scripts are byte-identical across them by design, so a
+        # divergence is itself a defect — and one that only shows up if both are
+        # actually run.
+        mirror: [en, ko]
+    defaults:
+      run:
+        working-directory: Code-Agent-Kit/${{ matrix.mirror }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          # 3.11 is the supported floor, documented in QUICKSTART.md: `tomllib`
+          # entered the standard library there and one check reads Codex's TOML.
+          # Pinned to the floor rather than to "latest" on purpose — CI passing on
+          # 3.13 says nothing about the oldest interpreter anyone is running.
+          python-version: "3.11"
+
+      # pwsh is preinstalled on GitHub's ubuntu runners. Asserted rather than
+      # assumed, because without it the parity harness exits 1 and the failure
+      # would read as a twin defect instead of a missing dependency.
+      - name: PowerShell is available
+        shell: bash
+        run: pwsh --version
+
+      - run: python -m compileall tools
+
+      # Of the ten self-tests, only `reference-image-manifest` needs anything
+      # outside the standard library. Installed rather than skipped: a self-test
+      # that quietly opts out is the exact failure this file exists to prevent —
+      # and the import is asserted afterwards, naming `ImageCms` specifically,
+      # because it is a separate C extension that some wheels omit. Without the
+      # assertion a broken install would surface as a confusing test failure
+      # instead of a missing dependency.
+      - name: Pillow, for the reference-image self-test
+        shell: bash
+        run: |
+          set -e
+          python -m pip install --quiet --disable-pip-version-check pillow
+          python -c "import PIL, PIL.ImageCms; print('Pillow', PIL.__version__)"
+
+      - name: Every tool self-test
+        shell: bash
+        run: |
+          set -e
+          for test in tools/*/self_test.py; do
+            echo "== $test"
+            python "$test"
+          done
+
+      # The .ps1 twins are the only gate on a machine without Python. An
+      # unverified twin recorded as verified is worse than one recorded as
+      # unverified, so this failing must fail the job.
+      - name: PowerShell twins agree with their Python originals
+        run: python tools/check-script-parity/check_script_parity.py --root .
+
+      - name: Twin coverage has not regressed
+        shell: bash
+        run: |
+          set -e
+          python tools/check-script-parity/check_script_parity.py --root . --status
+          # `remaining` naming anything means a tool grew a verdict with no twin.
+          # Grepping the report rather than trusting a number keeps this honest
+          # when tools are added.
+          if python tools/check-script-parity/check_script_parity.py --root . --status \
+             | grep -q "remaining: none"; then
+            echo "every applicable tool is twinned"
+          else
+            echo "a tool is missing its PowerShell twin; see the status report above" >&2
+            exit 1
+          fi
+
+      - run: python tools/check-agent-config/check_agent_config.py --root .
+      - run: python tools/check-shell-safety/check_shell_safety.py --root .
+      - run: python tools/check-kit-installation/check_kit_installation.py --root .
+      - run: python tools/check-kit-selfcheck/check_kit_selfcheck.py --root .
+      - run: python tools/check-state-model/check_state_model.py --project-docs samples/react-aspnetcore-taskflow/docs
+
+      # Run the twin too, not just the Python original. The harness proves they
+      # agree on fixtures; this proves the PowerShell side survives the real tree,
+      # which is bigger and stranger than any fixture.
+      - name: The kit self-check, through its PowerShell twin
+        run: pwsh -NoProfile -NonInteractive -File tools/check-kit-selfcheck/check_kit_selfcheck.ps1 -Root .
+      - name: Shell safety, through its PowerShell twin
+        run: pwsh -NoProfile -NonInteractive -File tools/check-shell-safety/check_shell_safety.ps1 -Root .
+
+  mirrors:
+    # Cross-mirror checks need both trees at once, so they cannot live in the
+    # matrix above.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Mirrors hold the same paths and identical shared scripts
+        run: python Code-Agent-Kit/en/tools/check-mirror-parity/check_mirror_parity.py --root Code-Agent-Kit
+
+      - name: The same, through the PowerShell twin
+        run: pwsh -NoProfile -NonInteractive -File Code-Agent-Kit/en/tools/check-mirror-parity/check_mirror_parity.ps1 -Root Code-Agent-Kit
+
+      - name: No proprietary or organization-identifying strings in the public tree
+        run: python Code-Agent-Kit/en/tools/check-sanitization/check_sanitization.py --root .
+
+# There is deliberately no job that runs `enforce-agent-gates` against this
+# repository's own diff.
+#
+# An earlier revision of this file had one, and it blocked with
+# `[enforce-agent-gates:current-not-updated]` and
+# `[enforce-agent-gates:history-not-appended]` — because this repository has no
+# `docs/features/`, and never has. That is not an omission. The feature state
+# model governs a project that *installs* the kit; this is where the kit is
+# built, and its own development is recorded in `docs/worklogs/`. Note that
+# `check-state-model` above already points at `samples/`, not at the repository
+# root, for exactly this reason.
+#
+# The mistake was to satisfy that block by writing the two documents it asked
+# for. Ceremony produced to make a checker happy is the failure mode this whole
+# project exists to prevent, and the owner rejected it.
+#
+# The gate itself is not left unverified. `check-script-parity` in the `kit` job
+# exercises `enforce-agent-gates` over 11 fixtures built as real git
+# repositories — six pinned to exit 2, four to exit 0, one to exit 1 — on both
+# mirrors. That tests the gate's behaviour on trees shaped like a project that
+# adopted the kit, which is what it is for. Applying it here tested nothing and
+# asserted something false.

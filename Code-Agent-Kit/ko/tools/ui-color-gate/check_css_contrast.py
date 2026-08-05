@@ -1,5 +1,14 @@
 # SPDX-License-Identifier: MPL-2.0
-"""Deterministically check configured CSS foreground/background contrast pairs."""
+"""Deterministically check configured CSS foreground/background contrast pairs.
+
+Findings are tagged `[ui-color-gate:<id>]`; see
+docs/core/finding-identifiers.md.
+
+Exit codes:
+  0  every configured pair meets its minimum
+  2  at least one pair is below its minimum
+  1  tool error -- including a colour this tool refuses to guess at
+"""
 
 from __future__ import annotations
 
@@ -10,6 +19,11 @@ import re
 import sys
 from pathlib import Path
 from typing import Any
+
+# The kit's exit-code convention differs from argparse's: a usage error is a
+# tool error (1), not a validation failure (2). See tools/_lib/kit_cli.py.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "_lib"))
+from kit_cli import ArgumentParser  # noqa: E402
 
 
 HEX_COLOR = re.compile(r"^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$")
@@ -28,7 +42,7 @@ def matching_brace(text: str, opening: int) -> int:
             depth -= 1
             if depth == 0:
                 return index
-    raise ValueError("Unmatched CSS brace.")
+    raise ValueError("[ui-color-gate:unmatched-brace] Unmatched CSS brace.")
 
 
 def parse_declarations(body: str) -> dict[str, str]:
@@ -76,7 +90,10 @@ def parse_rules(css: str) -> dict[str, dict[str, str]]:
 def normalize_hex(value: str) -> str:
     value = value.strip()
     if not HEX_COLOR.fullmatch(value):
-        raise ValueError(f"Only literal hex colors are supported, got: {value}")
+        raise ValueError(
+            f"[ui-color-gate:unsupported-color] Only literal hex colors are "
+            f"supported, got: {value}"
+        )
 
     digits = value[1:]
     if len(digits) == 3:
@@ -125,17 +142,20 @@ def resolve_value(
     property_name = str(reference["property"]).lower()
 
     if selector not in rules:
-        raise ValueError(f"Selector not found: {selector}")
+        raise ValueError(
+            f"[ui-color-gate:selector-not-found] Selector not found: {selector}"
+        )
     if property_name not in rules[selector]:
         raise ValueError(
-            f"Property '{property_name}' not found for selector '{selector}'."
+            f"[ui-color-gate:property-not-found] Property '{property_name}' not "
+            f"found for selector '{selector}'."
         )
 
     return normalize_hex(rules[selector][property_name])
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument("--css", required=True, type=Path)
     parser.add_argument("--config", required=True, type=Path)
     parser.add_argument("--output", type=Path)
@@ -181,10 +201,16 @@ def main() -> int:
             )
 
         for result in results:
+            # The identifier is printed only on the failing line. A passing pair
+            # is not a finding, and tagging it would make the identifier
+            # unusable for mechanical extraction.
+            tag = ""
+            if result["status"] == "FAIL":
+                tag = "[ui-color-gate:contrast-below-minimum] "
             print(
                 f"{result['status']:4} "
                 f"{result['ratio']:>5.2f}:1 >= {result['minimum']:>4.1f}:1 "
-                f"{result['name']} "
+                f"{tag}{result['name']} "
                 f"({result['foreground']} on {result['background']})"
             )
 

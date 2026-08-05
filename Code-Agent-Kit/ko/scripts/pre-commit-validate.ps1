@@ -1,4 +1,4 @@
-param(
+﻿param(
     [switch]$SkipDocker
 )
 
@@ -10,7 +10,11 @@ $Backend = Join-Path $Sample "backend"
 $Evidence = Join-Path $Sample "docs/evidence/generated"
 $Collector = Join-Path $Root "tools/collect-validation-evidence/collect.py"
 
-New-Item -ItemType Directory -Force -Path $Evidence | Out-Null
+# [System.IO.Directory]::CreateDirectory, not New-Item: New-Item has no
+# -LiteralPath parameter at all, so the form this line used to have threw
+# "A parameter cannot be found that matches parameter name 'LiteralPath'".
+# The .NET call is literal by definition and creates intermediate directories.
+[void][System.IO.Directory]::CreateDirectory($Evidence)
 
 function Invoke-Evidence {
     param(

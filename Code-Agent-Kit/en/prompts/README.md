@@ -11,6 +11,8 @@ These prompts turn the workflow documentation into repeatable task entry points.
 | Modify a feature | `4-modify-feature.md` |
 | Create an isolated demo | `5-demo-sample.md` |
 | Debug a faulty implementation | `6-debug-fix.md` |
+| Update the kit in a project already using it | `7-update-the-kit.md` |
+| Fill in or add a tech stack | `8-fill-stack.md` |
 
 Every prompt uses `GATE.md`.
 

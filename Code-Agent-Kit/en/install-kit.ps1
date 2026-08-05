@@ -1,4 +1,4 @@
-param(
+﻿param(
     [Parameter(Mandatory=$true)][string]$Target,
     [ValidateSet("full","core")][string]$Mode="full",
     [string]$Stack="_template",

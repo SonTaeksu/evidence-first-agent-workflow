@@ -9,5 +9,5 @@ authors:
   - name: "HUENSYSTEM Co., Ltd."
 repository-code: "https://github.com/SonTaeksu/evidence-first-agent-workflow"
 license: "MIT"
-version: "0.1.8-alpha"
-date-released: 2026-07-13
+version: "0.1.9-alpha"
+date-released: 2026-08-04

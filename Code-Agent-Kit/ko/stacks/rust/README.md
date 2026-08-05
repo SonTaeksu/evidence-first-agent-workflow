@@ -1,22 +1,22 @@
-# Rust 스택 프로필 — 계획
+# Rust
 
-Rust는 다음 실험 스택의 우선 후보입니다.
+Services and tools in Rust with Cargo. The async runtime and the error model are load-bearing choices that pervade the code.
 
-후보 기준선:
+**State: `blocked`.** Not broken — waiting. The owner inputs in
+`STACK-INPUTS.md` are unanswered, so `check-stack-readiness` derives `blocked`,
+and `tools/check-last` deliberately skips a stack in that state so a
+placeholder does not produce a false alarm on every run.
 
-- Axum
-- Tokio
-- SQLx
-- SQLite 또는 PostgreSQL
-- 선택적으로 HTMX 또는 React Frontend
+What is already here and useful:
 
-Rust는 다음과 같은 강한 결정론적 게이트를 제공하므로 이 워크플로우와 잘 맞을 가능성이 있습니다.
+- `references/pitfalls.md` — failures in this stack that produce no error message;
+- `capability-detection.md` — how to tell what this project actually uses;
+- `mcp/source-routing.md` — which documentation source is authoritative, and
+  which must not be consulted.
+
+To reach `ready`, answer `STACK-INPUTS.md` with evidence that exists. Evidence is
+measured, not declared:
 
 ```bash
-cargo fmt --check
-cargo check
-cargo clippy -- -D warnings
-cargo test
+python ../../tools/check-stack-readiness/check_stack_readiness.py --stack .
 ```
-
-React + ASP.NET Core 샘플에서 공개 피드백을 확보할 때까지 이 디렉터리는 계획용 Placeholder로 유지합니다.

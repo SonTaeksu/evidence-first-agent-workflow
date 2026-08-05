@@ -39,3 +39,16 @@ reference-assets/spa/*
 
 # Visual Studio
 .vs/
+
+# archived files kept out of the portable kit
+_archive/
+
+# working drafts and internal reporting material — kept on disk, out of the repo
+/blog-post.md
+/reddit-post-general.md
+/reddit-post-localllm.md
+/gate-test-guide.md
+/Agent-Workflow-Overview-KO.pptx
+
+# check-last baseline marker (runtime, not kit content)
+.evidence-first/

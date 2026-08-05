@@ -2,6 +2,59 @@
 
 [English](RELEASE-NOTES.md) | **한국어**
 
+## v0.1.9-alpha — 데스크톱 Stack, 자기검사하는 킷, 입문자용 진입점 (2026-08-04)
+
+### 핵심
+
+세 가지이고, 그중 하나는 불편한 내용입니다.
+
+**두 번째 ready Stack.** .NET Framework 4.7.2 이상의 C# Windows Forms. Reference Skeleton과 Validation Profile을 갖췄습니다. 교육용 사례이기도 합니다 — Windows Forms에는 Rendered 문서가 없어서 흔히 쓰는 "화면이 정말 그려졌나" 검사가 볼 대상 자체가 없습니다. 그 Layer를 조용히 빼는 대신, 이 팩은 Form의 Designer File을 읽어 선언된 Control을 코드가 존재하기 전에 작성된 명세와 대조합니다.
+
+**킷이 자기 자신을 검사합니다.** `check-kit-selfcheck`는 킷이 복사하라고 지시한 Template을 복사해 킷 자신의 Validator에 돌립니다. `check-mirror-parity`는 두 언어 Mirror를 대조하고, 문서가 적은 수치를 실측과 대조합니다.
+
+**불편한 부분: 그 자기검사가 첫 실행에서 실제 결함을 잡았습니다.** `using-another-stack.md`가 복사하라고 지시하는 `templates/stack-profile/` 폴더에, 자기 Manifest가 필수로 적어둔 File이 없었습니다. 문서대로 따라간 사람은 자기 잘못이 아닌 Readiness 실패를 겪었습니다. 그 결함이 그동안 배포되고 있었습니다. 수정했고, 그것을 잡았을 검사가 이제 돕니다.
+
+### ⚠️ 행동 변화
+
+새로 차단되는 것은 없지만, 두 가지 주장이 이제 기계로 검사됩니다.
+
+| 변경 | 방향 | 새로 실패하는 것 |
+|---|---|---|
+| `mirrored_file_count`를 실측과 대조 | 엄격해짐 | `mirrored_file_count_rule`이 있는데 수치가 틀린 Manifest |
+| `ready`를 선언한 Stack은 실제로 ready여야 함 | 엄격해짐 | 도달할 수 없는 상태로 배포된 Stack Pack |
+| Seed Template에 필수 문서 누락이 없어야 함 | 엄격해짐 | 킷 자신의 검사를 통과하지 못하는 Scaffold |
+
+Fork를 유지하신다면 갱신 후가 아니라 **갱신 전에** `check-mirror-parity`와 `check-kit-selfcheck`를 돌려 보세요.
+
+### 추가
+- `stacks/csharp-winforms/` — ready, 양쪽 Mirror, `check_stack_readiness` exit 0.
+- `tools/check-kit-selfcheck/`, `tools/check-mirror-parity/` — Self-test 포함.
+- `docs/core/gate-design-principles.md` — 새 검사가 무언가를 차단할 수 있게 되기 전에 만족해야 할 조건.
+- `OVERVIEW.md`·`OVERVIEW.ko.md` — README에서 분리한 전체 참조.
+
+### 수정
+- `docs/core/honesty-and-correction.md` (en)이 문장 중간에 잘려 있었습니다.
+- `templates/stack-profile/`에 File 2개가 없었고, 그중 하나는 자기 Manifest가 필수로 요구하는 것이었습니다.
+- `enforcement-matrix.md`가 존재하지 않는 Tool을 인용했습니다.
+- `KIT-MANIFEST.json`이 어떤 계산 규칙과도 맞지 않는 File 개수를 싣고 있었습니다.
+
+### 변경
+- `README`를 AI 코딩 에이전트가 처음인 독자 기준으로 다시 썼고, 비용·위험 9개 항목을 명시했습니다.
+- `CONTRIBUTING` 정정: 새 Stack Profile은 File 4개가 아니라 14개 문서가 필요합니다.
+- `ADOPTION`이 이제 모델, GPU, VRAM, RAM, 컨텍스트 창, 관측 속도를 묻습니다.
+
+### 보고 — VRAM 6 GB에서 돌리기
+
+Pi Agent + Qwen3.6 35B A3B Compact, 노트북, 6 GB VRAM, 32 GB RAM: 사람 개입을 포함해 기능 하나를 끝까지 완성했고, 속도는 약 45 tokens/second에서 컨텍스트가 길어지며 대략 21까지 떨어졌습니다.
+
+주의사항이 중요합니다. 벤치마크가 아니라 가벼운 시험이고, 이 공개 릴리스가 아니라 원래의 사내 버전에서 돌렸으며, 비공개 Stack의 서버 호출 관례와 클라이언트 쪽 표시 문제에 사람이 개입해야 했고, 긴 컨텍스트에서 21 tokens/second는 체감될 만큼 느립니다.
+
+### 검증
+
+게이트 19개, 실패 0. `check_sanitization` 689개 File CLEAN. Python 64개 File 컴파일 통과. 양쪽 Mirror 실측 각 327개, 경로 일치, Shared Script 68개 Byte 동일.
+
+주장하지 않는 것: 브라우저·.NET SDK·Docker가 필요한 애플리케이션 수준 게이트는 이전과 마찬가지로 생성 환경에서 `PENDING`입니다. `PRE-COMMIT-VALIDATION.ko.md` 참고.
+
 ## v0.1.8-alpha — 강제된 정직·프로세스 안전·스택 온램프 (2026-07-15)
 
 ### 추가 — 정직·증거 규칙 (AGENTS.md, 항상 로드)

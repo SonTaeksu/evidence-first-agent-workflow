@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "nextjs-docs": {
+      "type": "http",
+      "url": "https://gitmcp.io/vercel/next.js"
+    }
+  }
+}

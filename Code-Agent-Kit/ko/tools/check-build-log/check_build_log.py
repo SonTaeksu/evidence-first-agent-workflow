@@ -9,6 +9,11 @@ import re
 import sys
 from pathlib import Path
 
+# The kit's exit-code convention differs from argparse's: a usage error is a
+# tool error (1), not a validation failure (2). See tools/_lib/kit_cli.py.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "_lib"))
+from kit_cli import ArgumentParser  # noqa: E402
+
 
 DEFAULT_ERRORS = [
     r"(?im)^\s*(?:error|fatal)\b",
@@ -19,7 +24,7 @@ DEFAULT_ERRORS = [
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument("log", type=Path)
     parser.add_argument("--config", type=Path)
     parser.add_argument("--output", type=Path)
@@ -71,12 +76,12 @@ def main() -> int:
         print(f"Build log check: {status}")
         for item in errors:
             print(
-                f"FAIL pattern: {item['pattern']} "
+                f"[check-build-log:error-pattern-matched] {item['pattern']} "
                 f"({item['matches']} matches)",
                 file=sys.stderr,
             )
         for pattern in missing_success:
-            print(f"FAIL missing success: {pattern}", file=sys.stderr)
+            print(f"[check-build-log:missing-success-pattern] {pattern}", file=sys.stderr)
 
         return 0 if status == "PASS" else 2
     except (OSError, TypeError, json.JSONDecodeError, re.error) as error:

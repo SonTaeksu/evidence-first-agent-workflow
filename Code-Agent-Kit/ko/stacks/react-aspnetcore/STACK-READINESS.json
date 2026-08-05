@@ -25,11 +25,10 @@
       "source": "auto",
       "status": "detected",
       "evidence": [
-        "/global.json",
-        "frontend/package.json",
-        "backend/*.csproj"
+        "../../samples/react-aspnetcore-taskflow/frontend/package.json",
+        "../../samples/react-aspnetcore-taskflow/backend/TaskFlow.Api/TaskFlow.Api.csproj"
       ],
-      "notes": "Public sample only."
+      "notes": "Measured against the shipped sample. An adopting project re-detects from its own manifests; see capability-detection.md."
     },
     {
       "key": "authoritative-sources",

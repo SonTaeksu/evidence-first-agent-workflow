@@ -9,8 +9,17 @@ Modes:
 Exit codes:
   0  all enforced gates pass (or nothing relevant changed)
   2  a hard gate failed  -> commit/PR is blocked
+  1  tool error -- this check could not reach a verdict at all
+
+The 1/2 split is a machine contract, not a formality: a runner that cannot tell
+"this gate found something" from "this gate could not run" blocks correct
+commits. Being outside a git repository is the second kind. `check-document-sync`
+already exits 1 on exactly that condition, and the same condition returning two
+different values inside one repository is itself the defect.
 
 Reference: docs/core/enforcement-matrix.md maps each rule to its mechanism.
+Findings are tagged `[enforce-agent-gates:<id>]`; see
+docs/core/finding-identifiers.md.
 """
 
 from __future__ import annotations
@@ -20,6 +29,11 @@ import re
 import subprocess
 import sys
 from pathlib import Path
+
+# The kit's exit-code convention differs from argparse's: a usage error is a
+# tool error (1), not a validation failure (2). See tools/_lib/kit_cli.py.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "_lib"))
+from kit_cli import ArgumentParser  # noqa: E402
 
 SOURCE_SUFFIXES = {
     ".cs", ".csproj", ".fs", ".vb",
@@ -97,7 +111,8 @@ def gate_secret_scan(changed, base):
         content = staged_blob(rel, base)
         for pattern, label in SECRET_PATTERNS:
             if pattern.search(content):
-                failures.append("[secret] " + label + " in " + rel)
+                failures.append(
+                    "[enforce-agent-gates:hardcoded-secret] " + label + " in " + rel)
                 break
     return failures
 
@@ -116,15 +131,15 @@ def gate_worklog_and_gate_sections(source_changes, changed):
     failures = []
     worklog = find_active_worklog(changed)
     if worklog is None or not worklog.exists():
-        return ["[gate] project source changed but no worklog under docs/worklogs/ was produced (GATE.md 5-section evidence missing)."]
+        return ["[enforce-agent-gates:worklog-missing] project source changed but no worklog under docs/worklogs/ was produced (GATE.md 5-section evidence missing)."]
     text = worklog.read_text(encoding="utf-8", errors="replace")
     for section in MANDATORY_GATE_SECTIONS:
         if section not in text:
-            failures.append("[gate] worklog " + str(worklog) + " missing section '" + section + "'")
+            failures.append("[enforce-agent-gates:worklog-section-missing] worklog " + str(worklog) + " missing section '" + section + "'")
     if "Expected Files" in text:
         tail = text.split("Expected Files", 1)[1]
         if not re.search(r"(?m)^\s*-\s*\[[ xX]\]\s+\S+", tail):
-            failures.append("[gate] worklog " + str(worklog) + ": 'Expected Files' has no concrete entry.")
+            failures.append("[enforce-agent-gates:expected-files-empty] worklog " + str(worklog) + ": 'Expected Files' has no concrete entry.")
     return failures
 
 
@@ -141,11 +156,11 @@ def gate_state_sync(source_changes, changed):
     failures = []
     warnings = []
     if not touched(lambda c: re.search(r"docs/features/.+\.current\.md$", c)):
-        failures.append("[state] source changed but no feature '*.current.md' was updated.")
+        failures.append("[enforce-agent-gates:current-not-updated] source changed but no feature '*.current.md' was updated.")
     if not touched(lambda c: re.search(r"docs/features/.+\.history\.md$", c)):
-        failures.append("[state] source changed but no feature '*.history.md' append was made.")
+        failures.append("[enforce-agent-gates:history-not-appended] source changed but no feature '*.history.md' append was made.")
     if not touched(lambda c: c.endswith("docs/project-map.md")):
-        warnings.append("[state] 'docs/project-map.md' not touched - confirm no shared-file/impact change is unrecorded.")
+        warnings.append("[enforce-agent-gates:project-map-not-touched] 'docs/project-map.md' not touched - confirm no shared-file/impact change is unrecorded.")
     return failures, warnings
 
 
@@ -183,7 +198,7 @@ def gate_verification_evidence(source_changes, changed):
         return []
     has_evidence = ("`" in sec) or ("```" in sec) or (re.search(r"\d", sec) is not None)
     if not has_evidence:
-        return ["[verify] worklog Verification claims PASS with no evidence at all "
+        return ["[enforce-agent-gates:verification-without-evidence] worklog Verification claims PASS with no evidence at all "
                 "(no command, no exit code). Cite the command and exit code, or mark PENDING."]
     return []
 
@@ -196,11 +211,11 @@ def gate_unexpected_files(source_changes, changed):
         return []
     declared = worklog.read_text(encoding="utf-8", errors="replace")
     undeclared = [s for s in source_changes if Path(s).name not in declared and s not in declared]
-    return ["[scope] source file not declared in worklog Expected Files: " + s for s in undeclared]
+    return ["[enforce-agent-gates:file-not-declared] source file not declared in worklog Expected Files: " + s for s in undeclared]
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Evidence-First enforcement gate.")
+    parser = ArgumentParser(description="Evidence-First enforcement gate.")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--staged", action="store_true", help="pre-commit mode")
     group.add_argument("--base", help="CI mode: base ref to diff against")
@@ -210,8 +225,15 @@ def main():
     base = args.base if args.base else None
 
     if git("rev-parse", "--is-inside-work-tree").strip() != "true":
-        print("enforce_gates: not inside a git repository.", file=sys.stderr)
-        return 2
+        # A tool error (1), not a validation failure (2). Nothing was found to
+        # be wrong here -- the check simply could not run. This returned 2 for
+        # three releases; every caller branches on `!= 0` only, so the change is
+        # invisible to the hook and to CI, and it removes a contradiction with
+        # check-document-sync, which already exits 1 on this same condition.
+        print("[enforce-agent-gates:not-a-repository] not inside a git "
+              "repository - this gate reads the staged diff and has nothing to "
+              "read.", file=sys.stderr)
+        return 1
 
     changed = changed_files(base)
     source_changes = [c for c in changed if is_project_source(c)]

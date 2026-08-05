@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "elixir-docs": {
+      "type": "http",
+      "url": "https://gitmcp.io/elixir-lang/elixir"
+    }
+  }
+}
