@@ -1,8 +1,88 @@
 # Project-scoped Codex MCP configuration.
 # Codex loads this file only for a trusted project.
+#
+# Every remote server below answered MCP Inspector on 2026-08-05: it connected
+# without credentials, listed its tools, and returned a real tools/call. The run
+# and the verdicts are in docs/core/mcp-source-verification.md.
+#
+# Keys use underscores because that is what this file already used; the server
+# name a client shows may therefore differ from the hyphenated name used in the
+# JSON configurations and in the stack routing documents.
+#
+# Registering all of them at once is not free. From the verification guide:
+# "모든 서버를 한꺼번에 등록하지 않는 편이 좋다. 현재 프로젝트에서 사용하는
+#  스택만 등록하면 도구 라우팅 오류와 불필요한 도구 스키마 컨텍스트를 줄일 수 있다."
+# Delete the blocks for stacks this project does not use.
 
 [mcp_servers.microsoft_learn]
 url = "https://learn.microsoft.com/api/mcp"
+enabled = true
+tool_timeout_sec = 60
+
+[mcp_servers.wpf_docs]
+url = "https://gitmcp.io/dotnet/docs-desktop"
+enabled = true
+tool_timeout_sec = 60
+
+[mcp_servers.wcf_docs]
+url = "https://gitmcp.io/dotnet/docs"
+enabled = true
+tool_timeout_sec = 60
+
+[mcp_servers.asmx_docs]
+url = "https://gitmcp.io/dotnet/AspNetDocs"
+enabled = true
+tool_timeout_sec = 60
+
+[mcp_servers.vue_docs]
+url = "https://gitmcp.io/vuejs/docs"
+enabled = true
+tool_timeout_sec = 60
+
+[mcp_servers.vue_docs_specialized]
+url = "https://mcp.vue-mcp.org/mcp"
+enabled = true
+tool_timeout_sec = 60
+# PARTIAL: connection and tools/list succeeded, but a real
+# vue_docs_search call returned isError:true. Prefer vue_docs.
+
+[mcp_servers.nextjs_docs]
+url = "https://gitmcp.io/vercel/next.js"
+enabled = true
+tool_timeout_sec = 60
+
+[mcp_servers.nodejs_docs]
+url = "https://gitmcp.io/nodejs/node"
+enabled = true
+tool_timeout_sec = 60
+
+[mcp_servers.go_docs]
+url = "https://gitmcp.io/golang/go"
+enabled = true
+tool_timeout_sec = 60
+
+[mcp_servers.go_htmx_docs]
+url = "https://gitmcp.io/donseba/go-htmx"
+enabled = true
+tool_timeout_sec = 60
+
+[mcp_servers.deepwiki]
+url = "https://mcp.deepwiki.com/mcp"
+enabled = true
+tool_timeout_sec = 60
+
+[mcp_servers.rust_book]
+url = "https://gitmcp.io/rust-lang/book"
+enabled = true
+tool_timeout_sec = 60
+
+[mcp_servers.rust_reference]
+url = "https://gitmcp.io/rust-lang/reference"
+enabled = true
+tool_timeout_sec = 60
+
+[mcp_servers.elixir_docs]
+url = "https://gitmcp.io/elixir-lang/elixir"
 enabled = true
 tool_timeout_sec = 60
 

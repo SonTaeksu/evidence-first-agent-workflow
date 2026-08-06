@@ -1,34 +1,34 @@
 # Stack Profile — Node.js
 
-Server-side or CLI JavaScript on Node. The module system is the first thing to establish and it changes the answer to most questions.
+Node에서 도는 Server-side 또는 CLI JavaScript입니다. 가장 먼저 확정할 것은 Module System이고, 이것이 대부분의 질문에 대한 답을 바꿉니다.
 
-## Runtime and framework versions
+## Runtime 및 Framework Version
 
-`⟨verification required: exact versions, read from this project's manifests and
-from the toolchain on the machine that runs validation⟩`
+`⟨확인 필요: 정확한 Version. 이 Project의 Manifest와 Validation을
+실행하는 Machine의 Toolchain에서 읽을 것⟩`
 
-A supported range is not a version. See `STACK-INPUTS.md`.
+지원 범위는 Version이 아닙니다. `STACK-INPUTS.md`를 보십시오.
 
-## Directory structure
+## 디렉터리 구조
 
-- `package.json` — `type`, `engines`, `exports` and `scripts` are all contracts.
-- `src/` or the `main`/`exports` entry — the module graph root.
-- Lock file — the only authority on installed versions.
+- `package.json` — `type`, `engines`, `exports`, `scripts`는 모두 Contract입니다.
+- `src/` 또는 `main`/`exports`가 가리키는 Entry — Module Graph의 Root입니다.
+- Lock File — 설치된 Version에 대한 유일한 권위입니다.
 
-## Build commands
+## Build 명령
 
-`⟨verification required: the project's own build command and its pass criterion⟩`
+`⟨확인 필요: 이 Project 자체의 Build 명령과 그 통과 기준⟩`
 
-## Test commands
+## Test 명령
 
-`⟨verification required: the project's own test command and its pass criterion⟩`
+`⟨확인 필요: 이 Project 자체의 Test 명령과 그 통과 기준⟩`
 
-## Known constraints
+## 알려진 제약
 
-These are properties of the technology and hold regardless of the project.
+아래는 기술 자체의 성질이며 Project와 무관하게 성립합니다.
 
-- `"type": "module"` switches the whole package to ESM. Without it, `.js` is CommonJS and `import` syntax is a parse error.
-- `__dirname` and `__filename` do not exist in ESM; `import.meta.url` replaces them.
-- Top-level `await` is available in ESM only.
-- The `exports` field, once present, makes deep imports fail even when the file exists on disk.
-- Behaviour on an unhandled promise rejection, and which APIs are stable, both depend on the major version. The `engines` field states an intent, not a fact.
+- `"type": "module"`은 Package 전체를 ESM으로 바꿉니다. 이것이 없으면 `.js`는 CommonJS이고 `import` 구문은 Parse Error입니다.
+- ESM에는 `__dirname`과 `__filename`이 없습니다. `import.meta.url`이 그 자리를 대신합니다.
+- Top-level `await`는 ESM에서만 쓸 수 있습니다.
+- `exports` Field는 한번 존재하는 순간, File이 Disk에 실제로 있어도 Deep Import를 실패하게 만듭니다.
+- 처리되지 않은 Promise Rejection의 동작, 그리고 어떤 API가 안정적인지는 둘 다 Major Version에 달려 있습니다. `engines` Field는 의도를 적은 것이지 Fact가 아닙니다.

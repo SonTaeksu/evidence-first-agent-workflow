@@ -1,20 +1,19 @@
-# Stack-Specific Agent Rules — WCF (.NET Framework 4.7.2+)
+# Stack 전용 Agent Rule — WCF (.NET Framework 4.7.2+)
 
-This file extends root `AGENTS.md`. It does not repeat it.
+이 File은 Root `AGENTS.md`를 확장합니다. 같은 내용을 반복하지 않습니다.
 
-- Read `STACK-READINESS.json` before any stack-dependent implementation.
-- A blocking capability with status `unknown` prohibits the dependent pattern.
-  Not "proceed carefully" — prohibits.
-- Route documentation lookups through `mcp/source-routing.md`. `microsoft-learn` is
-  authoritative for this stack; `context7` is not, for the reason stated there.
-- Use `references/verified-facts.md` and `references/pitfalls.md` instead of
-  recall. Every entry there names where it was verified.
-- Record every selected capability in the Project Map and repeat it in Gate
-  Analysis.
+- Stack에 의존하는 구현을 시작하기 전에 `STACK-READINESS.json`을 읽습니다.
+- Blocking Capability의 상태가 `unknown`이면 그에 의존하는 Pattern을 금지합니다.
+  "조심해서 진행"이 아니라 금지입니다.
+- 문서 조회는 `mcp/source-routing.md`를 거칩니다. 이 Stack의 정본은 `microsoft-learn`이며
+  `context7`은 아닙니다. 이유는 그 File에 적혀 있습니다.
+- 기억 대신 `references/verified-facts.md`와 `references/pitfalls.md`를 사용합니다.
+  그곳의 모든 항목은 어디서 확인했는지를 밝히고 있습니다.
+- 선택한 Capability를 모두 Project Map에 기록하고 Gate Analysis에서 다시 밝힙니다.
 
-## Stack prohibitions
+## Stack 금지 사항
 
-- Do not state a version-sensitive fact from memory. Do not route WCF questions to a package-documentation server, and do not answer them from ASP.NET Core or gRPC documentation — the configuration model is unrelated.
-- Do not report a validation as passed without the command and its exit code.
-- Do not fill a row of `STACK-INPUTS.md` on the owner's behalf. An unanswered
-  input is a blocked stack, which is a correct state.
+- Version에 민감한 Fact를 기억에서 꺼내 말하지 않습니다. WCF 질문을 Package 문서 Server로 보내지 않고, ASP.NET Core나 gRPC 문서로 답하지도 않습니다 — 구성 Model이 서로 무관합니다.
+- 명령과 그 Exit Code 없이 Validation이 통과했다고 보고하지 않습니다.
+- Owner를 대신해 `STACK-INPUTS.md`의 행을 채우지 않습니다. 답이 없는 입력은
+  Blocked Stack이고, 그것은 올바른 상태입니다.

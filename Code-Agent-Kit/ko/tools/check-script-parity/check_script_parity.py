@@ -203,6 +203,22 @@ def _inputs_document(status: str = "detected", key: str = "runtime-sdk-versions"
     )
 
 
+def _inputs_document_without_key() -> str:
+    """The same table with the `Key` column dropped — a real regression.
+
+    `ko/stacks/react-aspnetcore` shipped exactly this: the column was lost in
+    translation, so no row could be joined, so the drift comparison iterated over
+    nothing and the stack measured READY with exit 0. The check passed because its
+    subject was missing. These cases pin the corrected behaviour in both twins.
+    """
+    return (
+        "# Stack Inputs\n\n"
+        "| Input | Required | Value or Path | Evidence | Status |\n"
+        "|---|---:|---|---|---|\n"
+        "| Versions in use | yes | 1.0 | global.json | detected |\n"
+    )
+
+
 # A well-formed project state tree, built from check-state-model's own section
 # and front-matter lists so the harness cannot drift from the requirement it is
 # testing. Each argument breaks exactly one rule.
@@ -684,11 +700,15 @@ CASES: list[dict] = [
         "args": ["--stack", "{ROOT}/stack"],
     },
     {
-        # A document with no Key column cannot be joined. Being unable to compare is
-        # not the same as disagreeing, and reporting it as a disagreement would
-        # punish every stack whose document predates the check.
-        "tool": "check-stack-readiness", "case": "SR-20", "expect": 0,
-        "desc": "a document with no key column is not compared, rather than assumed wrong",
+        # This case used to pin `expect: 0` on the reasoning that being unable to
+        # compare is not the same as disagreeing. That reasoning holds for one key
+        # with no row; it does not hold for a filled-in table with no `Key` column
+        # at all, and the difference was not academic — `ko/stacks/react-aspnetcore`
+        # lost that column in translation and measured READY with exit 0, because
+        # the comparison ran over nothing. The pin was protecting the hole, so it is
+        # reversed here deliberately rather than quietly.
+        "tool": "check-stack-readiness", "case": "SR-20", "expect": 2,
+        "desc": "a filled-in document with no key column is reported, not passed",
         "files": dict(_stack_fixture(), **{
             "stack/STACK-INPUTS.md":
                 "# Stack Inputs\n\n| Input | Status |\n|---|---|\n| Versions | unknown |\n"}),
@@ -700,6 +720,28 @@ CASES: list[dict] = [
         "files": dict(_stack_fixture(), **{
             "stack/STACK-INPUTS.md": _inputs_document(status="unknown", key="not-a-manifest-key")}),
         "args": ["--stack", "{ROOT}/stack"],
+    },
+    {
+        # A table with no `Key` column cannot be compared to the manifest at all.
+        # Reported, and at drift's weight: the warning derives `provisional`, so a
+        # stack declaring `ready` on an uncomparable table fails.
+        "tool": "check-stack-readiness", "case": "SR-22", "expect": 2,
+        "desc": "a document with no Key column is reported, not silently passed",
+        "files": dict(_stack_fixture(declared="ready"), **{
+            "stack/STACK-INPUTS.md": _inputs_document_without_key()}),
+        "args": ["--stack", "{ROOT}/stack"],
+    },
+    {
+        # The other half: it is a warning, not a failure. `--allow-provisional` is
+        # what separates the two — it forgives the derived state but not a single
+        # entry in `failures`, so exit 0 here proves the finding was recorded as a
+        # warning. Pinning both halves stops a later "fix" from quietly promoting
+        # it to a failure or demoting it to silence.
+        "tool": "check-stack-readiness", "case": "SR-23", "expect": 0,
+        "desc": "the same document is a warning, not a failure",
+        "files": dict(_stack_fixture(declared="provisional"), **{
+            "stack/STACK-INPUTS.md": _inputs_document_without_key()}),
+        "args": ["--stack", "{ROOT}/stack", "--allow-provisional"],
     },
     {
         # The same coverage hole in the second tool that had it.

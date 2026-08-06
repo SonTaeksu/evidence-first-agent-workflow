@@ -2,18 +2,18 @@
 
 ## Reference Skeleton에서 확인된 사항
 
-| Input | Value or Path | Evidence | Status |
-|---|---|---|---|
-| 지원되는 Runtime 및 SDK Version | .NET Framework 4.7.2 (`net472`) | `skeletons/MinimalApp/MinimalApp.csproj`, `skeletons/MinimalApp/App.config` | detected |
-| 공식 문서 | Source Routing을 통한 Microsoft Learn | `mcp/source-routing.md`, `evidence-provenance.md` | confirmed |
-| Golden Skeleton File | `skeletons/MinimalApp/` | `skeletons/README.md` | confirmed |
-| Feature 경계와 Action Model | Form 하나와 그 Service 경계 | `feature-model.md` | confirmed |
-| 명명 및 File 관례 | Behaviour는 `MainForm.cs`, Layout은 `MainForm.Designer.cs` | `artifact-contract.md` | confirmed |
-| Communication 및 Data Contract | Service Interface 하나, UI Thread Marshalling 규칙 | `communication-contract.md`, `skeletons/MinimalApp/Services/IGreetingService.cs` | confirmed |
-| Capability 분기 규칙 | Project Format, Designer Ownership, DPI, Automation | `capability-detection.md` | confirmed |
-| Validation 명령과 실패 신호 | MSBuild, VSTest, Designer-tree 비교 | `validation/validation-profile.md` | confirmed |
-| 알려진 Pitfall | Thread Affinity, Designer 재생성, DPI 우선순위 | `references/pitfalls.md` | confirmed |
-| 기밀 분류 | 조직 내용 없는 합성 공개 Skeleton | this file | confirmed |
+| Input | Key | Value or Path | Evidence | Status |
+|---|---|---|---|---|
+| 지원되는 Runtime 및 SDK Version | `runtime-sdk-versions` | .NET Framework 4.7.2 (`net472`) | `skeletons/MinimalApp/MinimalApp.csproj`, `skeletons/MinimalApp/App.config` | detected |
+| 공식 문서 | `authoritative-sources` | Source Routing을 통한 Microsoft Learn | `mcp/source-routing.md`, `evidence-provenance.md` | confirmed |
+| Golden Skeleton File | `golden-skeletons` | `skeletons/MinimalApp/` | `skeletons/README.md` | confirmed |
+| Feature 경계와 Action Model | `feature-model` | Form 하나와 그 Service 경계 | `feature-model.md` | confirmed |
+| 명명 및 File 관례 | `artifact-contract` | Behaviour는 `MainForm.cs`, Layout은 `MainForm.Designer.cs` | `artifact-contract.md` | confirmed |
+| Communication 및 Data Contract | `communication-contract` | Service Interface 하나, UI Thread Marshalling 규칙 | `communication-contract.md`, `skeletons/MinimalApp/Services/IGreetingService.cs` | confirmed |
+| Capability 분기 규칙 | `capability-detection` | Project Format, Designer Ownership, DPI, Automation | `capability-detection.md` | confirmed |
+| Validation 명령과 실패 신호 | `validation-profile` | MSBuild, VSTest, Designer-tree 비교 | `validation/validation-profile.md` | confirmed |
+| 알려진 Pitfall | `known-pitfalls` | Thread Affinity, Designer 재생성, DPI 우선순위 | `references/pitfalls.md` | confirmed |
+| 기밀 분류 | `confidentiality` | 조직 내용 없는 합성 공개 Skeleton | this file | confirmed |
 
 ## 다른 Project에 이 Profile을 도입할 때 필요한 Input
 
@@ -31,12 +31,12 @@
 
 ## 자동으로 Detection된 Evidence
 
-| Item | Detection 방법 | Reference Skeleton에서의 결과 |
-|---|---|---|
-| Project Format | `.csproj`의 Root Element와 `Sdk` Attribute | SDK-style |
-| Target Framework | `TargetFramework` 또는 `TargetFrameworkVersion` | `net472` |
-| Windows Forms 사용 | `System.Windows.Forms` 참조, `*.Designer.cs` 존재 | present |
-| DPI 구성 | `App.config`의 `System.Windows.Forms.ApplicationConfigurationSection` | `PerMonitorV2` |
-| Manifest 호환성 | `app.manifest`의 `supportedOS` Entry | Windows 10 선언됨 |
-| Designer-generated File | `InitializeComponent`를 담은 `*.Designer.cs` | present |
-| Test Project | Test Project 참조와 VSTest Adapter | absent |
+| Item | Key | Detection 방법 | Reference Skeleton에서의 결과 |
+|---|---|---|---|
+| Project Format |  | `.csproj`의 Root Element와 `Sdk` Attribute | SDK-style |
+| Target Framework |  | `TargetFramework` 또는 `TargetFrameworkVersion` | `net472` |
+| Windows Forms 사용 |  | `System.Windows.Forms` 참조, `*.Designer.cs` 존재 | present |
+| DPI 구성 |  | `App.config`의 `System.Windows.Forms.ApplicationConfigurationSection` | `PerMonitorV2` |
+| Manifest 호환성 |  | `app.manifest`의 `supportedOS` Entry | Windows 10 선언됨 |
+| Designer-generated File |  | `InitializeComponent`를 담은 `*.Designer.cs` | present |
+| Test Project |  | Test Project 참조와 VSTest Adapter | absent |

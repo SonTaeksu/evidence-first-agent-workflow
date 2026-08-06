@@ -1,9 +1,9 @@
 # References — Node.js
 
-| Document | Use it for |
+| 문서 | 용도 |
 |---|---|
-| `pitfalls.md` | failures in this stack that produce no error message |
-| `verified-facts.md` | facts confirmed against a source, with the source named |
+| `pitfalls.md` | 이 Stack에서 Error Message 없이 나는 실패 |
+| `verified-facts.md` | Source에 대조해 확인한 Fact. Source를 함께 적음 |
 
-Authoritative source for this stack: **`context7`**.
-Do not answer Node questions from browser JavaScript documentation. Do not assume a framework — a Node project need not have one.
+이 Stack의 정본 Source: **`context7`**.
+Browser JavaScript 문서로 Node 질문에 답하지 않습니다. Framework를 가정하지 않습니다. Node Project에 Framework가 없을 수도 있습니다.

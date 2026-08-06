@@ -1,26 +1,25 @@
-# Pitfalls — ASMX Web Service 2.0 (.NET Framework 4+)
+# Pitfall — ASMX Web Service 2.0 (.NET Framework 4+)
 
-Each of these is a property of the technology, verifiable independently of any
-project. They are collected because they share one characteristic: **the failure
-is silent, or the error message names something other than the cause.** A stack
-whose failures announce themselves does not need a list like this.
+여기 있는 것은 모두 기술 자체의 속성이며 어떤 Project와도 무관하게 검증할 수 있습니다.
+한 가지 공통점 때문에 모아 두었습니다. **실패가 조용하거나, Error Message가 원인이 아닌
+다른 것을 가리킨다는 점입니다.** 실패가 스스로 드러나는 Stack에는 이런 목록이 필요 없습니다.
 
-## XmlSerializer silently drops members
+## XmlSerializer는 Member를 조용히 빠뜨린다
 
-A member without a public setter, or a type without a parameterless constructor, is omitted from the wire format without any error. The field arrives as its default and looks like valid data.
+Public Setter가 없는 Member나 무인자 생성자가 없는 Type은 아무런 오류 없이 전송 형식에서 빠집니다. 그 Field는 기본값으로 도착하고, 정상적인 Data처럼 보입니다.
 
-## Interfaces and generics do not serialize
+## Interface와 Generic은 직렬화되지 않는다
 
-An `interface`-typed or open-generic member cannot be expressed in the schema. This surfaces as a runtime serialization exception on first call, not at build.
+`interface` Type이거나 열린 Generic인 Member는 Schema로 표현할 수 없습니다. 이것은 Build 시점이 아니라 첫 호출 때 Runtime 직렬화 Exception으로 드러납니다.
 
-## Nullable value types
+## Nullable 값 Type
 
-Without the `Specified` pattern, `0` and 'not supplied' are the same message. Any logic that branches on absence is wrong.
+`Specified` Pattern이 없으면 `0`과 '보내지 않음'이 같은 Message입니다. 값의 부재로 분기하는 Logic은 모두 틀립니다.
 
-## Proxy regeneration
+## Proxy 재생성
 
-A regenerated proxy overwrites edits, exactly as with WCF. Adapt in a wrapper.
+다시 생성한 Proxy는 수정을 덮어씁니다. WCF와 똑같습니다. 조정은 Wrapper에서 합니다.
 
-## Legacy status is a constraint, not a value judgement
+## Legacy라는 상태는 제약이지 가치 판단이 아니다
 
-New APIs and framework features are not added to ASMX. Do not carry a pattern over from newer stacks and assume it is supported; look it up.
+새 API와 Framework 기능은 ASMX에 추가되지 않습니다. 더 최신 Stack의 Pattern을 그대로 가져와 지원된다고 넘겨짚지 말고, 조회해서 확인하십시오.

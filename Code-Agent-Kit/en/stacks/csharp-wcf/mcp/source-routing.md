@@ -136,9 +136,15 @@ table. Copy it into the adapter configuration your agent reads:
 | Roo | `.roo/mcp.json` |
 | Cline | `.clinerules/` for rules; MCP is configured in the client |
 
-The kit's root configuration deliberately carries only `microsoft-learn` and
-`context7`. The per-stack servers are not enabled by default, because copying
-them is how an operator says "I accept that these queries leave this machine".
+The kit's root configuration carries every server in this document, enabled.
+This is the public kit; it is meant to work without anyone hunting down
+endpoints first. The cost is not hidden. The verification guide's own advice is
+the opposite of shipping them all: registering only the stacks a project
+actually uses "reduces tool-routing errors and unnecessary tool-schema
+context". So delete the entries for stacks this project does not use — that is
+a normal edit, not a downgrade. And read the section above before leaving any
+of them enabled on a closed network, where the right answer is an internal
+mirror rather than these endpoints.
 
 Client field names differ — `mcpServers`, `servers`, `serverUrl`, `httpUrl`. The
 two values that matter are the transport and the URL.

@@ -4,6 +4,58 @@
       "type": "http",
       "url": "https://learn.microsoft.com/api/mcp"
     },
+    "wpf-docs": {
+      "type": "http",
+      "url": "https://gitmcp.io/dotnet/docs-desktop"
+    },
+    "wcf-docs": {
+      "type": "http",
+      "url": "https://gitmcp.io/dotnet/docs"
+    },
+    "asmx-docs": {
+      "type": "http",
+      "url": "https://gitmcp.io/dotnet/AspNetDocs"
+    },
+    "vue-docs": {
+      "type": "http",
+      "url": "https://gitmcp.io/vuejs/docs"
+    },
+    "vue-docs-specialized": {
+      "type": "http",
+      "url": "https://mcp.vue-mcp.org/mcp"
+    },
+    "nextjs-docs": {
+      "type": "http",
+      "url": "https://gitmcp.io/vercel/next.js"
+    },
+    "nodejs-docs": {
+      "type": "http",
+      "url": "https://gitmcp.io/nodejs/node"
+    },
+    "go-docs": {
+      "type": "http",
+      "url": "https://gitmcp.io/golang/go"
+    },
+    "go-htmx-docs": {
+      "type": "http",
+      "url": "https://gitmcp.io/donseba/go-htmx"
+    },
+    "deepwiki": {
+      "type": "http",
+      "url": "https://mcp.deepwiki.com/mcp"
+    },
+    "rust-book": {
+      "type": "http",
+      "url": "https://gitmcp.io/rust-lang/book"
+    },
+    "rust-reference": {
+      "type": "http",
+      "url": "https://gitmcp.io/rust-lang/reference"
+    },
+    "elixir-docs": {
+      "type": "http",
+      "url": "https://gitmcp.io/elixir-lang/elixir"
+    },
     "context7": {
       "type": "stdio",
       "command": "npx",

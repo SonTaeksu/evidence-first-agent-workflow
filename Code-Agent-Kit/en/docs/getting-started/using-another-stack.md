@@ -53,8 +53,8 @@ question is when to use each.
 
 Whatever the source, **record where it came from** (claim, source, version, date —
 `../../stacks/<stack>/evidence-provenance.md`). Which MCP to use for which topic lives in
-the stack's `mcp/source-routing.md`; the general rule is `../core/mcp-knowledge-routing.md`;
-summarizing big results is `../core/mcp-result-compaction.md`.
+the stack's `mcp/source-routing.md`; everything general — routing, fallback,
+compacting results, connecting — is one page at `../mcp.md`.
 
 Rule of thumb: **bake the stable, only-we-know facts into md; confirm changing official
 facts via MCP at the moment, then summarize and keep the source.**

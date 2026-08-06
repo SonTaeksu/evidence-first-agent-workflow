@@ -161,6 +161,7 @@ Every one of them names the row. None of them requires guessing what went wrong.
 
 `stacks/<name>/mcp/source-routing.md` names the server that is authoritative for
 this stack and the one that is not, with the tool names each actually exposed when
-it was tested. Those servers are **off by default** — see
-[`docs/core/mcp-source-verification.md`](../docs/core/mcp-source-verification.md)
-before switching any on, especially on a closed network.
+it was tested. Those servers are **enabled** in the kit's root configuration —
+see [`docs/core/mcp-source-verification.md`](../docs/core/mcp-source-verification.md)
+for what each one was and was not proven to do, and delete the ones this project
+does not use. On a closed network, read that document before leaving any enabled.

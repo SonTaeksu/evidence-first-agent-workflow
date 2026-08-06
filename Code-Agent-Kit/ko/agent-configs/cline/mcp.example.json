@@ -6,6 +6,84 @@
       "disabled": false,
       "autoApprove": []
     },
+    "wpf-docs": {
+      "type": "streamableHttp",
+      "url": "https://gitmcp.io/dotnet/docs-desktop",
+      "disabled": false,
+      "autoApprove": []
+    },
+    "wcf-docs": {
+      "type": "streamableHttp",
+      "url": "https://gitmcp.io/dotnet/docs",
+      "disabled": false,
+      "autoApprove": []
+    },
+    "asmx-docs": {
+      "type": "streamableHttp",
+      "url": "https://gitmcp.io/dotnet/AspNetDocs",
+      "disabled": false,
+      "autoApprove": []
+    },
+    "vue-docs": {
+      "type": "streamableHttp",
+      "url": "https://gitmcp.io/vuejs/docs",
+      "disabled": false,
+      "autoApprove": []
+    },
+    "vue-docs-specialized": {
+      "type": "streamableHttp",
+      "url": "https://mcp.vue-mcp.org/mcp",
+      "disabled": false,
+      "autoApprove": []
+    },
+    "nextjs-docs": {
+      "type": "streamableHttp",
+      "url": "https://gitmcp.io/vercel/next.js",
+      "disabled": false,
+      "autoApprove": []
+    },
+    "nodejs-docs": {
+      "type": "streamableHttp",
+      "url": "https://gitmcp.io/nodejs/node",
+      "disabled": false,
+      "autoApprove": []
+    },
+    "go-docs": {
+      "type": "streamableHttp",
+      "url": "https://gitmcp.io/golang/go",
+      "disabled": false,
+      "autoApprove": []
+    },
+    "go-htmx-docs": {
+      "type": "streamableHttp",
+      "url": "https://gitmcp.io/donseba/go-htmx",
+      "disabled": false,
+      "autoApprove": []
+    },
+    "deepwiki": {
+      "type": "streamableHttp",
+      "url": "https://mcp.deepwiki.com/mcp",
+      "disabled": false,
+      "autoApprove": []
+    },
+    "rust-book": {
+      "type": "streamableHttp",
+      "url": "https://gitmcp.io/rust-lang/book",
+      "disabled": false,
+      "autoApprove": []
+    },
+    "rust-reference": {
+      "type": "streamableHttp",
+      "url": "https://gitmcp.io/rust-lang/reference",
+      "disabled": false,
+      "autoApprove": []
+    },
+    "elixir-docs": {
+      "type": "streamableHttp",
+      "url": "https://gitmcp.io/elixir-lang/elixir",
+      "disabled": false,
+      "autoApprove": []
+    },
     "context7": {
       "command": "npx",
       "args": [

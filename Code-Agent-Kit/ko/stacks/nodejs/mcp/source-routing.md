@@ -1,119 +1,120 @@
 # Source Routing — Node.js
 
-Every server below was verified by MCP Inspector on **2026-08-05**: connected
-without credentials, listed its tools, and answered a real `tools/call`. The
-verdicts, the run, and — importantly — what was *not* verified are recorded in
-[`docs/core/mcp-source-verification.md`](../../../docs/core/mcp-source-verification.md).
+아래 Server는 모두 **2026-08-05**에 MCP Inspector로 검증했습니다. 자격 증명 없이
+연결되었고, Tool 목록을 반환했으며, 실제 `tools/call`에 응답했습니다. 판정과 실행 기록,
+그리고 무엇보다 *검증하지 않은 것*은
+[`docs/core/mcp-source-verification.md`](../../../docs/core/mcp-source-verification.md)에
+기록되어 있습니다.
 
-| Server | Endpoint | Verdict | Tools | Role |
+| Server | Endpoint | 판정 | Tool 수 | 역할 |
 |---|---|---|---:|---|
-| `nodejs-docs` | `https://gitmcp.io/nodejs/node` | **PASS** | 4 | official repository, doc/api and source |
+| `nodejs-docs` | `https://gitmcp.io/nodejs/node` | **PASS** | 4 | 공식 Repository, 문서/API와 Source |
 
-Transport is **Streamable HTTP** for all of them. That is not a preference: an
-earlier run of the same checker used SSE and every GitMCP endpoint answered
-`405`. A client that cannot speak Streamable HTTP needs the `mcp-remote` bridge,
-shown at the end of this document.
+Transport는 모두 **Streamable HTTP**입니다. 취향의 문제가 아닙니다. 같은 Checker를
+이전에 SSE로 돌렸을 때 모든 GitMCP Endpoint가 `405`를 반환했습니다. Streamable HTTP를
+말하지 못하는 Client는 `mcp-remote` Bridge가 필요하며, 그 방법은 이 문서 끝에 있습니다.
 
 ### `nodejs-docs` — PASS
 
 Endpoint: `https://gitmcp.io/nodejs/node`  (Streamable HTTP)
 
-Tools actually exposed, as observed rather than as documented:
+문서에 적힌 것이 아니라 실제로 관찰한, 노출되는 Tool:
 
 - `fetch_node_documentation`
 - `search_node_documentation`
 - `search_node_code`
 - `fetch_generic_url_content`
 
-Use it for: the API documentation at source, and the implementation when the documentation is ambiguous about a version boundary.
+용도: 원본 그대로의 API 문서, 그리고 문서가 Version 경계에 대해 모호할 때의 구현 Code.
 
-## Not this source
+## 이 Source는 아님
 
-Do not answer Node questions from browser JavaScript documentation. Do not assume a framework — a Node project need not have one.
+Browser JavaScript 문서로 Node 질문에 답하지 않습니다. Framework를 가정하지 않습니다. Node Project에 Framework가 없을 수도 있습니다.
 
-Routing a question to the wrong server does not produce an error. It produces a
-confident answer about a different technology, which is worse.
+질문을 엉뚱한 Server로 Routing해도 Error는 나지 않습니다. 대신 다른 기술에 대한 확신에
+찬 답이 나오는데, 그게 더 나쁩니다.
 
 
-## Priority
+## 우선순위
 
-1. This project's code, manifests and lock files.
-2. Deterministic build and test evidence, with exit codes.
-3. The servers above, in the order listed.
-4. Official release notes, for behaviour that changed between versions.
-5. Model memory — never for a version-sensitive fact.
+1. 이 Project의 Code, Manifest, Lock File.
+2. Exit Code를 포함한 결정론적 Build 및 Test Evidence.
+3. 위 Table의 Server. 나열된 순서대로.
+4. 공식 Release Note. Version 사이에 바뀐 동작에 씁니다.
+5. Model의 기억 — Version 민감 Fact에는 절대 쓰지 않습니다.
 
-## Calling them at all
+## 실제로 호출하게 만들기
 
-Registering a server does not make a model use it. The rule, which belongs in
-the project's agent instructions and not only here:
+Server를 등록했다고 Model이 그것을 쓰지는 않습니다. 아래 Rule은 여기뿐 아니라 Project의
+Agent 지시문에도 들어가야 합니다.
 
-- do not answer an API, version-behaviour or configuration question from
-  training knowledge alone;
-- call the stack's `search_*` tool first, then `fetch_*` for the passage itself;
-- cross-check against `search_*_code` when documentation and implementation
-  could disagree;
-- never assume the repository's default branch matches this project's installed
-  version;
-- state the repository, path and version or commit used;
-- if the search found nothing, say so. Do not fill the gap from memory.
+- API, Version 동작, 설정에 관한 질문에 학습 지식만으로 답하지 않습니다;
+- 먼저 그 Stack의 `search_*` Tool을 호출하고, 본문 자체는 `fetch_*`로 가져옵니다;
+- 문서와 구현이 어긋날 수 있는 경우 `search_*_code`로 교차 확인합니다;
+- Repository의 기본 Branch가 이 Project에 설치된 Version과 같다고 가정하지 않습니다;
+- 사용한 Repository, 경로, Version 또는 Commit을 밝힙니다;
+- 검색 결과가 없으면 없다고 말합니다. 빈자리를 기억으로 채우지 않습니다.
 
-## Version-sensitive lookups
+## Version 민감 조회
 
-Always look up rather than recall:
+기억에 의존하지 말고 항상 찾아봅니다.
 
-- which version introduced or changed an API;
-- the exact spelling of a configuration key;
-- a default value, which is the thing most likely to have changed quietly.
+- 어떤 Version에서 API가 도입되거나 바뀌었는지;
+- 설정 Key의 정확한 철자;
+- 기본값. 조용히 바뀌었을 가능성이 가장 큰 항목입니다.
 
 ## Fallback
 
-When the version in the project disagrees with the version a source describes,
-**stop and report the mismatch**. Record it as
-`⟨verification required: what and how⟩`.
+Project의 Version이 Source가 서술하는 Version과 다르면 **멈추고 불일치를 보고합니다**.
+`⟨확인 필요: 무엇을 어떻게 확인할지⟩`로 기록합니다.
 
-## Named but not verified
+## 이름만 있고 검증하지 않음
 
-These are local `stdio` servers. They were **not** part of the verified run, so
-nothing here says they work. They are named so that nobody has to rediscover
-them, and marked so that nobody mistakes a name for a test.
+아래는 Local `stdio` Server입니다. 검증 실행에 **포함되지 않았으므로** 여기 있는 무엇도
+그것이 동작한다는 뜻이 아닙니다. 아무도 다시 찾아 헤매지 않도록 이름을 적어 두었고,
+아무도 이름을 Test로 착각하지 않도록 표시해 두었습니다.
 
 **`nodejs-api-docs`** — `snyk-labs/mcp-server-nodejs-api-docs`
 
-Not in the verified run, and inspection of the repository is discouraging: 9 stars, 36 commits, no releases, 42 open pull requests against 0 open issues — the shape of an abandoned repository collecting dependency bots. `snyk-labs` is an experiments org.
+검증 실행에 없었고, Repository를 살펴본 결과도 좋지 않습니다. Star 9개, Commit 36개, Release 없음, Open Issue 0개에 Open Pull Request 42개 — Dependency Bot만 쌓이는 방치된 Repository의 모양입니다. `snyk-labs`는 실험용 Org입니다.
 
-## Before sending anything outward
+## 바깥으로 무언가 보내기 전에
 
-These are **public, third-party endpoints**. A call sends the query, the tool
-arguments the agent assembled, and whatever context it included. That can carry
-private source, customer data, internal hostnames, credentials, unpublished
-repository names, or raw operational logs.
+이들은 **공개된 서드파티 Endpoint**입니다. 호출 한 번에 질의, Agent가 조립한 Tool 인자,
+그리고 Agent가 함께 넣은 Context가 나갑니다. 거기에는 비공개 Source, 고객 데이터,
+내부 Hostname, 자격 증명, 공개되지 않은 Repository 이름, 가공 없는 운영 Log가 실릴 수
+있습니다.
 
-On a closed network, do not make these an operational dependency. Mirror the
-official repositories internally, pin a commit, index them, and serve an internal
-read-only MCP that returns the repository, path, commit and retrieval date with
-every answer. Use the public endpoints for public technology research only.
+폐쇄망에서는 이것을 운영 의존성으로 삼지 마십시오. 공식 Repository를 내부에 Mirror하고,
+Commit을 고정하고, Index를 만들고, 답마다 Repository, 경로, Commit, 조회 날짜를 함께
+돌려주는 내부 읽기 전용 MCP를 제공하십시오. 공개 Endpoint는 공개 기술 조사에만
+사용합니다.
 
-## Connecting
+## 연결
 
-`mcp-profile.json.example` next to this document holds exactly the servers in the
-table. Copy it into the adapter configuration your agent reads:
+이 문서 옆의 `mcp-profile.json.example`에 위 Table의 Server가 그대로 들어 있습니다.
+Agent가 읽는 Adapter 설정에 복사하십시오.
 
 | Adapter | File |
 |---|---|
 | Claude Code | `.mcp.json` |
 | Codex | `.codex/config.toml` |
 | Roo | `.roo/mcp.json` |
-| Cline | `.clinerules/` for rules; MCP is configured in the client |
+| Cline | Rule은 `.clinerules/`, MCP는 Client에서 설정 |
 
-The kit's root configuration deliberately carries only `microsoft-learn` and
-`context7`. The per-stack servers are not enabled by default, because copying
-them is how an operator says "I accept that these queries leave this machine".
+Kit의 Root 설정에는 이 문서의 모든 Server가 활성화된 채로 들어 있습니다.
+이것은 공개 Kit이고, 누구도 Endpoint부터 찾아다니지 않아도 동작하게 하려는 것입니다.
+그 대가는 숨기지 않습니다. 검증 Guide 자신의 권고는 전부 싣는 것과 반대입니다.
+Project가 실제로 쓰는 Stack만 등록하면 "Tool Routing 오류와 불필요한 Tool Schema
+Context가 줄어든다"고 적혀 있습니다. 그러니 이 Project가 쓰지 않는 Stack의 항목은
+지우십시오. 그것은 정상적인 편집이지 격하가 아닙니다. 그리고 폐쇄망에서 무엇이든
+켜 둔 채로 두기 전에 위 절을 읽으십시오. 폐쇄망의 정답은 이 Endpoint가 아니라 내부
+Mirror입니다.
 
-Client field names differ — `mcpServers`, `servers`, `serverUrl`, `httpUrl`. The
-two values that matter are the transport and the URL.
+Client마다 Field 이름이 다릅니다 — `mcpServers`, `servers`, `serverUrl`, `httpUrl`.
+중요한 값은 Transport와 URL 둘뿐입니다.
 
-For a client that only speaks `stdio`:
+`stdio`만 말하는 Client라면:
 
 ```json
 {
@@ -126,11 +127,11 @@ For a client that only speaks `stdio`:
 }
 ```
 
-## Re-checking
+## 다시 확인하기
 
 ```bash
 npx -y @modelcontextprotocol/inspector --cli https://gitmcp.io/nodejs/node   --transport http --method tools/list --format json
 ```
 
-A tool name that has changed is a finding, not a detail: the routing rules above
-name specific tools.
+Tool 이름이 바뀌었다면 그것은 사소한 사항이 아니라 Finding입니다. 위의 Routing Rule이
+특정 Tool 이름을 지목하고 있기 때문입니다.

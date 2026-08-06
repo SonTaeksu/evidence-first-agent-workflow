@@ -44,7 +44,7 @@ python tools/check-stack-readiness/check_stack_readiness.py --stack stacks/<이�
 - **MCP**(Context7, Microsoft Learn) — 자주 바뀌는 공식 라이브러리 사실. 작업 중 조회하고, **필요한 사실 + 출처만 요약해** 레퍼런스나 worklog에 남깁니다(전체 덤프는 버림).
 - **모델 기억** — 버전·니치 사실엔 쓰지 않습니다(마지막 수단).
 
-어느 출처든 **어디서 왔는지 기록**합니다(무슨 주장을, 어디서, 어떤 버전, 언제 — `../../stacks/<스택>/evidence-provenance.md`). 어떤 MCP를 어떤 주제에 쓸지는 스택의 `mcp/source-routing.md`, 일반 규칙은 `../core/mcp-knowledge-routing.md`, 큰 결과 요약은 `../core/mcp-result-compaction.md`.
+어느 출처든 **어디서 왔는지 기록**합니다(무슨 주장을, 어디서, 어떤 버전, 언제 — `../../stacks/<스택>/evidence-provenance.md`). 어떤 MCP를 어떤 주제에 쓸지는 스택의 `mcp/source-routing.md`, 일반적인 것 — 라우팅, 대체 절차, 결과 압축, 연결 — 은 `../mcp.md` 한 장에 있습니다.
 
 한 줄 기준: **안 바뀌고 우리만 아는 건 md에 굽고, 바뀌는 공식 사실은 MCP로 그때그때 확인 후 요약해 남긴다.**
 

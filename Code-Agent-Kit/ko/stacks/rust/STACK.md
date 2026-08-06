@@ -1,34 +1,34 @@
 # Stack Profile — Rust
 
-Services and tools in Rust with Cargo. The async runtime and the error model are load-bearing choices that pervade the code.
+Cargo로 만드는 Rust Service와 도구입니다. Async Runtime과 Error Model은 Code 전반에 스며드는 핵심 선택입니다.
 
-## Runtime and framework versions
+## Runtime 및 Framework Version
 
-`⟨verification required: exact versions, read from this project's manifests and
-from the toolchain on the machine that runs validation⟩`
+`⟨확인 필요: 정확한 Version. 이 Project의 Manifest와 Validation을 실행하는 Machine의
+Toolchain에서 읽을 것⟩`
 
-A supported range is not a version. See `STACK-INPUTS.md`.
+지원 범위는 Version이 아닙니다. `STACK-INPUTS.md`를 참고합니다.
 
-## Directory structure
+## 디렉터리 구조
 
-- `Cargo.toml` — edition, `rust-version` (MSRV), features and workspace members.
-- `Cargo.lock` — the only authority on resolved versions for a binary.
-- `src/lib.rs` / `src/main.rs` — the crate roots.
-- `tests/` — integration tests, compiled as separate crates.
+- `Cargo.toml` — edition, `rust-version`(MSRV), Feature, Workspace Member.
+- `Cargo.lock` — Binary에 대해 해석된 Version의 유일한 권위.
+- `src/lib.rs` / `src/main.rs` — Crate Root.
+- `tests/` — 별도의 Crate로 Compile되는 통합 Test.
 
-## Build commands
+## Build 명령
 
-`⟨verification required: the project's own build command and its pass criterion⟩`
+`⟨확인 필요: 이 Project 자체의 Build 명령과 그 통과 기준⟩`
 
-## Test commands
+## Test 명령
 
-`⟨verification required: the project's own test command and its pass criterion⟩`
+`⟨확인 필요: 이 Project 자체의 Test 명령과 그 통과 기준⟩`
 
-## Known constraints
+## 알려진 제약
 
-These are properties of the technology and hold regardless of the project.
+기술 자체의 속성이며 Project와 무관하게 성립합니다.
 
-- The edition changes language rules; `rust-version` states the minimum compiler. Both are contracts and neither is the installed toolchain.
-- The async runtime is not an implementation detail: spawning, timers and IO types come from it, and two runtimes cannot generally be mixed.
-- Cargo unifies features across a workspace, so enabling a feature in one member can change what another member compiles.
-- `Send`/`Sync` bounds propagate through the call graph; one non-`Send` value can make a whole spawn impossible.
+- edition은 언어 규칙을 바꾸고, `rust-version`은 최소 Compiler를 선언합니다. 둘 다 Contract이며 어느 쪽도 설치된 Toolchain이 아닙니다.
+- Async Runtime은 구현 세부 사항이 아닙니다. Spawn, Timer, IO Type이 모두 거기서 나오며, 두 Runtime을 일반적으로 섞을 수 없습니다.
+- Cargo는 Workspace 전체에서 Feature를 통합하므로, 한 Member에서 Feature를 켜면 다른 Member가 Compile하는 내용이 달라질 수 있습니다.
+- `Send`/`Sync` 제약은 호출 그래프를 타고 전파됩니다. `Send`가 아닌 값 하나가 Spawn 전체를 불가능하게 만들 수 있습니다.

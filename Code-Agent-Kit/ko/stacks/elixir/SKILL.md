@@ -1,25 +1,25 @@
 ---
 name: elixir
-description: Use this skill when implementing or validating work in the Elixir stack.
+description: Elixir Stack에서 구현하거나 Validation하는 작업에 사용합니다.
 ---
 
 # Stack Skill Router — Elixir
 
-Routes to the smallest relevant document. The core workflow is not repeated here.
+가장 작은 관련 문서로 Route합니다. 핵심 Workflow는 여기에 반복하지 않습니다.
 
-## Always read
+## 항상 읽기
 
 - `STACK.md`
 - `AGENTS.stack.md`
 - `mcp/source-routing.md`
 - `validation/validation-profile.md`
 
-## Task routing
+## 작업 Routing
 
-| Task | Read |
+| 작업 | 읽을 문서 |
 |---|---|
-| New feature | `feature-model.md`, then `capability-detection.md` |
-| Contract or interface change | `communication-contract.md`, `artifact-contract.md` |
-| Anything version-sensitive | `references/verified-facts.md`, then look it up through `context7` |
-| Debugging | `references/pitfalls.md` — several failures in this stack are silent |
-| Reporting a result | `evidence-provenance.md` |
+| 신규 Feature | `feature-model.md`, 그다음 `capability-detection.md` |
+| Contract 또는 Interface 변경 | `communication-contract.md`, `artifact-contract.md` |
+| Version에 민감한 모든 것 | `references/verified-facts.md`, 그다음 `context7`로 조회 |
+| Debugging | `references/pitfalls.md` — 이 Stack의 실패 중 여럿은 조용합니다 |
+| 결과 보고 | `evidence-provenance.md` |

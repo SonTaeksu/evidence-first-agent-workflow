@@ -1,9 +1,9 @@
 # References — ASMX Web Service 2.0 (.NET Framework 4+)
 
-| Document | Use it for |
+| 문서 | 용도 |
 |---|---|
-| `pitfalls.md` | failures in this stack that produce no error message |
-| `verified-facts.md` | facts confirmed against a source, with the source named |
+| `pitfalls.md` | 이 Stack에서 Error Message 없이 일어나는 실패 |
+| `verified-facts.md` | Source에 대조해 확인한 Fact, 그 Source를 명시 |
 
-Authoritative source for this stack: **`microsoft-learn`**.
-Do not answer ASMX questions from WCF or ASP.NET Core documentation. The serializer, the attribute model and the hosting pipeline are all different.
+이 Stack에서 권위 있는 Source: **`microsoft-learn`**.
+ASMX 질문에 WCF나 ASP.NET Core 문서로 답하지 않습니다. Serializer도, Attribute Model도, Hosting Pipeline도 모두 다릅니다.

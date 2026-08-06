@@ -1,20 +1,19 @@
-# Stack-Specific Agent Rules — Vue.js
+# Stack 전용 Agent Rule — Vue.js
 
-This file extends root `AGENTS.md`. It does not repeat it.
+Root `AGENTS.md`를 확장하며, 같은 내용을 반복하지 않습니다.
 
-- Read `STACK-READINESS.json` before any stack-dependent implementation.
-- A blocking capability with status `unknown` prohibits the dependent pattern.
-  Not "proceed carefully" — prohibits.
-- Route documentation lookups through `mcp/source-routing.md`. `context7` is
-  authoritative for this stack; `microsoft-learn` is not, for the reason stated there.
-- Use `references/verified-facts.md` and `references/pitfalls.md` instead of
-  recall. Every entry there names where it was verified.
-- Record every selected capability in the Project Map and repeat it in Gate
-  Analysis.
+- Stack 의존 구현 전에 `STACK-READINESS.json`을 읽습니다.
+- 상태가 `unknown`인 Blocking Capability는 해당 Pattern을 금지합니다.
+  "주의해서 진행"이 아니라 금지입니다.
+- 문서 조회는 `mcp/source-routing.md`로 라우팅합니다. 이 Stack의 Authoritative Source는
+  `context7`이고 `microsoft-learn`은 아닙니다. 이유는 그 File에 있습니다.
+- 기억 대신 `references/verified-facts.md`와 `references/pitfalls.md`를 씁니다. 그곳의 모든
+  항목은 검증 위치를 밝힙니다.
+- 선택한 Capability는 Project Map에 기록하고 Gate Analysis에서 반복합니다.
 
-## Stack prohibitions
+## Stack 금지 사항
 
-- Do not state a version-sensitive fact from memory. Do not answer Vue questions from Microsoft Learn. Do not carry Vue 2 answers into a Vue 3 project or the reverse — the reactivity system differs.
-- Do not report a validation as passed without the command and its exit code.
-- Do not fill a row of `STACK-INPUTS.md` on the owner's behalf. An unanswered
-  input is a blocked stack, which is a correct state.
+- Version 민감 Fact를 기억으로 말하지 않습니다. Vue 질문에 Microsoft Learn으로 답하지 않습니다. Vue 2의 답을 Vue 3 Project로, 또는 그 반대로 옮기지 않습니다 — Reactivity System이 다릅니다.
+- 명령과 Exit Code 없이 Validation 통과를 보고하지 않습니다.
+- Owner 대신 `STACK-INPUTS.md` 행을 채우지 않습니다. 답하지 않은 입력은 Blocked Stack이며,
+  그것은 올바른 상태입니다.

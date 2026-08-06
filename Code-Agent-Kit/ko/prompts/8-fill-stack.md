@@ -155,7 +155,8 @@ python tools/check-stack-readiness/check_stack_readiness.py --stack stacks/<name
 ## 문서 조회는 어디로 가는가
 
 `stacks/<name>/mcp/source-routing.md`에 이 스택에 권위 있는 서버와 그렇지 않은 서버가,
-그리고 시험했을 때 각 서버가 실제로 노출한 도구 이름이 적혀 있습니다. 그 서버들은 **기본
-꺼져 있습니다** — 켜기 전에, 특히 폐쇄망이라면
-[`docs/core/mcp-source-verification.md`](../docs/core/mcp-source-verification.md)를
-먼저 보십시오.
+그리고 시험했을 때 각 서버가 실제로 노출한 도구 이름이 적혀 있습니다. 그 서버들은 킷의
+루트 설정에 **전부 켜져 있습니다** — 각각 무엇이 증명되었고 무엇이 증명되지 않았는지는
+[`docs/core/mcp-source-verification.md`](../docs/core/mcp-source-verification.md)에
+있으니 보시고, 이 프로젝트가 쓰지 않는 것은 지우십시오. 폐쇄망이라면 하나라도 켜 둔 채로
+두기 전에 그 문서를 먼저 보십시오.

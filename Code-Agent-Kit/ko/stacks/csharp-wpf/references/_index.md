@@ -1,9 +1,9 @@
 # References — WPF (.NET Framework 4.7.2+)
 
-| Document | Use it for |
+| 문서 | 쓰임 |
 |---|---|
-| `pitfalls.md` | failures in this stack that produce no error message |
-| `verified-facts.md` | facts confirmed against a source, with the source named |
+| `pitfalls.md` | 오류 Message를 남기지 않는 이 Stack의 실패 |
+| `verified-facts.md` | Source에 대해 확인했고 그 Source를 밝힌 Fact |
 
-Authoritative source for this stack: **`microsoft-learn`**.
-Do not route WPF questions to a package-documentation server. WPF is part of the framework, not a package.
+이 Stack의 정본 Source: **`microsoft-learn`**.
+WPF 질문을 Package 문서 Server로 보내지 않습니다. WPF는 Package가 아니라 Framework의 일부입니다.

@@ -154,10 +154,17 @@ arguments the agent assembled, and whatever context it attached — which can
 include private source, customer data, internal hostnames, credentials,
 unpublished repository names and raw logs.
 
-The kit's root configuration therefore carries only `microsoft-learn` and
-`context7`. Per-stack servers are **not** enabled by default: copying
-`mcp-profile.json.example` into an adapter configuration is the act by which an
-operator accepts that these queries leave the machine.
+The kit's root configuration nevertheless carries all fourteen, enabled. That
+is a decision about *this* kit rather than a general recommendation: it is the
+public release, and an endpoint nobody can find is not a source. The private
+lineage this kit came from does treat copying a profile as the act of consent,
+and on a closed network that is still the right shape — see below.
+
+Two things follow, and they are the operator's to weigh rather than ours to
+decide. Registering all fourteen costs tool-schema context on every start and
+gives the model more similarly-named `search_*` tools to choose between; the
+verification guide recommends keeping only the stacks in use. And every enabled
+server is an egress path, so the paragraph above is not boilerplate.
 
 On a closed network, do not make them an operational dependency. Mirror the
 official repositories internally, pin a commit, index them, and serve an internal
