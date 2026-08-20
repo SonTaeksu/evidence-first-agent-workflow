@@ -84,6 +84,18 @@
       "disabled": false,
       "autoApprove": []
     },
+    "dxdocs": {
+      "type": "streamableHttp",
+      "url": "https://api.devexpress.com/mcp/docs",
+      "disabled": false,
+      "autoApprove": []
+    },
+    "dxdocs24_2": {
+      "type": "streamableHttp",
+      "url": "https://api.devexpress.com/mcp/docs?v=24.2",
+      "disabled": false,
+      "autoApprove": []
+    },
     "context7": {
       "command": "npx",
       "args": [

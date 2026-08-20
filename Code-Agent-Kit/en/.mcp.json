@@ -56,6 +56,14 @@
       "type": "http",
       "url": "https://gitmcp.io/elixir-lang/elixir"
     },
+    "dxdocs": {
+      "type": "http",
+      "url": "https://api.devexpress.com/mcp/docs"
+    },
+    "dxdocs24_2": {
+      "type": "http",
+      "url": "https://api.devexpress.com/mcp/docs?v=24.2"
+    },
     "context7": {
       "type": "stdio",
       "command": "npx",

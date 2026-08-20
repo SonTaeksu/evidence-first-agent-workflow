@@ -16,9 +16,10 @@
 
 ## 무엇이 들어 있고, 전부 켜져 있습니다
 
-킷의 설정에는 검증된 서버 14개가 전부, 켜진 채로 들어 있고 `context7`이
-더해집니다. 전부 **2026-08-05**에 MCP Inspector로 확인했습니다 — 인증 없이
-접속했고, 도구 목록을 냈고, 실제 `tools/call`에 답했습니다.
+킷의 설정에는 서버 17개가 전부 켜진 채로 들어 있습니다. 그중 14개는
+**2026-08-05**에 MCP Inspector로 확인했습니다 — 인증 없이 접속했고, 도구
+목록을 냈고, 실제 `tools/call`에 답했습니다. `context7`은 stdio이고 그 검사
+이전부터 있었습니다. DevExpress 둘은 등급이 낮습니다 — 표 아래를 보십시오.
 
 | 서버 | 엔드포인트 | 용도 |
 |---|---|---|
@@ -37,6 +38,8 @@
 | `rust-reference` | `https://gitmcp.io/rust-lang/reference` | Rust, Reference |
 | `elixir-docs` | `https://gitmcp.io/elixir-lang/elixir` | Elixir |
 | `context7` | stdio, `npx -y @upstash/context7-mcp` | React, Vite, Vitest, Playwright |
+| `dxdocs` | `https://api.devexpress.com/mcp/docs` | DevExpress 컴포넌트 — **목록만 확인, 호출 안 함**, 아래 참고 |
+| `dxdocs24_2` | `https://api.devexpress.com/mcp/docs?v=24.2` | 같은 서버, v24.2 고정 |
 
 원격 서버의 전송 방식은 전부 **Streamable HTTP**입니다. 취향이 아닙니다 —
 같은 검사를 SSE로 돌렸을 때 GitMCP 엔드포인트가 전부 `405`를 냈습니다.
@@ -48,7 +51,22 @@
 쓰십시오. 켜서 넣어 둔 것은 직접 다시 시험해 보시라는 뜻이지, 동작한다는 뜻이
 아닙니다.
 
-**15개를 다 켜 두는 데는 대가가 있습니다.** 검증 가이드의 권고는 오히려 반대입니다
+**DevExpress 둘은 나머지와 등급이 다릅니다.** **2026-08-06**에 인증 없이
+접속해 `tools/list`가 도구 두 개(`devexpress_docs_search`,
+`devexpress_docs_get_content`)를 돌려줬습니다. 실제 `tools/call`은 하지
+않았고 고정 URL도 따로 시험하지 않았으므로, 둘 다 `PASS`로 기록하지 않습니다.
+
+규칙 둘은 이 킷의 취향이 아니라 **서버가 자기 도구 설명에 적어 둔 것**입니다.
+`devexpress_docs_get_content` 앞에는 반드시 `devexpress_docs_search`를 먼저
+불러야 합니다 — 검색은 발췌만 돌려주기 때문입니다. 그리고 `get_content`에
+넘기는 URL은 검색 결과에서 얻은 것이어야 하며, 스키마가 "일반 지식으로 URL을
+만들지 말라"고 명시합니다. `devexpress_docs_search`는 닫힌 enum에서 고른
+`technologies` 배열도 필수입니다(`WindowsForms`, `WPF`, `AspNetCore`,
+`XtraReports`, `Blazor`, `VCL`, `XPO` 등). 그래서 산문으로 쓴 플랫폼 이름은
+빈 결과가 아니라 **스키마 오류**가 됩니다. `?v=` 버전 고정은 **v24.2
+이상만** 지원하고, 그보다 이전 릴리스를 고정하는 공식적인 방법은 없습니다.
+
+**17개를 다 켜 두는 데는 대가가 있습니다.** 검증 가이드의 권고는 오히려 반대입니다
 — 프로젝트가 실제로 쓰는 스택만 등록하면 "도구 라우팅 오류와 불필요한 도구 스키마
 컨텍스트를 줄일 수 있다"고 적혀 있습니다. 서버 하나하나가 시작할 때마다 스키마로
 컨텍스트를 먹고, 이름이 비슷한 `search_*`·`fetch_*` 도구가 여럿 생겨 모델이 고를

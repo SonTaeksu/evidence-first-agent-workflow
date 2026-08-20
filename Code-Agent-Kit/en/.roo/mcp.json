@@ -98,6 +98,20 @@
       "disabled": false,
       "timeout": 60
     },
+    "dxdocs": {
+      "type": "streamable-http",
+      "url": "https://api.devexpress.com/mcp/docs",
+      "alwaysAllow": [],
+      "disabled": false,
+      "timeout": 60
+    },
+    "dxdocs24_2": {
+      "type": "streamable-http",
+      "url": "https://api.devexpress.com/mcp/docs?v=24.2",
+      "alwaysAllow": [],
+      "disabled": false,
+      "timeout": 60
+    },
     "context7": {
       "command": "npx",
       "args": [

@@ -57,7 +57,7 @@
   "post_install_validation": "tools/check-kit-installation/check_kit_installation.py",
   "mirror_parity_check": "tools/check-mirror-parity/check_mirror_parity.py",
   "self_check": "tools/check-kit-selfcheck/check_kit_selfcheck.py",
-  "mirrored_file_count": 540,
+  "mirrored_file_count": 594,
   "mirrored_file_count_rule": "all-files",
   "validation": {
     "self_contained_links": "PASS",

@@ -126,6 +126,50 @@ in a namespacing client that name is the only thing separating the two tools. An
 when both are registered, name the server in the request rather than leaving the
 choice to inference.
 
+## DevExpress, on a different date and to a different depth
+
+Added **2026-08-06**, after the fourteen above, and deliberately not folded into
+their table because it was not taken as far.
+
+| Server | Endpoint | What was established | Tools |
+|---|---|---|---:|
+| `dxdocs` | `https://api.devexpress.com/mcp/docs` | connected without credentials; `tools/list` returned | 2 |
+| `dxdocs24_2` | `https://api.devexpress.com/mcp/docs?v=24.2` | nothing — documented, not exercised | — |
+
+**No `tools/call` was made.** The fourteen servers above hold `PASS` because a
+real call returned; this endpoint has not been taken that far, so it is not
+written as `PASS`. The pinned URL was not contacted at all.
+
+Both tools carry input schemas, and they are a machine contract worth recording:
+
+- `devexpress_docs_search` requires `technologies` — an array, `minItems: 1`,
+  whose items come from a **closed enum** of 31 values (`WindowsForms`, `WPF`,
+  `AspNetCore`, `XtraReports`, `Blazor`, `VCL`, `XPO`, `eXpressAppFramework`,
+  `Dashboard`, `DevExtremeAspNetMvc` among them) — and `question`, a string.
+  A prose platform name is a schema error, not an empty result.
+- `devexpress_docs_get_content` requires `url`, and its own description says the
+  URL must come from a search result rather than be constructed from general
+  knowledge.
+- The search tool's description states that it must be called before any
+  `get_content` call, because it returns excerpts only.
+
+### A correction worth keeping
+
+Before the run, a schema circulating outside the official documentation —
+`technologies` plus a required `question` — was written up here as *contradicted*,
+on the reasoning that it described tools whose names did not match the documented
+ones. That was wrong. The names matched all along; DevExpress simply does not
+publish input schemas, and absence of documentation was read as conflict with it.
+**"Not in the documentation" is not "contradicted by the documentation."** The
+first is a gap a measurement closes; the second is a verdict, and there was no
+evidence for it.
+
+### Version pinning has a floor
+
+`?v=` is supported no earlier than **v24.2**. There is no supported way to pin
+v16.x or any other pre-24.2 release, so on such a project the documentation
+server cannot be aligned to the code and every control-API answer is unpinned.
+
 ## Named but not verified
 
 Local `stdio` servers, outside the remote run. Named so nobody rediscovers them;

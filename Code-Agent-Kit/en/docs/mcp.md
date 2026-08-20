@@ -16,10 +16,11 @@ Two things are deliberately **not** here:
 
 ## What ships, and it is all switched on
 
-The kit's configurations carry all fourteen verified servers, enabled, plus
-`context7`. Every one of them answered MCP Inspector on **2026-08-05**:
-connected without credentials, listed its tools, and returned a real
-`tools/call`.
+The kit's configurations carry seventeen servers, all enabled. Fourteen of them
+answered MCP Inspector on **2026-08-05**: connected without credentials, listed
+their tools, and returned a real `tools/call`. `context7` is stdio and predates
+that run. The two DevExpress entries are graded lower — see the note under the
+table.
 
 | Server | Endpoint | For |
 |---|---|---|
@@ -38,6 +39,8 @@ connected without credentials, listed its tools, and returned a real
 | `rust-reference` | `https://gitmcp.io/rust-lang/reference` | Rust, the reference |
 | `elixir-docs` | `https://gitmcp.io/elixir-lang/elixir` | Elixir |
 | `context7` | stdio, `npx -y @upstash/context7-mcp` | React, Vite, Vitest, Playwright |
+| `dxdocs` | `https://api.devexpress.com/mcp/docs` | DevExpress components — **listed, not called**, see below |
+| `dxdocs24_2` | `https://api.devexpress.com/mcp/docs?v=24.2` | the same, pinned to v24.2 |
 
 Transport for every remote server is **Streamable HTTP**. That is not a
 preference: an earlier run used SSE and every GitMCP endpoint answered `405`.
@@ -48,7 +51,23 @@ preference: an earlier run used SSE and every GitMCP endpoint answered `405`.
 real `vue_docs_search` call returned `isError:true`. Prefer `vue-docs`. It is
 shipped enabled so you can retry it yourself, not because it works.
 
-**Shipping all fifteen has a price.** The verification guide's own advice is the
+**The two DevExpress entries are not the same grade as the rest.** On
+**2026-08-06** the endpoint connected without credentials and returned
+`tools/list` with two tools, `devexpress_docs_search` and
+`devexpress_docs_get_content`. No real `tools/call` was run, and the pinned URL
+was not separately exercised, so neither is recorded as `PASS`.
+
+Two rules come from the server's own tool descriptions rather than from this kit.
+`devexpress_docs_search` must be called before any `devexpress_docs_get_content`,
+because search returns excerpts only. And a URL passed to `get_content` must come
+from a search result — the schema says in as many words not to construct one from
+general knowledge. `devexpress_docs_search` also requires a `technologies` array
+drawn from a closed enum (`WindowsForms`, `WPF`, `AspNetCore`, `XtraReports`,
+`Blazor`, `VCL`, `XPO` and others), so a prose platform name is a schema error
+rather than an empty result. Version pinning with `?v=` is supported no earlier
+than **v24.2**; there is no supported way to pin an older release.
+
+**Shipping all seventeen has a price.** The verification guide's own advice is the
 opposite: register only the stacks a project actually uses, because that
 "reduces tool-routing errors and unnecessary tool-schema context". Every server
 costs schema context at every start, and several expose similarly named

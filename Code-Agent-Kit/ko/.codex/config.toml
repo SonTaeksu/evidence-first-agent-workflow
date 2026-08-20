@@ -1,9 +1,13 @@
 # Project-scoped Codex MCP configuration.
 # Codex loads this file only for a trusted project.
 #
-# Every remote server below answered MCP Inspector on 2026-08-05: it connected
-# without credentials, listed its tools, and returned a real tools/call. The run
-# and the verdicts are in docs/core/mcp-source-verification.md.
+# The first fourteen remote servers answered MCP Inspector on 2026-08-05: they
+# connected without credentials, listed their tools, and returned a real
+# tools/call. The run and the verdicts are in docs/core/mcp-source-verification.md.
+#
+# The two dxdocs entries are graded lower and deliberately so. On 2026-08-06 the
+# endpoint connected without credentials and returned tools/list with two tools,
+# but no real tools/call was made and the pinned URL was not separately exercised.
 #
 # Keys use underscores because that is what this file already used; the server
 # name a client shows may therefore differ from the hyphenated name used in the
@@ -85,6 +89,21 @@ tool_timeout_sec = 60
 url = "https://gitmcp.io/elixir-lang/elixir"
 enabled = true
 tool_timeout_sec = 60
+
+[mcp_servers.dxdocs]
+url = "https://api.devexpress.com/mcp/docs"
+enabled = true
+tool_timeout_sec = 60
+# tools/list returned two tools on 2026-08-06; no tools/call was run.
+# devexpress_docs_search takes a required `technologies` array whose
+# items come from a closed enum, plus a required `question` string.
+
+[mcp_servers.dxdocs24_2]
+url = "https://api.devexpress.com/mcp/docs?v=24.2"
+enabled = true
+tool_timeout_sec = 60
+# `?v=` pinning is supported no earlier than 24.2. This pinned URL was
+# not separately exercised; only the unpinned endpoint was reached.
 
 [mcp_servers.context7]
 command = "npx"
