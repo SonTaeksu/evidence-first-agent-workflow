@@ -1,22 +1,20 @@
 # Evidence Provenance — ASMX Web Service 2.0 (.NET Framework 4+)
 
-Every fact used in this stack has to be attributable. The order below is by how
-much a claim can be trusted.
+이 Stack에서 쓰는 모든 Fact는 출처를 댈 수 있어야 합니다. 아래 순서는 주장을 얼마나
+신뢰할 수 있는지에 따른 것입니다.
 
-1. **This project's code and manifests.** The lock file, not the version range.
-2. **A command's exit code**, with the command recorded and the machine it ran on.
-3. **`microsoft-learn` through MCP**, for anything version-sensitive.
-4. **Official release notes**, for a behaviour that changed between versions.
-5. **Model memory** — last, and never for a version-sensitive fact.
+1. **이 Project의 Code와 Manifest.** Version 범위가 아니라 Lock File입니다.
+2. **명령의 Exit Code.** 실행한 명령과 실행한 Machine을 함께 기록합니다.
+3. **MCP를 통한 `microsoft-learn`.** Version에 민감한 모든 것에 사용합니다.
+4. **공식 Release Note.** Version 사이에 바뀐 동작에 사용합니다.
+5. **모델 기억** — 마지막이며, Version에 민감한 Fact에는 절대 쓰지 않습니다.
 
-## Recording a fact
+## Fact 기록
 
-An entry in `references/verified-facts.md` states the fact, where it was
-verified, and when. An entry with no source is a memory, and is removed rather
-than kept.
+`references/verified-facts.md`의 항목은 Fact, 그것을 확인한 곳, 확인한 시점을 밝힙니다.
+출처가 없는 항목은 기억일 뿐이므로 남기지 않고 삭제합니다.
 
-## When sources disagree
+## Source가 서로 어긋날 때
 
-Stop and report the disagreement. Do not implement against whichever version the
-documentation happened to show. Record the unresolved item as
-`⟨verification required: what and how⟩`.
+멈추고 그 불일치를 보고합니다. 문서에 우연히 보이는 Version에 맞춰 구현하지 않습니다.
+해결되지 않은 항목은 `⟨확인 필요: 무엇을 어떻게 확인할지⟩`로 기록합니다.

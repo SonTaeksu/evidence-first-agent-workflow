@@ -16,6 +16,9 @@ Stack Profile에는 Generic Core가 지어낼 수 없는 Fact가 들어갑니다
 | Go + HTMX | `stacks/go-htmx` | planned / blocked | Go 요구사항 전부 + HTMX Version, Template Engine, Fragment 규약 |
 | Rust | `stacks/rust` | planned / blocked | Edition·MSRV, Async Runtime, Web Framework, Error Model, Data Access |
 | Elixir | `stacks/elixir` | planned / blocked | Elixir·OTP·Phoenix·LiveView Version, Ecto, Project 형태, Asset Pipeline |
+| DevExpress WinForms (v24.2+) | `stacks/devexpress-winforms` | planned / blocked | DevExpress Version, Grid View, 명령 표면, Layout Control, Skin, License — `stacks/csharp-winforms`의 동반 Stack이며 그쪽 규칙은 그대로 적용됩니다 |
+| DevExpress WPF (v24.2+) | `stacks/devexpress-wpf` | planned / blocked | .NET·DevExpress Version, 라이선스 Feed, MVVM Framework(DevExpress 또는 서드파티), Binding 방언, Theme와 배포되는 Assembly, GridControl View 종류, Docking — `stacks/csharp-wpf`의 동반 Stack입니다 |
+| DevExpress for ASP.NET Core (v24.2+) | `stacks/devexpress-aspnetcore` | planned / blocked | .NET·DevExpress Version, 비공개 Feed와 인증 정보, 서버 측 Control인지 DevExtreme Widget인지, Reporting Host와 Report Storage, Client Asset 전달 — Blazor는 범위 밖입니다 |
 
 Stack 생성:
 

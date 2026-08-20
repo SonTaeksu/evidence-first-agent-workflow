@@ -7,6 +7,111 @@
       "disabled": false,
       "timeout": 60
     },
+    "wpf-docs": {
+      "type": "streamable-http",
+      "url": "https://gitmcp.io/dotnet/docs-desktop",
+      "alwaysAllow": [],
+      "disabled": false,
+      "timeout": 60
+    },
+    "wcf-docs": {
+      "type": "streamable-http",
+      "url": "https://gitmcp.io/dotnet/docs",
+      "alwaysAllow": [],
+      "disabled": false,
+      "timeout": 60
+    },
+    "asmx-docs": {
+      "type": "streamable-http",
+      "url": "https://gitmcp.io/dotnet/AspNetDocs",
+      "alwaysAllow": [],
+      "disabled": false,
+      "timeout": 60
+    },
+    "vue-docs": {
+      "type": "streamable-http",
+      "url": "https://gitmcp.io/vuejs/docs",
+      "alwaysAllow": [],
+      "disabled": false,
+      "timeout": 60
+    },
+    "vue-docs-specialized": {
+      "type": "streamable-http",
+      "url": "https://mcp.vue-mcp.org/mcp",
+      "alwaysAllow": [],
+      "disabled": false,
+      "timeout": 60
+    },
+    "nextjs-docs": {
+      "type": "streamable-http",
+      "url": "https://gitmcp.io/vercel/next.js",
+      "alwaysAllow": [],
+      "disabled": false,
+      "timeout": 60
+    },
+    "nodejs-docs": {
+      "type": "streamable-http",
+      "url": "https://gitmcp.io/nodejs/node",
+      "alwaysAllow": [],
+      "disabled": false,
+      "timeout": 60
+    },
+    "go-docs": {
+      "type": "streamable-http",
+      "url": "https://gitmcp.io/golang/go",
+      "alwaysAllow": [],
+      "disabled": false,
+      "timeout": 60
+    },
+    "go-htmx-docs": {
+      "type": "streamable-http",
+      "url": "https://gitmcp.io/donseba/go-htmx",
+      "alwaysAllow": [],
+      "disabled": false,
+      "timeout": 60
+    },
+    "deepwiki": {
+      "type": "streamable-http",
+      "url": "https://mcp.deepwiki.com/mcp",
+      "alwaysAllow": [],
+      "disabled": false,
+      "timeout": 60
+    },
+    "rust-book": {
+      "type": "streamable-http",
+      "url": "https://gitmcp.io/rust-lang/book",
+      "alwaysAllow": [],
+      "disabled": false,
+      "timeout": 60
+    },
+    "rust-reference": {
+      "type": "streamable-http",
+      "url": "https://gitmcp.io/rust-lang/reference",
+      "alwaysAllow": [],
+      "disabled": false,
+      "timeout": 60
+    },
+    "elixir-docs": {
+      "type": "streamable-http",
+      "url": "https://gitmcp.io/elixir-lang/elixir",
+      "alwaysAllow": [],
+      "disabled": false,
+      "timeout": 60
+    },
+    "dxdocs": {
+      "type": "streamable-http",
+      "url": "https://api.devexpress.com/mcp/docs",
+      "alwaysAllow": [],
+      "disabled": false,
+      "timeout": 60
+    },
+    "dxdocs24_2": {
+      "type": "streamable-http",
+      "url": "https://api.devexpress.com/mcp/docs?v=24.2",
+      "alwaysAllow": [],
+      "disabled": false,
+      "timeout": 60
+    },
     "context7": {
       "command": "npx",
       "args": [

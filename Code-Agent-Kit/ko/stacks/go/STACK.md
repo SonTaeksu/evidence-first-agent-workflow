@@ -1,34 +1,34 @@
 # Stack Profile — Go
 
-Services and command-line tools in Go, using the standard toolchain.
+표준 Toolchain으로 만드는 Go Service와 Command-line Tool.
 
-## Runtime and framework versions
+## Runtime 및 Framework Version
 
-`⟨verification required: exact versions, read from this project's manifests and
-from the toolchain on the machine that runs validation⟩`
+`⟨확인 필요: 정확한 Version. 이 Project의 Manifest와 Validation을
+실행하는 장비의 Toolchain에서 읽습니다⟩`
 
-A supported range is not a version. See `STACK-INPUTS.md`.
+지원 범위는 Version이 아닙니다. `STACK-INPUTS.md`를 참고합니다.
 
-## Directory structure
+## Directory 구조
 
-- `go.mod` — module path and the `go` directive. Both are contracts.
-- `cmd/*` — one directory per binary, by convention.
-- `internal/*` — importable only within this module; the compiler enforces it.
-- `*_test.go` — the standard test tooling; no runner needs to be chosen.
+- `go.mod` — Module 경로와 `go` Directive. 둘 다 Contract입니다.
+- `cmd/*` — 관례상 Binary 하나당 Directory 하나.
+- `internal/*` — 이 Module 안에서만 Import할 수 있고, Compiler가 강제합니다.
+- `*_test.go` — 표준 Test Tooling. Runner를 고를 필요가 없습니다.
 
-## Build commands
+## Build 명령
 
-`⟨verification required: the project's own build command and its pass criterion⟩`
+`⟨확인 필요: 이 Project 자체의 Build 명령과 그 통과 기준⟩`
 
-## Test commands
+## Test 명령
 
-`⟨verification required: the project's own test command and its pass criterion⟩`
+`⟨확인 필요: 이 Project 자체의 Test 명령과 그 통과 기준⟩`
 
-## Known constraints
+## 알려진 제약
 
-These are properties of the technology and hold regardless of the project.
+기술 자체의 성질이므로 Project와 무관하게 성립합니다.
 
-- The `go` directive in `go.mod` selects language semantics, and one of those semantics changed observably at 1.22 (loop variable scope).
-- `internal/` is a compiler-enforced boundary, not a convention.
-- Build tags and `GOOS`/`GOARCH` produce different compilation units; a file can be excluded from the build and never checked.
-- An interface value holding a nil pointer is not nil. This is a language rule, not a bug.
+- `go.mod`의 `go` Directive가 언어 의미론을 선택하며, 그중 하나는 1.22에서 눈에 보이게 바뀌었습니다(Loop 변수 Scope).
+- `internal/`은 관례가 아니라 Compiler가 강제하는 경계입니다.
+- Build Tag와 `GOOS`/`GOARCH`는 서로 다른 Compilation Unit을 만듭니다. 어떤 File은 Build에서 빠진 채 한 번도 검사되지 않을 수 있습니다.
+- nil Pointer를 담은 Interface 값은 nil이 아닙니다. 이것은 Bug가 아니라 언어 규칙입니다.

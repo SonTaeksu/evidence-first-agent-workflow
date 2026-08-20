@@ -1,21 +1,21 @@
 # Go
 
-Services and command-line tools in Go, using the standard toolchain.
+표준 Toolchain으로 만드는 Go Service와 Command-line Tool.
 
-**State: `blocked`.** Not broken — waiting. The owner inputs in
-`STACK-INPUTS.md` are unanswered, so `check-stack-readiness` derives `blocked`,
-and `tools/check-last` deliberately skips a stack in that state so a
-placeholder does not produce a false alarm on every run.
+**상태: `blocked`.** 고장난 것이 아니라 기다리는 중입니다. `STACK-INPUTS.md`의
+Owner 입력이 답변되지 않아 `check-stack-readiness`가 `blocked`를 도출하고,
+`tools/check-last`는 그 상태의 Stack을 의도적으로 건너뜁니다. Placeholder 하나
+때문에 매번 거짓 경보가 울리지 않게 하려는 것입니다.
 
-What is already here and useful:
+이미 들어 있고 지금도 쓸모 있는 것:
 
-- `references/pitfalls.md` — failures in this stack that produce no error message;
-- `capability-detection.md` — how to tell what this project actually uses;
-- `mcp/source-routing.md` — which documentation source is authoritative, and
-  which must not be consulted.
+- `references/pitfalls.md` — 이 Stack에서 Error 메시지 없이 나는 실패;
+- `capability-detection.md` — 이 Project가 실제로 무엇을 쓰는지 알아내는 방법;
+- `mcp/source-routing.md` — 어떤 문서 Source가 권위 있고, 어떤 Source는 참조하면
+  안 되는지.
 
-To reach `ready`, answer `STACK-INPUTS.md` with evidence that exists. Evidence is
-measured, not declared:
+`ready`에 이르려면 실제로 존재하는 Evidence로 `STACK-INPUTS.md`를 채웁니다.
+Evidence는 선언하는 것이 아니라 측정하는 것입니다:
 
 ```bash
 python ../../tools/check-stack-readiness/check_stack_readiness.py --stack .

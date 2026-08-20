@@ -1,9 +1,9 @@
 # References — Rust
 
-| Document | Use it for |
+| 문서 | 쓰임 |
 |---|---|
-| `pitfalls.md` | failures in this stack that produce no error message |
-| `verified-facts.md` | facts confirmed against a source, with the source named |
+| `pitfalls.md` | 오류 Message를 남기지 않는 이 Stack의 실패 |
+| `verified-facts.md` | Source에 대해 확인했고 그 Source를 밝힌 Fact |
 
-Authoritative source for this stack: **`context7`**.
-Do not mix documentation for different async runtimes; their types are not interchangeable. Do not answer from a pre-2018-edition source.
+이 Stack의 정본 Source: **`context7`**.
+서로 다른 Async Runtime의 문서를 섞지 않습니다. 그 Type들은 서로 바꿔 쓸 수 없습니다. 2018 edition 이전 Source로 답하지 않습니다.

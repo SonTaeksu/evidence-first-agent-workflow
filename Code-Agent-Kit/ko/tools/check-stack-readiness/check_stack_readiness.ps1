@@ -96,6 +96,28 @@ function Get-DocumentStatuses {
     return $result
 }
 
+function Test-DocumentHasTable {
+    # True when STACK-INPUTS.md carries at least one filled-in table row. A
+    # placeholder is not a defect; a table with no joinable key is -- see the .py twin.
+    param([string]$StackPath)
+    $documentPath = Join-Path $StackPath $InputsDocument
+    if (-not (Test-Path -LiteralPath $documentPath)) { return $false }
+    $lines = [System.IO.File]::ReadAllText($documentPath, [System.Text.Encoding]::UTF8) -replace "`r`n", "`n"
+    $seenSeparator = $false
+    $rows = 0
+    foreach ($line in $lines.Split("`n")) {
+        $stripped = $line.Trim()
+        if (-not $stripped.StartsWith("|")) { $seenSeparator = $false; continue }
+        if ($stripped -match '^[\|\- :]+$') { $seenSeparator = $true; continue }
+        if (-not $seenSeparator) { continue }
+        $rows = $rows + 1
+        # One backticked token means the Key column exists and is in use; the key
+        # simply may not be in this manifest, which is tolerated -- see the .py twin.
+        if ($stripped -match '`[^`]+`') { return $false }
+    }
+    return ($rows -gt 0)
+}
+
 function Compare-Document {
     # Warn when STACK-INPUTS.md and STACK-READINESS.json disagree. A warning derives
     # `provisional`, so a stack declaring `ready` with disagreeing files fails on the
@@ -104,6 +126,18 @@ function Compare-Document {
     $messages = @()
     $keys = @($ManifestStatuses.Keys)
     $documented = Get-DocumentStatuses $StackPath $keys
+    # A key with no row is tolerated below. *Every* key having no row is not: the
+    # document then carries no joinable column, the loop iterates over nothing, and
+    # the check reports agreement it never established -- see the .py twin.
+    # A placeholder document has nothing to compare and never claimed to; only a
+    # document with real rows and no joinable key is the defect -- see the .py twin.
+    if ($keys.Count -gt 0 -and $documented.Keys.Count -eq 0 -and (Test-DocumentHasTable $StackPath)) {
+        $sample = (($keys | Sort-Object | Select-Object -First 3) -join ", ")
+        $messages += ("[check-stack-readiness:inputs-document-unjoinable] " + $InputsDocument +
+            " has no row this check can join to STACK-READINESS.json. Rows join through a " +
+            "backticked key - add the ``Key`` column back, carrying the manifest keys verbatim (" +
+            $sample + "...). Until then the table and the manifest are not being compared at all.")
+    }
     foreach ($key in ($documented.Keys | Sort-Object)) {
         if (-not $ManifestStatuses.ContainsKey($key)) { continue }
         $expected = $ManifestStatuses[$key]

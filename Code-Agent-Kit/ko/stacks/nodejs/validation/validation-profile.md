@@ -1,32 +1,31 @@
 # Validation Profile — Node.js
 
-## Commands
+## 명령
 
-`⟨verification required: this project's exact commands⟩`
+`⟨확인 필요: 이 Project의 정확한 명령⟩`
 
-The shape they take in this stack:
+이 Stack에서 명령이 갖는 형태는 다음과 같습니다.
 
-- Install: lock-file-respecting install; a changed lock file is a reported change.
-- Build (if any) and test: the configured scripts. Exit code is the verdict.
-- Record `node --version` from the machine that ran them; the manifest range is not evidence.
+- Install: Lock File을 존중하는 설치. Lock File이 바뀌면 그것은 보고 대상 변경입니다.
+- Build(있다면)와 Test: 설정된 Script. Exit Code가 판정입니다.
+- 그것을 실행한 Machine의 `node --version`을 기록합니다. Manifest의 범위는 Evidence가 아닙니다.
 
-## Pass criterion
+## 통과 기준
 
-The **exit code**, in every case. A success message with a non-zero exit is a
-failure, and treating the message as the verdict is the specific mistake this
-kit was built to prevent.
+모든 경우에 **Exit Code**입니다. Exit이 0이 아닌데 성공 Message가 뜨는 것은 실패이며,
+그 Message를 판정으로 받아들이는 것이 바로 이 Kit이 막으려고 만들어진 실수입니다.
 
-## Long-running processes
+## 장시간 실행 Process
 
-A development server or a service under test is started and stopped through
-`tools/run-managed-service/run_service.py` (or its PowerShell twin), which tracks
-the process by PID and start time and stops only that process tree.
+Development Server나 Test 대상 Service는
+`tools/run-managed-service/run_service.py`(또는 그 PowerShell 짝)로 시작하고 중지합니다.
+이 Tool은 PID와 시작 시각으로 Process를 추적하며 그 Process Tree만 중지합니다.
 
-Never stop a process by image name. `Get-Process node | Stop-Process` and
-`pkill -f node` also kill the MCP servers the agent itself depends on, and the
-user's unrelated work.
+Image 이름으로 Process를 중지하지 마십시오. `Get-Process node | Stop-Process`와
+`pkill -f node`는 Agent 자신이 의존하는 MCP Server와 사용자의 무관한 작업까지 함께
+죽입니다.
 
-## Recording a result
+## 결과 기록
 
-Command, exit code, and the machine's toolchain version. Without the version the
-result cannot be compared to anything later.
+명령, Exit Code, 그리고 그 Machine의 Toolchain Version. Version이 없으면 나중에 나온
+결과와 비교할 수 없습니다.

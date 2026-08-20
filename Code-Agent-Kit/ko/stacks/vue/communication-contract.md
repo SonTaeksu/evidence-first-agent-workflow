@@ -1,18 +1,18 @@
 # Communication Contract — Vue.js
 
-## Interfaces this stack exposes or consumes
+## 이 Stack이 노출하거나 소비하는 Interface
 
-`⟨verification required: the contracts this project owns, and which of them have
+`⟨확인 필요: the contracts this project owns, and which of them have
 consumers outside this repository⟩`
 
-Whether an external consumer exists decides whether a change may be made in
-place or must be additive. Nobody can infer that from the code.
+외부 Consumer의 존재 여부가 제자리 변경과 추가 변경 중 무엇을 써야 하는지를 결정합니다. Code만으로는
+누구도 추론할 수 없습니다.
 
-## Rules that hold regardless
+## 항상 성립하는 규칙
 
-- A change to a contract is a change to every consumer of it. Regenerating one
-  side and not the other produces a runtime failure, not a build failure.
-- A generated client is regenerated, never edited. Adaptation belongs in a
-  hand-written wrapper, because the next regeneration silently discards edits.
-- An error that a caller is expected to branch on must be part of the contract.
-  An undeclared error arrives as something generic and cannot be handled.
+- Contract 변경은 그 Contract의 모든 Consumer 변경입니다. 한쪽만 재생성하면 Build 실패가 아니라
+  Runtime 실패가 납니다.
+- Generated Client는 재생성 대상이지 편집 대상이 아닙니다. 수정은 직접 작성한 Wrapper에 둡니다.
+  다음 재생성이 편집을 조용히 지웁니다.
+- 호출자가 분기할 것으로 기대되는 Error는 Contract의 일부여야 합니다. 선언되지 않은 Error는 뭉뚱그린
+  형태로 도착해 처리할 수 없습니다.

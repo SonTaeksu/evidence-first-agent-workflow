@@ -164,6 +164,44 @@ def document_statuses(stack: Path, keys: set[str]) -> dict[str, set[str]]:
     return found
 
 
+def _document_has_table(stack: Path) -> bool:
+    """True when STACK-INPUTS.md carries at least one filled-in table row.
+
+    The distinction matters. A document that is still a placeholder has nothing to
+    compare and never claimed to; saying so would punish a stack nobody has started
+    filling in, which is the same mistake the per-key tolerance above avoids. A
+    document with rows but no joinable key is the opposite: it looks complete, and
+    reports agreement that was never established.
+    """
+    document = stack / INPUTS_DOCUMENT
+    if not document.is_file():
+        return False
+    try:
+        lines = document.read_text(encoding="utf-8", errors="replace").splitlines()
+    except OSError:
+        return False
+    seen_separator = False
+    rows = 0
+    for line in lines:
+        stripped = line.strip()
+        if not stripped.startswith("|"):
+            seen_separator = False
+            continue
+        if set(stripped) <= set("|- :"):
+            seen_separator = True
+            continue
+        if not seen_separator:
+            continue
+        rows += 1
+        # One backticked token anywhere in the row means a `Key` column exists and
+        # is being used. The key may simply not be in this manifest, which is the
+        # tolerated case: extra rows are allowed and are not this tool's business.
+        # No backticked token in any row is the defect — the column is gone.
+        if BACKTICKED.findall(stripped):
+            return False
+    return rows > 0
+
+
 def compare_document(
     stack: Path,
     manifest_statuses: dict[str, str],
@@ -184,6 +222,26 @@ def compare_document(
     will not go looking for an explanation.
     """
     documented = document_statuses(stack, keys)
+
+    # A key with no row is tolerated above, deliberately. *Every* key having no
+    # row is a different thing and must not be tolerated: it means the document
+    # carries no joinable column at all, so the comparison below iterates over
+    # nothing and reports agreement it never established. That is how
+    # `ko/stacks/react-aspnetcore` shipped a table with the `Key` column dropped
+    # in translation and still measured `READY` with exit 0 — the check passed
+    # because its subject was missing, which is the failure this kit exists to
+    # catch. Reported at the same weight as drift: a warning, which derives
+    # `provisional`, so a stack cannot declare `ready` on an uncomparable table.
+    if keys and not documented and _document_has_table(stack):
+        warnings.append(
+            f"[check-stack-readiness:inputs-document-unjoinable] "
+            f"{INPUTS_DOCUMENT} has no row this check can join to "
+            f"STACK-READINESS.json. Rows join through a backticked key — add the "
+            f"`Key` column back, carrying the manifest keys verbatim "
+            f"({', '.join(sorted(keys)[:3])}...). Until then the table and the "
+            f"manifest are not being compared at all."
+        )
+
     for key, statuses in sorted(documented.items()):
         expected = manifest_statuses.get(key)
         if expected is None:

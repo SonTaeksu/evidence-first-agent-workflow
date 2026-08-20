@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "dxdocs": {
+      "type": "http",
+      "url": "https://api.devexpress.com/mcp/docs"
+    },
+    "dxdocs24_2": {
+      "type": "http",
+      "url": "https://api.devexpress.com/mcp/docs?v=24.2"
+    },
+    "microsoft-learn": {
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp"
+    }
+  }
+}

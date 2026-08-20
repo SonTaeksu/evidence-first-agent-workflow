@@ -1,0 +1,128 @@
+{
+  "schema": "evidence-first/stack-readiness/v1",
+  "stack_key": "devexpress-aspnetcore",
+  "declared_state": "blocked",
+  "required_documents": [
+    "STACK.md",
+    "STACK-INPUTS.md",
+    "AGENTS.stack.md",
+    "SKILL.md",
+    "capability-detection.md",
+    "feature-model.md",
+    "artifact-contract.md",
+    "communication-contract.md",
+    "evidence-provenance.md",
+    "references/_index.md",
+    "references/pitfalls.md",
+    "references/verified-facts.md",
+    "skeletons/README.md",
+    "validation/validation-profile.md"
+  ],
+  "inputs": [
+    {
+      "key": "runtime-sdk-versions",
+      "required": true,
+      "source": "auto",
+      "status": "unknown",
+      "evidence": [],
+      "notes": "The exact .NET target framework and SDK, and the exact DevExpress package version — not a supported range. Read from the project file, the lock or restore output, and the toolchain on the machine that runs validation."
+    },
+    {
+      "key": "devexpress-package-source",
+      "required": true,
+      "source": "owner",
+      "status": "unknown",
+      "evidence": [],
+      "notes": "The DevExpress NuGet feed is a private feed that needs credentials. Which feed URL this project restores from, where the credential comes from, and whether CI has it. A restore that works on one machine is not evidence that the feed is configured."
+    },
+    {
+      "key": "authoritative-sources",
+      "required": true,
+      "source": "mixed",
+      "status": "unknown",
+      "evidence": [],
+      "notes": "Which documentation source is authoritative for DevExpress and which for plain ASP.NET Core, and which must not be consulted for either. Recorded in mcp/source-routing.md."
+    },
+    {
+      "key": "feature-model",
+      "required": true,
+      "source": "owner",
+      "status": "unknown",
+      "evidence": [],
+      "notes": "What counts as one feature in this codebase, and what a feature may touch — including whether a report definition is part of a feature or a separate artefact with its own lifecycle."
+    },
+    {
+      "key": "validation-profile",
+      "required": true,
+      "source": "mixed",
+      "status": "unknown",
+      "evidence": [],
+      "notes": "The exact build, test and lint commands, and what their failure looks like. A command nobody has run is not a validation profile, and a build that only restores from a warm package cache has not proved the feed works."
+    },
+    {
+      "key": "confidentiality",
+      "required": true,
+      "source": "owner",
+      "status": "unknown",
+      "evidence": [],
+      "notes": "Whether this stack's material may appear in a public repository. Report definitions and connection strings are the usual leak; a licence key is the other."
+    }
+  ],
+  "capabilities": [
+    {
+      "key": "devexpress-version",
+      "status": "unknown",
+      "evidence": [],
+      "selected_path": "",
+      "blocks": [
+        "block any version-sensitive API use",
+        "block pinning an MCP documentation version"
+      ]
+    },
+    {
+      "key": "ui-component-layer",
+      "status": "unknown",
+      "evidence": [],
+      "selected_path": "",
+      "blocks": [
+        "block adding a component of either kind"
+      ]
+    },
+    {
+      "key": "page-model",
+      "status": "unknown",
+      "evidence": [],
+      "selected_path": "",
+      "blocks": [
+        "block adding a page or a controller"
+      ]
+    },
+    {
+      "key": "reporting-host",
+      "status": "unknown",
+      "evidence": [],
+      "selected_path": "",
+      "blocks": [
+        "block adding or changing a report viewer or designer host"
+      ]
+    },
+    {
+      "key": "report-storage",
+      "status": "unknown",
+      "evidence": [],
+      "selected_path": "",
+      "blocks": [
+        "block opening or saving a report from the designer"
+      ]
+    },
+    {
+      "key": "client-resource-delivery",
+      "status": "unknown",
+      "evidence": [],
+      "selected_path": "",
+      "blocks": [
+        "block adding a component that needs client-side assets"
+      ]
+    }
+  ]
+}

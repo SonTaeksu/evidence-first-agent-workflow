@@ -1,26 +1,26 @@
-# Pitfalls — Go + HTMX
+# Pitfall — Go + HTMX
 
-Each of these is a property of the technology, verifiable independently of any
-project. They are collected because they share one characteristic: **the failure
-is silent, or the error message names something other than the cause.** A stack
-whose failures announce themselves does not need a list like this.
+여기 있는 것들은 모두 기술 자체의 속성이고 어떤 Project와도 무관하게 확인할 수
+있습니다. 한 가지 공통점 때문에 모아 두었습니다. **실패가 조용하거나, 오류
+Message가 원인이 아닌 다른 것을 가리킨다는 점입니다.** 실패가 스스로를 알리는
+Stack이라면 이런 목록이 필요 없습니다.
 
-## Swap target mismatch is silent
+## Swap 대상 불일치는 조용하다
 
-A wrong `hx-target` selector, or a fragment whose root element id differs, produces no console error and no server error. The page simply does not update. Assert on the rendered fragment, not on the 200.
+`hx-target` Selector가 틀렸거나 Fragment의 Root Element id가 다르면 Console 오류도 Server 오류도 나지 않습니다. Page가 그냥 갱신되지 않습니다. 200이 아니라 Rendering된 Fragment를 Assert하십시오.
 
-## Returning a full page to a fragment request
+## Fragment Request에 전체 Page를 반환하기
 
-The whole document gets swapped into a `div`. It often looks nearly right, which is worse than a failure.
+문서 전체가 `div` 안으로 Swap됩니다. 대개 얼추 맞아 보이는데, 그것이 실패보다 더 나쁩니다.
 
-## Response codes HTMX treats specially
+## HTMX가 특별하게 다루는 응답 Code
 
-Some status codes suppress the swap entirely. A handler that signals an error with a code and also returns markup may have the markup discarded.
+일부 Status Code는 Swap 자체를 막습니다. Code로 오류를 알리면서 Markup도 함께 반환하는 Handler는 그 Markup이 버려질 수 있습니다.
 
-## CSRF on hx-post
+## hx-post의 CSRF
 
-An HTMX request is a normal request and needs the same token as a form post. Omitting it fails at the middleware, which reports nothing to the user.
+HTMX Request도 평범한 Request이며 Form Post와 똑같은 Token이 필요합니다. 빠뜨리면 Middleware에서 실패하는데, 사용자에게는 아무것도 알려 주지 않습니다.
 
-## HTMX version pinned client-side
+## HTMX Version은 Client측에 고정된다
 
-Attribute behaviour differs between HTMX major versions, and the version lives in a script tag rather than in `go.mod`. Read it from the asset.
+Attribute 동작은 HTMX Major Version 사이에 다르고, 그 Version은 `go.mod`가 아니라 Script Tag에 있습니다. Asset에서 읽으십시오.
